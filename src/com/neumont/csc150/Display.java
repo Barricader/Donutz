@@ -21,13 +21,11 @@ public class Display extends Canvas implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 448;
 	
-	// TODO: put main model class here
-//	private Space s;
+	private Donutz d;
 	
 	private Thread thread;
 	private JFrame frame;
-	// TODO: make a listener with a mouselistener here
-	//private Listener l;
+	private Listener l;
 	
 	private boolean running = true;
 
@@ -36,10 +34,11 @@ public class Display extends Canvas implements Runnable {
 		setPreferredSize(size);
 		frame = new JFrame();
 		
-		//s = new Space(this);
+		d = new Donutz(this);
 		
-		//l = new Listener(s);
-		//addKeyListener(l);
+		l = new Listener(d);
+		addKeyListener(l);
+		addMouseListener(l);
 	}
 	
 	/**
@@ -73,30 +72,32 @@ public class Display extends Canvas implements Runnable {
 		// TODO: put main model run method here
 		//s.run();
 		
-		long lastTime = System.nanoTime();
-		long timer = System.currentTimeMillis();
-		final double ns = 1000000000.0 / 60.0;
-		double delta = 0;
-		int frames = 0;
-		// Game loop
-		while (running) {
-			long now = System.nanoTime();
-			delta += (now - lastTime) / ns;
-			lastTime = now;
-			while (delta >= 1) {
-				update();
-				delta--;
-			}
-			
-			render();
-			frames++;
-			
-			if (System.currentTimeMillis() - timer > 1000) {
-				timer += 1000;
-				getFrame().setTitle("Donutz | " + frames + " fps");
-				frames = 0;
-			}
-		}
+		d.run();
+		
+//		long lastTime = System.nanoTime();
+//		long timer = System.currentTimeMillis();
+//		final double ns = 1000000000.0 / 60.0;
+//		double delta = 0;
+//		int frames = 0;
+//		// Game loop
+//		while (running) {
+//			long now = System.nanoTime();
+//			delta += (now - lastTime) / ns;
+//			lastTime = now;
+//			while (delta >= 1) {
+//				update();
+//				delta--;
+//			}
+//			
+//			render();
+//			frames++;
+//			
+//			if (System.currentTimeMillis() - timer > 1000) {
+//				timer += 1000;
+//				getFrame().setTitle("Donutz | " + frames + " fps");
+//				frames = 0;
+//			}
+//		}
 		
 		//stop();
 	}
@@ -117,7 +118,7 @@ public class Display extends Canvas implements Runnable {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		
+		// TODO: render here
 		
 		g.dispose();
 		bs.show();

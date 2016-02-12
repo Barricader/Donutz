@@ -10,14 +10,13 @@ import java.awt.event.MouseListener;
  * @author JoJones
  */
 public class Listener implements KeyListener, MouseListener {
-	// TODO: main model here
-	//private Space sp;
+	private Donutz d;
 	
 	// States of keys
 	public boolean q = false, w = false, e = false, r = false, space = false, esc = false, enter = false;
 	
-	Listener(/*Space s*/) {
-//		this.sp = s;
+	Listener(Donutz d) {
+		this.d = d;
 	}
 	
 	public void keyTyped(KeyEvent e) {}
@@ -81,6 +80,7 @@ public class Listener implements KeyListener, MouseListener {
 	public void mouseClicked(MouseEvent e) {
 		// TODO: main model click handler here
 		//m.clicked(e.x, e.y);
+		System.out.println(e.getX() + " " + e.getY());
 	}
 
 	public void mousePressed(MouseEvent e) {

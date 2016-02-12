@@ -30,8 +30,6 @@ public class Display extends Canvas implements Runnable {
 	//private Listener l;
 	
 	private boolean running = true;
-	
-	private boolean invincDraw = true;
 
 	public Display() {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
@@ -49,7 +47,7 @@ public class Display extends Canvas implements Runnable {
 	 **/
 	public synchronized void start() {
 		//running = true;
-		thread = new Thread(this, "Asteroids");
+		thread = new Thread(this, "Donutz");
 		thread.start();
 	}
 	
@@ -57,7 +55,6 @@ public class Display extends Canvas implements Runnable {
 	 ** Stop the thread
 	 **/
 	public synchronized void stop() {
-		//running = false;
 		try {
 			frame.dispatchEvent(new WindowEvent(frame, WindowEvent.WINDOW_CLOSING));
 			frame.dispose();

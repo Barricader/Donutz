@@ -60,11 +60,6 @@ public class Player extends Entity {
 		}
 		g2d.drawPolygon(p);
 		
-		// HITBOX DEBUG
-//		if (Space.DEBUG) {
-//			g2d.setColor(Color.GREEN);
-//			g2d.drawRect((int)x-10, (int)y-10, w, h);
-//		}
 	}
 
 	/**

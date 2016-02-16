@@ -26,8 +26,6 @@ public class Display extends Canvas implements Runnable {
 	private Thread thread;
 	private JFrame frame;
 	private Listener l;
-	
-	private boolean running = true;
 
 	public Display() {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
@@ -62,44 +60,11 @@ public class Display extends Canvas implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
-	// TODO: remove me and put in main model
-	public void update() {
-		
-	}
 
 	public void run() {
-		// TODO: put main model run method here
-		//s.run();
-		
 		d.run();
 		
-//		long lastTime = System.nanoTime();
-//		long timer = System.currentTimeMillis();
-//		final double ns = 1000000000.0 / 60.0;
-//		double delta = 0;
-//		int frames = 0;
-//		// Game loop
-//		while (running) {
-//			long now = System.nanoTime();
-//			delta += (now - lastTime) / ns;
-//			lastTime = now;
-//			while (delta >= 1) {
-//				update();
-//				delta--;
-//			}
-//			
-//			render();
-//			frames++;
-//			
-//			if (System.currentTimeMillis() - timer > 1000) {
-//				timer += 1000;
-//				getFrame().setTitle("Donutz | " + frames + " fps");
-//				frames = 0;
-//			}
-//		}
-		
-		//stop();
+		stop();
 	}
 	
 	/**
@@ -119,6 +84,7 @@ public class Display extends Canvas implements Runnable {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
 		// TODO: render here
+		d.getCurArea().render(g);
 		
 		g.dispose();
 		bs.show();
@@ -128,9 +94,9 @@ public class Display extends Canvas implements Runnable {
 		return frame;
 	}
 	
-//	public Listener getListener() {
-//		return l;
-//	}
+	public Listener getListener() {
+		return l;
+	}
 	
 	public static void main(String[] args) throws AWTException {
 		Display game = new Display();

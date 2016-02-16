@@ -3,22 +3,16 @@ package com.neumont.csc150;
 import java.util.Random;
 import java.util.Vector;
 
-//import org.json.simple.JSONArray;
-//import org.json.simple.JSONObject;
-//import org.json.simple.parser.JSONParser;
-//import org.json.simple.parser.ParseException;
-
-import com.neumont.csc150.entity.Particle;
 import com.neumont.csc150.entity.Player;
 
-// TODO: Make it look pretty
-// TODO: add selectors to the OK string in the enter your name and highscores screens
 public class Donutz {
 	public static final String DEFAULT_FILE = "save.json";
 	public static boolean DEBUG = false;
 //	private Vector<Asteroid> ast;
 //	private Vector<Bullet> bul;
-	private Vector<Particle> par;
+//	private Vector<Particle> par;
+	private Vector<Area> areas;
+	private Area curArea;
 	private Player p;
 
 	boolean showGameOver;
@@ -41,9 +35,12 @@ public class Donutz {
 	public Donutz(Display d) {
 		r = new Random();
 		
+		areas = new Vector<Area>();
+		areas.add(new Area("dirtMap.json"));
+		curArea = areas.get(0);
 //		ast = new Vector<Asteroid>();
 //		bul = new Vector<Bullet>();
-		par = new Vector<Particle>();
+//		par = new Vector<Particle>();
 		
 		//load();
 		
@@ -68,6 +65,8 @@ public class Donutz {
 		double delta = 0;
 		int frames = 0;
 		// Game loop
+		
+		areas.add(new Area("dirtMap.json"));
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -259,7 +258,7 @@ public class Donutz {
 		
 //		ast = new Vector<Asteroid>();
 //		bul = new Vector<Bullet>();
-		par = new Vector<Particle>();
+//		par = new Vector<Particle>();
 		
 		p = new Player(Display.WIDTH/2 - 10, Display.HEIGHT/2 - 10, 0);
 		
@@ -271,7 +270,6 @@ public class Donutz {
 	 * Save the state of the game
 	 * @param name - Name of file to save to
 	 */
-	@SuppressWarnings("unchecked")
 //	public void save() {
 //		//JSONObject scores = new JSONObject();
 //		
@@ -361,6 +359,10 @@ public class Donutz {
 		//howGameOver = true;
 	}
 	
+	public Area getCurArea() {
+		return curArea;
+	}
+	
 	public void setShowGameOver(boolean can) {
 		showGameOver = can;
 	}
@@ -375,9 +377,5 @@ public class Donutz {
 
 	public Player getPlayer() {
 		return p;
-	}
-	
-	public Vector<Particle> getParticles() {
-		return par;
 	}
 }

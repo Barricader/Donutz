@@ -40,8 +40,7 @@ public class Listener implements KeyListener, MouseListener {
 				break;
 			case KeyEvent.VK_ESCAPE:
 				esc = true;
-				// TODO: main model exit here
-				//sp.setRunning(false);
+				d.setRunning(false);
 				break;
 			case KeyEvent.VK_ENTER:
 				enter = true;

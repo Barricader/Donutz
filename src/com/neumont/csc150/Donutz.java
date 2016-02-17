@@ -14,6 +14,9 @@ public class Donutz {
 	private Vector<Area> areas;
 	private Area curArea;
 	private Player p;
+	
+	private int maxOffsetX, maxOffsetY, minOffsetX, minOffsetY;
+	private int camX, camY;
 
 	boolean showGameOver;
 	private boolean end;
@@ -38,6 +41,12 @@ public class Donutz {
 		areas = new Vector<Area>();
 		areas.add(new Area("dirtMap.json"));
 		curArea = areas.get(0);
+		
+		maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).getWidth()) - Display.WIDTH;
+		maxOffsetX = (curArea.getHeight() * curArea.getTiles().get(0).getHeight()) - Display.HEIGHT;
+		minOffsetX = 0;
+		minOffsetY = 0;
+		
 //		ast = new Vector<Asteroid>();
 //		bul = new Vector<Bullet>();
 //		par = new Vector<Particle>();
@@ -45,7 +54,7 @@ public class Donutz {
 		//load();
 		
 		showGameOver = false;
-		inMenu = true;
+		inMenu = false;
 		running = true;
 		end = false;
 		init = true;
@@ -53,7 +62,10 @@ public class Donutz {
 		selector = 0;
 		menuDelay = 0;
 		
-		p = new Player(Display.WIDTH/2 - 10, Display.HEIGHT/2 - 10, 0);
+		p = new Player(Display.WIDTH / 2, Display.HEIGHT / 2, 3);
+		
+		camX = (int) (p.getX() - Display.WIDTH / 2);
+		camY = (int) (p.getY() - Display.HEIGHT / 2);
 		
 		this.d = d;
 	}
@@ -106,39 +118,24 @@ public class Donutz {
 	 */
 	private void playerUpdate() {
 		if (!p.isDead()) {
-//			if (init || ast.size() == 0) {
-//				for (int i = 0; i < NUM_AST; i++) {
-//					ast.addElement(genAsteroid());
-//				}
-//				
-//				// Give extra lives if you clear a level
-//				if (!init) {
-//					lives += 2;
-//				}
-//				
-//				init = false;
-//				
-//				p.setInvincible(2.0);
-//			}
-//			
-//			p.setAccel(false);
-//			if (d.getListener().w || d.getListener().up) {
-//				double x2 = Math.cos(Math.toRadians(p.getDirection()));
-//				double y2 = Math.sin(Math.toRadians(p.getDirection()));
-//				p.setVel(x2, y2);
-//				p.setAccel(true);
-//			}
-//			if (d.getListener().a || d.getListener().left) {
-//				p.setDirection(p.getDirection() - 4);
-//			}
-//			else if (d.getListener().d || d.getListener().right) {
-//				p.setDirection(p.getDirection() + 4);
-//			}
-//			if (d.getListener().space && p.getBDelay() <= 0 && !p.isCollides()) {
-//				bul.addElement(genBullet());
-//			}
 			
 			p.update();
+			camX = (int) (p.getX() - Display.WIDTH / 2);
+			camY = (int) (p.getY() - Display.HEIGHT / 2);
+			
+			if (camX > maxOffsetX) {
+				camX = maxOffsetX;
+			}
+			else if (camX < minOffsetX) {
+				camX = minOffsetX;
+			}
+			if (camY > maxOffsetY) {
+				camY = maxOffsetY;
+			}
+			else if (camY < minOffsetY) {
+				camY = minOffsetY;
+			}
+			
 		}
 		else {
 			if (!showGameOver) {
@@ -146,45 +143,6 @@ public class Donutz {
 			}
 		}
 	}
-	
-	/**
-	 * Update the asteroids
-	 */
-//	private void asteroidUpdate() {
-//		for (int i = 0; i < ast.size(); i++) {
-//			ast.get(i).update();
-//			
-//			if (p.collide(ast.get(i)) && !p.isInvincible() && lives > 0 && !inMenu) {
-//				p.setCollides(true);
-//				
-//				Timer timeout = new Timer(1000, new ActionListener() {
-//					public void actionPerformed(ActionEvent e) {
-//						p.hide(false);
-//						p.restart();
-//						((Timer)e.getSource()).stop();
-//					}
-//				});
-//				
-//				timeout.start();
-//				
-//				p.setInvincible(0.999);
-//				p.hide(true);
-//				
-//				lives--;
-//				score += ast.get(i).giveScore();
-//				
-//				Random r = new Random();
-//				for (int j = 0; j < r.nextInt(ast.get(i).getSize()) + 5; j++) {
-//					Particle p = new Particle(ast.get(i).getX(), ast.get(i).getY(), 1 + r.nextDouble() * 2);
-//					p.setVelocity(r.nextInt(Display.WIDTH), r.nextInt(Display.HEIGHT));
-//					par.add(p);
-//				}
-//				ast.addAll(ast.get(i).destroy());
-//				ast.remove(i);
-//			}
-//		}
-//		
-//	}
 	
 	/**
 	 * Update the menu
@@ -217,37 +175,6 @@ public class Donutz {
 	}
 	
 	/**
-	 * Generate a random Asteroid
-	 * @return Generated asteroid
-	 */
-//	public Asteroid genAsteroid() {
-//		int t = r.nextInt(4);
-//		int x = 0, y = 0;
-//		switch (t) {
-//			case 0:
-//				x = -20;
-//				y = r.nextInt(Display.HEIGHT);
-//				break;
-//			case 1:
-//				y = -20;
-//				x = r.nextInt(Display.WIDTH);
-//				break;
-//			case 2:
-//				x = Display.WIDTH + 20;
-//				y = r.nextInt(Display.HEIGHT);
-//				break;
-//			case 3:
-//				y = Display.HEIGHT + 20;
-//				x = r.nextInt(Display.WIDTH);
-//				break;
-//		}
-//
-//		Asteroid a = new Asteroid(x, y, Asteroid.SLOW, Asteroid.BIG);
-//		a.setVelocity(r.nextInt(Display.WIDTH), r.nextInt(Display.HEIGHT));
-//		return a;
-//	}
-	
-	/**
 	 * Restart and init the game
 	 */
 	public void restart() {
@@ -260,7 +187,7 @@ public class Donutz {
 //		bul = new Vector<Bullet>();
 //		par = new Vector<Particle>();
 		
-		p = new Player(Display.WIDTH/2 - 10, Display.HEIGHT/2 - 10, 0);
+		p = new Player(Display.WIDTH/2 - 10, Display.HEIGHT/2 - 10, 3);
 		
 		init = true;
 		//b.hide();
@@ -377,5 +304,21 @@ public class Donutz {
 
 	public Player getPlayer() {
 		return p;
+	}
+
+	public int getCamX() {
+		return camX;
+	}
+
+	public void setCamX(int camX) {
+		this.camX = camX;
+	}
+
+	public int getCamY() {
+		return camY;
+	}
+
+	public void setCamY(int camY) {
+		this.camY = camY;
 	}
 }

@@ -37,6 +37,7 @@ public class Display extends Canvas implements Runnable {
 		l = new Listener(d);
 		addKeyListener(l);
 		addMouseListener(l);
+		addMouseMotionListener(l);
 	}
 	
 	/**
@@ -80,11 +81,13 @@ public class Display extends Canvas implements Runnable {
 		
 		// Get the graphics object from the buffer strategy of the canvas
 		Graphics g = bs.getDrawGraphics();
+		g.translate(-d.getCamX(), -d.getCamY());
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		// TODO: render here
 		d.getCurArea().render(g);
+		
+		d.getPlayer().render(g);
 		
 		g.dispose();
 		bs.show();
@@ -111,8 +114,8 @@ public class Display extends Canvas implements Runnable {
 		// A hack to have the window focused on start up
 		Robot r = new Robot();
 		r.mouseMove(game.frame.getLocationOnScreen().x + WIDTH /2, game.frame.getLocationOnScreen().y + HEIGHT/2);
-		r.mousePress(InputEvent.BUTTON1_MASK);
-		r.mouseRelease(InputEvent.BUTTON1_MASK);
+		//r.mousePress(InputEvent.BUTTON1_MASK);
+		//r.mouseRelease(InputEvent.BUTTON1_MASK);
 
 		game.start();
 	}

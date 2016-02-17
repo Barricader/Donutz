@@ -3,7 +3,7 @@ package com.neumont.csc150.entity;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
-import com.neumont.csc150.Display;
+import com.neumont.csc150.util.Vector;
 
 // TODO: move the polygon, points, and toVel stuff to here
 /**
@@ -32,21 +32,6 @@ public abstract class Entity {
 	public void update() {
 		x += dx;
 		y += dy;
-		
-		// Used for wrap around effect
-		if (x> Display.WIDTH + 20) {
-			x = -19;
-		}
-		else if (x < -20) {
-			x = Display.WIDTH + 19;
-		}
-		
-		if (y > Display.HEIGHT + 20) {
-			y = -19;
-		}
-		else if (y < -20) {
-			y = Display.HEIGHT + 19;
-		}
 	}
 
 	/**
@@ -64,14 +49,13 @@ public abstract class Entity {
 		double testX = x - this.x;
 		double testY = y - this.y;
 		
-		//Vector vec = new Vector(testX, testY);
-//		vec = vec.normalize();
-//		
-//		dx = vec.getdX() * speed;
-//		dy = vec.getdY() * speed;
+		Vector vec = new Vector(testX, testY);
+		vec = vec.normalize();
+		
+		dx = vec.getdX() * speed;
+		dy = vec.getdY() * speed;
 	}
 	
-	// TODO: move invincibility check here instead of Space
 	/**
 	 * Check collision with another entity
 	 * @param e - Entity to check for

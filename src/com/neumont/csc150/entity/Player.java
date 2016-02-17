@@ -2,119 +2,39 @@ package com.neumont.csc150.entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
-
-import javax.swing.Timer;
 
 import com.neumont.csc150.Display;
 
 public class Player extends Entity {
-	public static final int MAX_SPEED_MULTIPLIER = 4;
-	private int fDelay = 0;
-	private int bDelay = 0;
-	private boolean accel = false;
-	private boolean rocketDraw = true;
+	public static final int MAX_SPEED_MULTIPLIER = 3;
+	private boolean moving = false;
 	private boolean hide = false;
+	private double destX, destY;
 
 	public Player(double x, double y, double speed) {
 		super(x, y, speed);
 		w = 20;
 		h = 20;
 		direction = 0;
-		
-		// Rocket strobe timer
-		Timer rocketAnim = new Timer(35, new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rocketDraw = !rocketDraw;
-			}
-		});
-		
-		rocketAnim.start();
-	}
-
-	public void render(Graphics g) {
-		Graphics2D g2d = (Graphics2D)g;
-
-		// Rotate the points based on the current angle
-		Point[] temp = getPoints(1);
-		AffineTransform.getRotateInstance(Math.toRadians(direction), x, y)
-		.transform(getPoints(1), 0, temp, 0, 3);
-
-		Polygon p = toPoly(temp);
-
-		// Draw the rocket polygon strobe when moving
-		g2d.setColor(Color.WHITE);
-		if (accel && rocketDraw) {
-			Point[] temp2 = getPoints(2);
-			AffineTransform.getRotateInstance(Math.toRadians(direction), x, y)
-			.transform(getPoints(2), 0, temp2, 0, 3);
-			
-			Polygon p2 = toPoly(temp2);
-			g2d.drawPolygon(p2);
-		}
-		g2d.drawPolygon(p);
-		
-	}
-
-	/**
-	 * Convert the points into a Polygon
-	 * @param points - Array of Point to create a Polygon from
-	 * @return Polygon generated from the points
-	 */
-	public Polygon toPoly(Point[] points){
-		Polygon tempPoly = new Polygon();
-
-		for (int i = 0; i < points.length; i++){
-			tempPoly.addPoint(points[i].x, points[i].y);
-		}
-
-		return tempPoly;
+		destX = x;
+		destY = y;
 	}
 	
-	/**
-	 * Hard coded base points to pull from when rotating the points
-	 * @param t - Which points to use<br>0 is ship, 1 is rocket strobe
-	 * @return Base points
-	 */
-	public Point[] getPoints(int t) {
-		Point[] points = new Point[3];
-		if (t == 1) {
-			points[0] = new Point((int)x + 15, (int)y);
-			points[1] = new Point((int)x - 15, (int)y - 10);
-			points[2] = new Point((int)x - 15, (int)y + 10);
-		}
-		else {
-			points[0] = new Point((int)x - 25, (int)y);
-			points[1] = new Point((int)x - 15, (int)y - 5);
-			points[2] = new Point((int)x - 15, (int)y + 5);
-		}
-			
-		return points;
-	}
-	
-	/**
-	 * Adds friction and shooting delay
-	 */
 	public void update() {
 		super.update();
 		
-		if (bDelay > 0) {
-			bDelay--;
+		if ((destX > x - 4 && destX < x + 4) && (destY > y - 4 && destY < y + 4)) {
+			dx = 0;
+			dy = 0;
 		}
-		
-		if (fDelay <= 0) {
-			dx /= 1.01;
-			dy /= 1.01;
-		}
-		else {
-			fDelay--;
-		}
+	}
+	
+	public void render(Graphics g) {
+		g.setColor(Color.GREEN);
+		g.fillRect((int)x - w/2, (int)y - h/2, w, h);
 	}
 	
 	// Reinitialize the player
@@ -124,39 +44,17 @@ public class Player extends Entity {
 		dx = 0.0;
 		dy = 0.0;
 		direction = 0.0;
-		
-		//setInvincible(2.0);
 	}
 	
-	public void setVel(double dx, double dy) {
-		fDelay = 30;
-		
-		this.dx += dx;
-		this.dy += dy;
-		
-		if (dx > 0) {
-			if (this.dx > dx * MAX_SPEED_MULTIPLIER) {
-				this.dx = dx * MAX_SPEED_MULTIPLIER;
-			}
+	public void setVelocity(int x, int y) {
+		if ((x < this.x - 4 || x > this.x + 4) && (y < this.y - 4 || y > this.y + 4)) {
+			super.setVelocity(x, y);
+			
+			destX = x;
+			destY = y;
+			
+			moving = true;
 		}
-		if (dx < 0) {
-			if (this.dx < dx * MAX_SPEED_MULTIPLIER) {
-				this.dx = dx * MAX_SPEED_MULTIPLIER;
-			}
-		}
-		
-		if (dy > 0) {
-			if (this.dy > dy * MAX_SPEED_MULTIPLIER) {
-				this.dy = dy * MAX_SPEED_MULTIPLIER;
-			}
-		}
-		if (dy < 0) {
-			if (this.dy < dy * MAX_SPEED_MULTIPLIER) {
-				this.dy = dy * MAX_SPEED_MULTIPLIER;
-			}
-		}
-		
-		accel = true;
 	}
 	
 	public boolean collide(Entity e) {
@@ -170,6 +68,11 @@ public class Player extends Entity {
 		return false;
 	}
 	
+	public Rectangle getRect() {
+		Rectangle r = new Rectangle((int)x - 10, (int)y - 10, 20, 20);
+		return r;
+	}
+	
 	public void hide(boolean h) {
 		hide = h;
 	}
@@ -178,15 +81,11 @@ public class Player extends Entity {
 		return hide;
 	}
 	
-	public void setAccel(boolean a) {
-		accel = a;
+	public void setMoving(boolean a) {
+		moving = a;
 	}
-
-	public int getBDelay() {
-		return bDelay;
-	}
-
-	public void setBDelay(int bDelay) {
-		this.bDelay = bDelay;
+	
+	public boolean isMoving() {
+		return moving;
 	}
 }

@@ -18,14 +18,11 @@ public class Area {
 	private String imgPath, path;
 	
 	public Area() {
-		//this(0, 0, "test", "testTiles.png");
+		path = "";
+		tiles = new Vector<Tile>();
 	}
 	
-	public Area(/*int w, int h, String name, */String path) {
-//		this.w = w;
-//		this.h = h;
-//		this.name = name;
-//		this.sheet = sheet;
+	public Area(String path) {
 		this.path = path;
 		tiles = new Vector<Tile>();
 		
@@ -52,6 +49,9 @@ public class Area {
 			int tempH = (int) ((long)tsObj.get("tileheight"));
 			int imgW = (int) ((long)tsObj.get("imagewidth")); 
 			
+			w = (int) ((long)layObj.get("width"));
+			h = (int) ((long)layObj.get("height"));
+			
 			JSONArray data = (JSONArray) layObj.get("data");
 			Object[] d = data.toArray();
 			
@@ -74,23 +74,23 @@ public class Area {
 	
 	public void render(Graphics g) {
 		for (int i = 0; i < tiles.size(); i++) {
-			tiles.get(i).render(g, i);
+			tiles.get(i).render(g);
 		}
 	}
 
-	public int getW() {
+	public int getWidth() {
 		return w;
 	}
 
-	public void setW(int w) {
+	public void setWidth(int w) {
 		this.w = w;
 	}
 
-	public int getH() {
+	public int getHeight() {
 		return h;
 	}
 
-	public void setH(int h) {
+	public void setHeight(int h) {
 		this.h = h;
 	}
 

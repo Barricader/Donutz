@@ -40,13 +40,26 @@ public class Tile {
 		}
 	}
 	
-	public void render(Graphics g, int i) {
+	public void render(Graphics g) {
 		if (ID != 0) {
 			g.drawImage(sprite, x, y, null);
-			//g.drawImage(sprite, (int)isoX, (int)isoY, null);
-//			g.setColor(new Color(ID * 50 + 50, 20, 20));
-//			g.drawRect(x, y, w, h);
 		}
+	}
+	
+	public int getWidth() {
+		return w;
+	}
+
+	public void setWidth(int w) {
+		this.w = w;
+	}
+
+	public int getHeight() {
+		return h;
+	}
+
+	public void setHeight(int h) {
+		this.h= h;
 	}
 
 	public int getID() {

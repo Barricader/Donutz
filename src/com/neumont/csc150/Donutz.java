@@ -39,11 +39,14 @@ public class Donutz {
 		r = new Random();
 		
 		areas = new Vector<Area>();
-		areas.add(new Area("dirtMap.json"));
-		curArea = areas.get(0);
+		//areas.add(new Area("LostHaven.json"));
+		//curArea = areas.get(0);
+		curArea = new Area("LostHaven.json");
 		
 		maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).getWidth()) - Display.WIDTH;
 		maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).getHeight()) - Display.HEIGHT;
+		maxOffsetX *= 2;
+		maxOffsetY *= 2;
 		minOffsetX = 0;
 		minOffsetY = 0;
 		
@@ -62,10 +65,10 @@ public class Donutz {
 		selector = 0;
 		menuDelay = 0;
 		
-		p = new Player(Display.WIDTH / 2, Display.HEIGHT / 2, 3);
+		p = new Player(Display.WIDTH / 4, Display.HEIGHT / 4, 3);
 		
-		camX = (int) (p.getX() - Display.WIDTH / 2);
-		camY = (int) (p.getY() - Display.HEIGHT / 2);
+		camX = (int) (p.getX() - Display.WIDTH / 4);
+		camY = (int) (p.getY() - Display.HEIGHT / 4);
 		
 		this.d = d;
 	}
@@ -120,8 +123,8 @@ public class Donutz {
 		if (!p.isDead()) {
 			
 			p.update();
-			camX = (int) (p.getX() - Display.WIDTH / 2);
-			camY = (int) (p.getY() - Display.HEIGHT / 2);
+			camX = (int) (p.getX() - Display.WIDTH / 4) * 2;
+			camY = (int) (p.getY() - Display.HEIGHT / 4) * 2;
 			
 			if (camX > maxOffsetX) {
 				camX = maxOffsetX;
@@ -320,5 +323,21 @@ public class Donutz {
 
 	public void setCamY(int camY) {
 		this.camY = camY;
+	}
+
+	public int getMaxOffsetX() {
+		return maxOffsetX;
+	}
+
+	public void setMaxOffsetX(int maxOffsetX) {
+		this.maxOffsetX = maxOffsetX;
+	}
+	
+	public int getMaxOffsetY() {
+		return maxOffsetY;
+	}
+
+	public void setMaxOffsetY(int maxOffsetY) {
+		this.maxOffsetY = maxOffsetY;
 	}
 }

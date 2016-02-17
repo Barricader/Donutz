@@ -1,6 +1,5 @@
 package com.neumont.csc150;
 
-import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -29,6 +28,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 		t = new Timer();
 		tt = new TimerTask() {
 			public void run() {
+				// Does nothing, just used to instantiate
 				d.getPlayer().setVelocity(mx, my);
 			}
 		};
@@ -107,7 +107,13 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 							if (d.getPlayer().getX() > Display.WIDTH / 2) {
 								newX = (int) ((mx - Display.WIDTH / 2) + d.getPlayer().getX());
 							}
-							if (d.getPlayer().getY() > Display.HEIGHT / 2) {
+							if (d.getPlayer().getX() > d.getMaxOffsetX()) {
+								newX = (int) ((mx - Display.WIDTH / 2) + d.getPlayer().getX());
+							}
+							if (d.getPlayer().getY() > Display.HEIGHT / 2 && d.getPlayer().getY() < d.getMaxOffsetY()) {
+								newY = (int) ((my - Display.HEIGHT / 2) + d.getPlayer().getY());
+							}
+							if (d.getPlayer().getY() > d.getMaxOffsetY()) {
 								newY = (int) ((my - Display.HEIGHT / 2) + d.getPlayer().getY());
 							}
 							
@@ -131,7 +137,13 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 						if (d.getPlayer().getX() > Display.WIDTH / 2) {
 							newX = (int) ((mx - Display.WIDTH / 2) + d.getPlayer().getX());
 						}
-						if (d.getPlayer().getY() > Display.HEIGHT / 2) {
+						if (d.getPlayer().getX() > d.getMaxOffsetX()) {
+							newX = (int) ((mx - Display.WIDTH / 2) + d.getPlayer().getX());
+						}
+						if (d.getPlayer().getY() > Display.HEIGHT / 2 && d.getPlayer().getY() < d.getMaxOffsetY()) {
+							newY = (int) ((my - Display.HEIGHT / 2) + d.getPlayer().getY());
+						}
+						if (d.getPlayer().getY() > d.getMaxOffsetY()) {
 							newY = (int) ((my - Display.HEIGHT / 2) + d.getPlayer().getY());
 						}
 						
@@ -147,12 +159,12 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	public void mouseExited(MouseEvent e) {}
 	
 	public void mouseDragged(MouseEvent e) {
-		mx = e.getX();
-		my = e.getY();
+		mx = e.getX()/2;
+		my = e.getY()/2;
 	}
 
 	public void mouseMoved(MouseEvent e) {
-		mx = e.getX();
-		my = e.getY();
+		mx = e.getX()/2;
+		my = e.getY()/2;
 	}
 }

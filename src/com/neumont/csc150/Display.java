@@ -5,8 +5,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Robot;
-import java.awt.event.InputEvent;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 
@@ -18,8 +18,8 @@ import javax.swing.JFrame;
  */
 public class Display extends Canvas implements Runnable {
 	private static final long serialVersionUID = 1L;
-	public static final int WIDTH = 800;
-	public static final int HEIGHT = 448;
+	public static final int WIDTH = 1280;
+	public static final int HEIGHT = 720;
 	
 	private Donutz d;
 	
@@ -82,6 +82,8 @@ public class Display extends Canvas implements Runnable {
 		// Get the graphics object from the buffer strategy of the canvas
 		Graphics g = bs.getDrawGraphics();
 		g.translate(-d.getCamX(), -d.getCamY());
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.scale(2.0, 2.0);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		

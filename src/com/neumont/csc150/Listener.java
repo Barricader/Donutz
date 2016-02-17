@@ -101,9 +101,17 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 				if (!tt.cancel()) {
 					tt = new TimerTask() {
 						public void run() {
-							//if (!d.getPlayer().getRect().contains(e.getPoint())) {
-								d.getPlayer().setVelocity(mx, my);
-							//}
+							int newX = mx;
+							int newY = my;
+							
+							if (d.getPlayer().getX() > Display.WIDTH / 2) {
+								newX = (int) ((mx - Display.WIDTH / 2) + d.getPlayer().getX());
+							}
+							if (d.getPlayer().getY() > Display.HEIGHT / 2) {
+								newY = (int) ((my - Display.HEIGHT / 2) + d.getPlayer().getY());
+							}
+							
+							d.getPlayer().setVelocity(newX, newY);
 						}
 					};
 				}
@@ -117,9 +125,17 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 			if (!tt.cancel()) {
 				tt = new TimerTask() {
 					public void run() {
-						//if (!d.getPlayer().getRect().contains(e.getPoint())) {
-							d.getPlayer().setVelocity(mx, my);
-						//}
+						int newX = mx;
+						int newY = my;
+						
+						if (d.getPlayer().getX() > Display.WIDTH / 2) {
+							newX = (int) ((mx - Display.WIDTH / 2) + d.getPlayer().getX());
+						}
+						if (d.getPlayer().getY() > Display.HEIGHT / 2) {
+							newY = (int) ((my - Display.HEIGHT / 2) + d.getPlayer().getY());
+						}
+						
+						d.getPlayer().setVelocity(newX, newY);
 					}
 				};
 			}

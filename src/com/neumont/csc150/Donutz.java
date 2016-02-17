@@ -43,7 +43,7 @@ public class Donutz {
 		curArea = areas.get(0);
 		
 		maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).getWidth()) - Display.WIDTH;
-		maxOffsetX = (curArea.getHeight() * curArea.getTiles().get(0).getHeight()) - Display.HEIGHT;
+		maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).getHeight()) - Display.HEIGHT;
 		minOffsetX = 0;
 		minOffsetY = 0;
 		

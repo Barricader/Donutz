@@ -40,6 +40,16 @@ public class Tile {
 		}
 	}
 	
+	public Tile(BufferedImage img, int x, int y, int w, int h, int ID) {
+		this.x = x;
+		this.y = y;
+		this.w = w;
+		this.h = h;
+		this.ID = ID;
+		
+		sprite = img;
+	}
+
 	public void render(Graphics g) {
 		if (ID != 0) {
 			g.drawImage(sprite, x, y, null);

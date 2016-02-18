@@ -1,12 +1,17 @@
 package com.neumont.csc150;
 
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.Vector;
+
+import javax.imageio.ImageIO;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -61,15 +66,34 @@ public class Area {
 			System.out.println("Loaded data");
 			
 			int k = 0;
-			DecimalFormat df = new DecimalFormat("##.##%");
+			HashMap<Integer, BufferedImage> cache = new HashMap<Integer, BufferedImage>();
 			for (int i = 0; i < h; i++) {
 				for (int j = 0; j < w; j++) { 
 					int tempID = Integer.parseInt(d[k].toString());
-					tiles.add(new Tile(imgPath, tempW * j, tempH * i, tempW, tempH, tempID, imgW));
+					
+					if (!cache.containsKey(tempID)) {
+						BufferedImage sp;
+						try {
+							BufferedImage sh = ImageIO.read(new File(imgPath));
+							
+							int tempX = 0;
+							int tempY = 0;
+							if (tempID != 0) {
+								tempX = ((tempID - 1) * tempW) % imgW;
+								tempY = (((tempID - 1) * tempH) / imgW) * tempH;
+							}
+							
+							sp = sh.getSubimage(tempX, tempY, tempW, tempH);
+							cache.put(tempID, sp);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+					}
+					
+					tiles.add(new Tile(cache.get(tempID), tempW * j, tempH * i, tempW, tempH, tempID));
+					//tiles.add(new Tile(imgPath, tempW * j, tempH * i, tempW, tempH, tempID, imgW));
 					k++;
 					
-//					System.out.println("Loading..." + (k / (double)(w*h)) * 100 + "%");
-					//System.out.println("Loading..." + df.format(k / (double)(w*h)));
 					don.setLoadPerc(k / (double)(w*h));
 				}
 			}

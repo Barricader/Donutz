@@ -7,6 +7,8 @@ import com.neumont.csc150.entity.Player;
 
 public class Donutz {
 	public static final String DEFAULT_FILE = "save.json";
+	public static final String[] TIPS = { "Don't die", "Attack enemies", "Fear the Donutz", "Acquire space dollars", "Explore", "Get better gear" };
+	public static String CUR_TIP = "";
 	public static boolean DEBUG = false;
 //	private Vector<Asteroid> ast;
 //	private Vector<Bullet> bul;
@@ -43,14 +45,6 @@ public class Donutz {
 		areas = new Vector<Area>();
 		//areas.add(new Area("LostHaven.json"));
 		//curArea = areas.get(0);
-//		curArea = new Area("LostHaven.json", this);
-		
-//		maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).getWidth()) - Display.WIDTH;
-//		maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).getHeight()) - Display.HEIGHT;
-//		maxOffsetX *= 2;
-//		maxOffsetY *= 2;
-//		minOffsetX = 0;
-//		minOffsetY = 0;
 		
 //		ast = new Vector<Asteroid>();
 //		bul = new Vector<Bullet>();
@@ -135,10 +129,11 @@ public class Donutz {
 		Donutz temp = this;
 		Thread t = new Thread("load") {
 			public void run() {
-				curArea = new Area("LostHaven.json", temp);
+				CUR_TIP = TIPS[r.nextInt(TIPS.length)];
+				curArea = new Area("LostHaven2.json", temp);
 				
-				maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).getWidth()) - Display.WIDTH;
-				maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).getHeight()) - Display.HEIGHT;
+				maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).getWidth()) - Display.WIDTH/2;
+				maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).getHeight()) - Display.HEIGHT/2;
 				maxOffsetX *= 2;
 				maxOffsetY *= 2;
 				minOffsetX = 0;

@@ -115,7 +115,7 @@ public class Display extends Canvas implements Runnable {
 		else {
 			g.drawImage(loadImage, 0, 0, null);
 			g.setColor(Color.WHITE);
-			g.drawString("Welcome to Donutz, loading the starting level for you", WIDTH/4-140, HEIGHT / 3 - 20);
+			g.drawString("Pro tip: " + Donutz.CUR_TIP, (int)(WIDTH/4-(Donutz.CUR_TIP.length() * 4.75)), HEIGHT / 3 - 20);
 			g.drawString("Loading: " + df.format(d.getLoadPerc()), WIDTH / 4 - 40, HEIGHT / 4 - 10);
 			g.drawArc(WIDTH/4-10, HEIGHT/4-70, 20, 20, loadAngle, 60);
 			loadAngle++;

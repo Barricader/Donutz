@@ -9,7 +9,12 @@ import java.awt.Graphics2D;
 import java.awt.Robot;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.text.DecimalFormat;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 /**
@@ -26,6 +31,11 @@ public class Display extends Canvas implements Runnable {
 	private Thread thread;
 	private JFrame frame;
 	private Listener l;
+	
+	private DecimalFormat df;
+	
+	private int loadAngle;
+	private BufferedImage loadImage;
 
 	public Display() {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
@@ -38,6 +48,14 @@ public class Display extends Canvas implements Runnable {
 		addKeyListener(l);
 		addMouseListener(l);
 		addMouseMotionListener(l);
+		
+		df = new DecimalFormat("##.#%");
+		loadAngle = 0;
+		try {
+			loadImage = ImageIO.read(new File("earth.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -87,9 +105,21 @@ public class Display extends Canvas implements Runnable {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
-		d.getCurArea().render(g);
+		if (d.getCurArea() != null) {
+			d.getCurArea().render(g);
+		}
 		
-		d.getPlayer().render(g);
+		if (d.getLoadPerc() >= 1.0) {
+			d.getPlayer().render(g);
+		}
+		else {
+			g.drawImage(loadImage, 0, 0, null);
+			g.setColor(Color.WHITE);
+			g.drawString("Welcome to Donutz, loading the starting level for you", WIDTH/4-140, HEIGHT / 3 - 20);
+			g.drawString("Loading: " + df.format(d.getLoadPerc()), WIDTH / 4 - 40, HEIGHT / 4 - 10);
+			g.drawArc(WIDTH/4-10, HEIGHT/4-70, 20, 20, loadAngle, 60);
+			loadAngle++;
+		}
 		
 		g.dispose();
 		bs.show();

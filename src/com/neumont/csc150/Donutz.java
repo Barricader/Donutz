@@ -17,12 +17,14 @@ public class Donutz {
 	
 	private int maxOffsetX, maxOffsetY, minOffsetX, minOffsetY;
 	private int camX, camY;
+	
+	private double loadPerc;
 
 	boolean showGameOver;
 	private boolean end;
 	private boolean inMenu;
 	private boolean running;
-	private boolean init;
+	private boolean loaded;
 	
 	private int selector;
 	private int menuDelay;
@@ -41,18 +43,21 @@ public class Donutz {
 		areas = new Vector<Area>();
 		//areas.add(new Area("LostHaven.json"));
 		//curArea = areas.get(0);
-		curArea = new Area("LostHaven.json");
+//		curArea = new Area("LostHaven.json", this);
 		
-		maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).getWidth()) - Display.WIDTH;
-		maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).getHeight()) - Display.HEIGHT;
-		maxOffsetX *= 2;
-		maxOffsetY *= 2;
-		minOffsetX = 0;
-		minOffsetY = 0;
+//		maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).getWidth()) - Display.WIDTH;
+//		maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).getHeight()) - Display.HEIGHT;
+//		maxOffsetX *= 2;
+//		maxOffsetY *= 2;
+//		minOffsetX = 0;
+//		minOffsetY = 0;
 		
 //		ast = new Vector<Asteroid>();
 //		bul = new Vector<Bullet>();
 //		par = new Vector<Particle>();
+		
+		curArea = null;
+		loadPerc = 0.0;
 		
 		//load();
 		
@@ -60,7 +65,7 @@ public class Donutz {
 		inMenu = false;
 		running = true;
 		end = false;
-		init = true;
+		loaded = false;
 		
 		selector = 0;
 		menuDelay = 0;
@@ -81,7 +86,7 @@ public class Donutz {
 		int frames = 0;
 		// Game loop
 		
-		areas.add(new Area("dirtMap.json"));
+		//areas.add(new Area("dirtMap.json"));
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -107,13 +112,49 @@ public class Donutz {
 	 **/
 	public void update() {
 		if (!inMenu) {
-			if (!end) {
+			if (!loaded) {
+				load();
+				//curArea = new Area("LostHaven.json", this);
+			}
+			if (!end && loadPerc >= 1.0) {
 				playerUpdate();
+			}
+			else {
+				//loadUpdate();
 			}
 		}
 		else {
 			menuUpdate();
 		}
+	}
+	
+	/**
+	 * Load an area
+	 */
+	public void load() {
+		Donutz temp = this;
+		Thread t = new Thread("load") {
+			public void run() {
+				curArea = new Area("LostHaven.json", temp);
+				
+				maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).getWidth()) - Display.WIDTH;
+				maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).getHeight()) - Display.HEIGHT;
+				maxOffsetX *= 2;
+				maxOffsetY *= 2;
+				minOffsetX = 0;
+				minOffsetY = 0;
+				
+				try {
+					this.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+		
+		t.start();
+		
+		loaded = true;
 	}
 	
 	/**
@@ -192,7 +233,7 @@ public class Donutz {
 		
 		p = new Player(Display.WIDTH/2 - 10, Display.HEIGHT/2 - 10, 3);
 		
-		init = true;
+		loaded = true;
 		//b.hide();
 	}
 	
@@ -339,5 +380,13 @@ public class Donutz {
 
 	public void setMaxOffsetY(int maxOffsetY) {
 		this.maxOffsetY = maxOffsetY;
+	}
+	
+	public void setLoadPerc(double perc) {
+		loadPerc = perc;
+	}
+	
+	public double getLoadPerc() {
+		return loadPerc;
 	}
 }

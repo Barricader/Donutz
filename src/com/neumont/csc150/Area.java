@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.Vector;
 
 import org.json.simple.JSONArray;
@@ -16,15 +17,17 @@ public class Area {
 	private int w, h;
 	private Vector<Tile> tiles;
 	private String imgPath, path;
+	private Donutz don;
 	
 	public Area() {
 		path = "";
 		tiles = new Vector<Tile>();
 	}
 	
-	public Area(String path) {
+	public Area(String path, Donutz d) {
 		this.path = path;
 		tiles = new Vector<Tile>();
+		don = d;
 		
 		load();
 	}
@@ -55,12 +58,19 @@ public class Area {
 			JSONArray data = (JSONArray) layObj.get("data");
 			Object[] d = data.toArray();
 			
+			System.out.println("Loaded data");
+			
 			int k = 0;
-			for (int i = 0; i < (long)layObj.get("height"); i++) {
-				for (int j = 0; j < (long)layObj.get("width"); j++) { 
+			DecimalFormat df = new DecimalFormat("##.##%");
+			for (int i = 0; i < h; i++) {
+				for (int j = 0; j < w; j++) { 
 					int tempID = Integer.parseInt(d[k].toString());
 					tiles.add(new Tile(imgPath, tempW * j, tempH * i, tempW, tempH, tempID, imgW));
 					k++;
+					
+//					System.out.println("Loading..." + (k / (double)(w*h)) * 100 + "%");
+					//System.out.println("Loading..." + df.format(k / (double)(w*h)));
+					don.setLoadPerc(k / (double)(w*h));
 				}
 			}
 		} catch (FileNotFoundException e) {
@@ -74,7 +84,11 @@ public class Area {
 	
 	public void render(Graphics g) {
 		for (int i = 0; i < tiles.size(); i++) {
-			tiles.get(i).render(g);
+			if (tiles.get(i).getX() > don.getCamX()/2 - tiles.get(i).getWidth() && tiles.get(i).getX() < don.getCamX()/2 + Display.WIDTH/2) {
+				if (tiles.get(i).getY() > don.getCamY()/2 - tiles.get(i).getHeight() && tiles.get(i).getY() < don.getCamY()/2 + Display.HEIGHT/2) {
+					tiles.get(i).render(g);
+				}
+			}
 		}
 	}
 

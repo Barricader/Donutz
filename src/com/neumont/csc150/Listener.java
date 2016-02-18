@@ -1,5 +1,6 @@
 package com.neumont.csc150;
 
+import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -95,7 +96,8 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	public void mouseClicked(MouseEvent e) {}
 
 	public void mousePressed(MouseEvent e) {
-		if (!d.getPlayer().getRect().contains(e.getPoint())) {
+		Point temp = new Point(e.getX()/2, e.getY()/2);
+		if (!d.getPlayer().getRect().contains(temp)) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				t = new Timer();
 				if (!tt.cancel()) {
@@ -104,17 +106,17 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 							int newX = mx;
 							int newY = my;
 							
-							if (d.getPlayer().getX() > Display.WIDTH / 2) {
-								newX = (int) ((mx - Display.WIDTH / 2) + d.getPlayer().getX());
+							if (d.getPlayer().getX() > Display.WIDTH / 4) {
+								newX = (int) ((mx - Display.WIDTH / 4) + d.getPlayer().getX());
 							}
-							if (d.getPlayer().getX() > d.getMaxOffsetX()) {
-								newX = (int) ((mx - Display.WIDTH / 2) + d.getPlayer().getX());
+							if (d.getPlayer().getX() > d.getMaxOffsetX() - Display.WIDTH/4) {
+								newX = (mx - Display.WIDTH/2) + d.getMaxOffsetX();
 							}
-							if (d.getPlayer().getY() > Display.HEIGHT / 2 && d.getPlayer().getY() < d.getMaxOffsetY()) {
-								newY = (int) ((my - Display.HEIGHT / 2) + d.getPlayer().getY());
+							if (d.getPlayer().getY() > Display.HEIGHT / 4) {
+								newY = (int) ((my - Display.HEIGHT / 4) + d.getPlayer().getY());
 							}
-							if (d.getPlayer().getY() > d.getMaxOffsetY()) {
-								newY = (int) ((my - Display.HEIGHT / 2) + d.getPlayer().getY());
+							if (d.getPlayer().getY() > d.getMaxOffsetY() - Display.HEIGHT * 1.45) {
+								newY = (int) ((my - Display.HEIGHT/2) + (d.getMaxOffsetY() - Display.HEIGHT*1.17));
 							}
 							
 							d.getPlayer().setVelocity(newX, newY);
@@ -134,17 +136,17 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 						int newX = mx;
 						int newY = my;
 						
-						if (d.getPlayer().getX() > Display.WIDTH / 2) {
-							newX = (int) ((mx - Display.WIDTH / 2) + d.getPlayer().getX());
+						if (d.getPlayer().getX() > Display.WIDTH / 4) {
+							newX = (int) ((mx - Display.WIDTH / 4) + d.getPlayer().getX());
 						}
-						if (d.getPlayer().getX() > d.getMaxOffsetX()) {
-							newX = (int) ((mx - Display.WIDTH / 2) + d.getPlayer().getX());
+						if (d.getPlayer().getX() > d.getMaxOffsetX() - Display.WIDTH/4) {
+							newX = (mx - Display.WIDTH/2) + d.getMaxOffsetX();
 						}
-						if (d.getPlayer().getY() > Display.HEIGHT / 2 && d.getPlayer().getY() < d.getMaxOffsetY()) {
-							newY = (int) ((my - Display.HEIGHT / 2) + d.getPlayer().getY());
+						if (d.getPlayer().getY() > Display.HEIGHT / 4) {
+							newY = (int) ((my - Display.HEIGHT / 4) + d.getPlayer().getY());
 						}
-						if (d.getPlayer().getY() > d.getMaxOffsetY()) {
-							newY = (int) ((my - Display.HEIGHT / 2) + d.getPlayer().getY());
+						if (d.getPlayer().getY() > d.getMaxOffsetY() - Display.HEIGHT/4) {
+							newY = (my - Display.HEIGHT/2) + d.getMaxOffsetY();
 						}
 						
 						d.getPlayer().setVelocity(newX, newY);

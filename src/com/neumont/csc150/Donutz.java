@@ -139,6 +139,8 @@ public class Donutz {
 				minOffsetX = 0;
 				minOffsetY = 0;
 				
+				p.load("player.png");
+				
 				try {
 					this.join();
 				} catch (InterruptedException e) {

@@ -1,13 +1,15 @@
 package com.neumont.csc150.entity;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
+import javax.swing.Timer;
 
 import com.neumont.csc150.Display;
 
@@ -17,6 +19,8 @@ public class Player extends Entity {
 	private boolean hide = false;
 	private double destX, destY;
 	private BufferedImage[][] sprites;
+	private int step;
+	private Timer stepTime;
 
 	public Player(double x, double y, double speed) {
 		super(x, y, speed);
@@ -25,6 +29,20 @@ public class Player extends Entity {
 		direction = 0;
 		destX = x;
 		destY = y;
+
+		step = 0;
+		stepTime = new Timer(150, new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				step++;
+				if (step > 3) {
+					step = 0;
+				}
+			}
+		});
+		
+		stepTime.start();
+	
+		sprites = new BufferedImage[4][4];
 	}
 	
 	public void update() {
@@ -41,11 +59,44 @@ public class Player extends Entity {
 		if (y < 0) {
 			y = 0;
 		}
+		
+		if (dx != 0.0 && dy != 0.0) {
+			moving = true;
+		}
+		else {
+			moving = false;
+		}
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(Color.GREEN);
-		g.fillRect((int)x - w/2, (int)y - h/2, w, h);
+		if (moving) {
+			if (direction < 45 || direction > 315) {
+				g.drawImage(sprites[3][step], (int)x - w/2, (int)y - h/2, null);
+			}
+			else if (direction >= 45 && direction < 135) {
+				g.drawImage(sprites[0][step], (int)x - w/2, (int)y - h/2, null);
+			}
+			else if (direction >= 135 && direction < 225) {
+				g.drawImage(sprites[2][step], (int)x - w/2, (int)y - h/2, null);
+			}
+			else if (direction >= 225 && direction <= 315) {
+				g.drawImage(sprites[1][step], (int)x - w/2, (int)y - h/2, null);
+			}
+		}
+		else {
+			if (direction < 45 || direction > 315) {
+				g.drawImage(sprites[3][0], (int)x - w/2, (int)y - h/2, null);
+			}
+			else if (direction >= 45 && direction < 135) {
+				g.drawImage(sprites[0][0], (int)x - w/2, (int)y - h/2, null);
+			}
+			else if (direction >= 135 && direction < 225) {
+				g.drawImage(sprites[2][0], (int)x - w/2, (int)y - h/2, null);
+			}
+			else if (direction >= 225 && direction <= 315) {
+				g.drawImage(sprites[1][0], (int)x - w/2, (int)y - h/2, null);
+			}
+		}
 	}
 	
 	// Reinitialize the player
@@ -69,10 +120,13 @@ public class Player extends Entity {
 			if (direction < 0) {
 				direction += 360;
 			}
-			System.out.println(direction);
 		}
 	}
 	
+	/**
+	 * Load the player's sprite sheet into memory
+	 * @param sheet
+	 */
 	public void load(String sheet) {
 		try {
 			BufferedImage sh = ImageIO.read(new File(sheet));

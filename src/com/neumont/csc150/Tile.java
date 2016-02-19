@@ -7,6 +7,11 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+/**
+ * Tile in the area
+ * @author JoJones
+ *
+ */
 public class Tile {
 	private int x, y, w, h;
 	private int ID;
@@ -14,30 +19,7 @@ public class Tile {
 	BufferedImage sprite;
 	
 	Tile() {
-		this("", 0, 0, 0, 0, -1, 0);
-	}
-	
-	Tile(String sheet, int x, int y, int w, int h, int ID, int temp) {
-		this.x = x;
-		this.y = y;
-		this.w = w;
-		this.h = h;
-		this.ID = ID;
-		
-		try {
-			BufferedImage sh = ImageIO.read(new File(sheet));
-			
-			int tempX = 96;
-			int tempY = 3;
-			if (ID != 0) {
-				tempX = ((ID - 1) * w) % temp;
-				tempY = (((ID - 1) * h) / temp) * h;
-			}
-			
-			sprite = sh.getSubimage(tempX, tempY, w, h);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this(null, 0, 0, 0, 0, -1);
 	}
 	
 	public Tile(BufferedImage img, int x, int y, int w, int h, int ID) {
@@ -50,6 +32,10 @@ public class Tile {
 		sprite = img;
 	}
 
+	/**
+	 * Draw the tile
+	 * @param g Graphics to draw on
+	 */
 	public void render(Graphics g) {
 		if (ID != 0) {
 			g.drawImage(sprite, x, y, null);

@@ -44,11 +44,13 @@ public class Display extends Canvas implements Runnable {
 		
 		d = new Donutz(this);
 		
+		// Listeners for keyboard and mouse
 		l = new Listener(d);
 		addKeyListener(l);
 		addMouseListener(l);
 		addMouseMotionListener(l);
 		
+		// Used for loading screen to show percent loaded
 		df = new DecimalFormat("##.#%");
 		loadAngle = 0;
 		try {
@@ -105,6 +107,7 @@ public class Display extends Canvas implements Runnable {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
+		// Render the area if loaded
 		if (d.getCurArea() != null) {
 			d.getCurArea().render(g);
 		}
@@ -113,6 +116,7 @@ public class Display extends Canvas implements Runnable {
 			d.getPlayer().render(g);
 		}
 		else {
+			// If the area is not loaded yet, draw the load screen
 			g.drawImage(loadImage, 0, 0, null);
 			g.setColor(Color.WHITE);
 			g.drawString("Pro tip: " + Donutz.CUR_TIP, (int)(WIDTH/4-(Donutz.CUR_TIP.length() * 4.75)), HEIGHT / 3 - 20);
@@ -143,11 +147,9 @@ public class Display extends Canvas implements Runnable {
 		game.frame.setLocationRelativeTo(null);
 		game.frame.setVisible(true);
 		
-		// A hack to have the window focused on start up
+		// Used to move mouse to the middle of the window
 		Robot r = new Robot();
 		r.mouseMove(game.frame.getLocationOnScreen().x + WIDTH /2, game.frame.getLocationOnScreen().y + HEIGHT/2);
-		//r.mousePress(InputEvent.BUTTON1_MASK);
-		//r.mouseRelease(InputEvent.BUTTON1_MASK);
 
 		game.start();
 	}

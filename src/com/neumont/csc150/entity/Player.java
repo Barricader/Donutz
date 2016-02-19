@@ -11,10 +11,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
-import com.neumont.csc150.Display;
-
+// TODO: add variables for combat such as a WEAPON class and hp and skill points and what not
 public class Player extends Entity {
-	public static final int MAX_SPEED_MULTIPLIER = 3;
 	private boolean moving = false;
 	private boolean hide = false;
 	private double destX, destY;
@@ -22,14 +20,15 @@ public class Player extends Entity {
 	private int step;
 	private Timer stepTime;
 
-	public Player(double x, double y, double speed) {
-		super(x, y, speed);
+	public Player(double x, double y) {
+		super(x, y, 3);
 		w = 32;
 		h = 32;
 		direction = 0;
 		destX = x;
 		destY = y;
 
+		// A timer that just animates the player
 		step = 0;
 		stepTime = new Timer(150, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -48,6 +47,7 @@ public class Player extends Entity {
 	public void update() {
 		super.update();
 		
+		// Only move the player if they are not already at the destination
 		if ((destX > x - 4 && destX < x + 4) && (destY > y - 4 && destY < y + 4)) {
 			dx = 0;
 			dy = 0;
@@ -60,6 +60,7 @@ public class Player extends Entity {
 			y = 0;
 		}
 		
+		// If the player's rate of change isn't zero, then he must be moving
 		if (dx != 0.0 && dy != 0.0) {
 			moving = true;
 		}
@@ -68,6 +69,9 @@ public class Player extends Entity {
 		}
 	}
 	
+	/**
+	 * Draw the player
+	 */
 	public void render(Graphics g) {
 		if (moving) {
 			if (direction < 45 || direction > 315) {
@@ -99,15 +103,9 @@ public class Player extends Entity {
 		}
 	}
 	
-	// Reinitialize the player
-	public void restart() {
-		x = Display.WIDTH / 2 - 10;
-		y = Display.HEIGHT / 2 - 10;
-		dx = 0.0;
-		dy = 0.0;
-		direction = 0.0;
-	}
-	
+	/**
+	 * Sets the current velocity of the player
+	 */
 	public void setVelocity(int x, int y) {
 		if ((x < this.x - 4 || x > this.x + 4) && (y < this.y - 4 || y > this.y + 4)) {
 			super.setVelocity(x, y);
@@ -115,7 +113,7 @@ public class Player extends Entity {
 			destX = x;
 			destY = y;
 			
-			moving = true;
+			// Complicated math for finding the direction of the players
 			direction = -Math.atan2(y - this.y, x - this.x) * 180 / Math.PI;
 			if (direction < 0) {
 				direction += 360;
@@ -152,8 +150,11 @@ public class Player extends Entity {
 		}
 	}
 	
+	/**
+	 * Collision checking
+	 */
 	public boolean collide(Entity e) {
-		Rectangle r = new Rectangle((int)x - 10, (int)y - 10, w, h);
+		Rectangle r = new Rectangle((int)x - w/2, (int)y - w/2, w, h);
 		Rectangle r2 = new Rectangle((int)e.getX(), (int)e.getY(), e.getWidth(), e.getHeight());
 		
 		if (r.intersects(r2)) {
@@ -163,8 +164,12 @@ public class Player extends Entity {
 		return false;
 	}
 	
+	/**
+	 *  Get the player's collision box
+	 * @return The collision box
+	 */
 	public Rectangle getRect() {
-		Rectangle r = new Rectangle((int)x - 10, (int)y - 10, w, h);
+		Rectangle r = new Rectangle((int)x - w/2, (int)y - w/2, w, h);
 		return r;
 	}
 	

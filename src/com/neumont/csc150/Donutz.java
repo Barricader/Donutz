@@ -43,17 +43,9 @@ public class Donutz {
 		r = new Random();
 		
 		areas = new Vector<Area>();
-		//areas.add(new Area("LostHaven.json"));
-		//curArea = areas.get(0);
-		
-//		ast = new Vector<Asteroid>();
-//		bul = new Vector<Bullet>();
-//		par = new Vector<Particle>();
 		
 		curArea = null;
 		loadPerc = 0.0;
-		
-		//load();
 		
 		showGameOver = false;
 		inMenu = false;
@@ -64,7 +56,7 @@ public class Donutz {
 		selector = 0;
 		menuDelay = 0;
 		
-		p = new Player(Display.WIDTH / 4, Display.HEIGHT / 4, 3);
+		p = new Player(Display.WIDTH / 4, Display.HEIGHT / 4);
 		
 		camX = (int) (p.getX() - Display.WIDTH / 4);
 		camY = (int) (p.getY() - Display.HEIGHT / 4);
@@ -79,8 +71,6 @@ public class Donutz {
 		double delta = 0;
 		int frames = 0;
 		// Game loop
-		
-		//areas.add(new Area("dirtMap.json"));
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -108,13 +98,9 @@ public class Donutz {
 		if (!inMenu) {
 			if (!loaded) {
 				load();
-				//curArea = new Area("LostHaven.json", this);
 			}
 			if (!end && loadPerc >= 1.0) {
 				playerUpdate();
-			}
-			else {
-				//loadUpdate();
 			}
 		}
 		else {
@@ -140,6 +126,8 @@ public class Donutz {
 				minOffsetY = 0;
 				
 				p.load("player.png");
+				
+				areas.add(curArea);
 				
 				try {
 					this.join();
@@ -188,6 +176,7 @@ public class Donutz {
 	/**
 	 * Update the menu
 	 */
+	@Deprecated
 	private void menuUpdate() {
 //		if ((d.getListener().s || d.getListener().down) && menuDelay <= 0) {
 //			selector++;
@@ -203,6 +192,7 @@ public class Donutz {
 		}
 	}
 
+	@Deprecated
 	public void chooseSelected() {
 		// Play game
 		if (selector % 2 == 0) {
@@ -218,6 +208,7 @@ public class Donutz {
 	/**
 	 * Restart and init the game
 	 */
+	@Deprecated
 	public void restart() {
 		r = new Random();
 		
@@ -228,7 +219,7 @@ public class Donutz {
 //		bul = new Vector<Bullet>();
 //		par = new Vector<Particle>();
 		
-		p = new Player(Display.WIDTH/2 - 10, Display.HEIGHT/2 - 10, 3);
+		p = new Player(Display.WIDTH/2 - 10, Display.HEIGHT/2 - 10);
 		
 		loaded = true;
 		//b.hide();

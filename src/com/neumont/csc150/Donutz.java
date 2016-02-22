@@ -10,6 +10,7 @@ public class Donutz {
 	public static final String[] TIPS = { "Don't die", "Attack enemies", "Fear the Donutz", "Acquire space dollars", "Explore", "Get better gear" };
 	public static String CUR_TIP = "";
 	public static boolean DEBUG = false;
+	private static Donutz instance;
 //	private Vector<Asteroid> ast;
 //	private Vector<Bullet> bul;
 //	private Vector<Particle> par;
@@ -62,6 +63,10 @@ public class Donutz {
 		camY = (int) (p.getY() - Display.HEIGHT / 4);
 		
 		this.d = d;
+		
+		if (instance == null) {
+			instance = this;
+		}
 	}
 	
 	public void run() {
@@ -376,5 +381,9 @@ public class Donutz {
 	
 	public double getLoadPerc() {
 		return loadPerc;
+	}
+	
+	public static Donutz getInstance() {
+		return instance;
 	}
 }

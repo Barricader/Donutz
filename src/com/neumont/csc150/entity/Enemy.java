@@ -50,7 +50,6 @@ public class Enemy extends Entity {
 	}
 	
 	public void load(String i){
-	
 		
 	}
 	

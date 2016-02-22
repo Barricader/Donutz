@@ -1,15 +1,20 @@
 package com.neumont.csc150.entity;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
+
+import com.neumont.csc150.Display;
+import com.neumont.csc150.Donutz;
 
 // TODO: add variables for combat such as a WEAPON class and hp and skill points and what not
 public class Player extends Entity {
@@ -41,10 +46,17 @@ public class Player extends Entity {
 		
 		stepTime.start();
 	
-		sprites = new BufferedImage[4][4];
+		sprites = new BufferedImage[8][4];
 	}
 	
 	public void update() {
+		if (x + dx < 16 || x + dx > Donutz.getInstance().getMaxOffsetX() - Display.WIDTH/2 - 16) {
+			dx = 0;
+		}
+		if (y + dy < 16 || y + dy > Donutz.getInstance().getMaxOffsetY() - Display.HEIGHT*1.5 - 134) {
+			dy = 0;
+		}
+		
 		super.update();
 		
 		// Only move the player if they are not already at the destination
@@ -52,6 +64,14 @@ public class Player extends Entity {
 			dx = 0;
 			dy = 0;
 		}
+		
+//		if (destX < 0 || destX > Display.WIDTH) {
+//			dx = 0;
+//		}
+//		
+//		if (destY < 0 || destY > Display.HEIGHT) {
+//			dy = 0;
+//		}
 		
 		if (x < 0) {
 			x = 0;
@@ -73,34 +93,74 @@ public class Player extends Entity {
 	 * Draw the player
 	 */
 	public void render(Graphics g) {
+//		if (moving) {
+//			if (direction < 22.5 || direction > 337.5) {
+//				g.drawImage(sprites[3][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 67.5 && direction < 112.5) {
+//				g.drawImage(sprites[0][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 157.5 && direction < 202.5) {
+//				g.drawImage(sprites[2][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 247.5 && direction <= 292.5) {
+//				g.drawImage(sprites[1][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 22.5 && direction < 67.5) {
+//				g.drawImage(sprites[6][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 112.5 && direction < 157.5) {
+//				g.drawImage(sprites[5][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 202.5 && direction <= 247.5) {
+//				g.drawImage(sprites[7][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 292.5 && direction <= 337.5) {
+//				g.drawImage(sprites[4][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//		}
+//		else {
+//			if (direction < 22.5 || direction > 337.5) {
+//				g.drawImage(sprites[3][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 67.5 && direction < 112.5) {
+//				g.drawImage(sprites[0][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 157.5 && direction < 202.5) {
+//				g.drawImage(sprites[2][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 247.5 && direction <= 292.5) {
+//				g.drawImage(sprites[1][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 22.5 && direction < 67.5) {
+//				g.drawImage(sprites[6][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 112.5 && direction < 157.5) {
+//				g.drawImage(sprites[5][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 202.5 && direction <= 247.5) {
+//				g.drawImage(sprites[7][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 292.5 && direction <= 337.5) {
+//				g.drawImage(sprites[4][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//		}
+		
+		Graphics2D g2d = (Graphics2D)g;
+		AffineTransform old = g2d.getTransform();
+		
+		AffineTransform af = new AffineTransform();
+		af.rotate(Math.toRadians(-(direction-90)), x, y);
+		g2d.transform(af);
+		
 		if (moving) {
-			if (direction < 45 || direction > 315) {
-				g.drawImage(sprites[3][step], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 45 && direction < 135) {
-				g.drawImage(sprites[0][step], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 135 && direction < 225) {
-				g.drawImage(sprites[2][step], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 225 && direction <= 315) {
-				g.drawImage(sprites[1][step], (int)x - w/2, (int)y - h/2, null);
-			}
+			g.drawImage(sprites[0][step], (int)x - w/2, (int)y - h/2, null);
 		}
 		else {
-			if (direction < 45 || direction > 315) {
-				g.drawImage(sprites[3][0], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 45 && direction < 135) {
-				g.drawImage(sprites[0][0], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 135 && direction < 225) {
-				g.drawImage(sprites[2][0], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 225 && direction <= 315) {
-				g.drawImage(sprites[1][0], (int)x - w/2, (int)y - h/2, null);
-			}
+			g.drawImage(sprites[0][0], (int)x - w/2, (int)y - h/2, null);
 		}
+		
+		g2d.transform(old);
 	}
 	
 	/**
@@ -129,22 +189,15 @@ public class Player extends Entity {
 		try {
 			BufferedImage sh = ImageIO.read(new File(sheet));
 			
-			sprites[0][0] = sh.getSubimage(0, 0, w, h);
-			sprites[0][1] = sh.getSubimage(0, h, w, h);
-			sprites[0][2] = sh.getSubimage(0, h*2, w, h);
-			sprites[0][3] = sh.getSubimage(0, h*3, w, h);
-			sprites[1][0] = sh.getSubimage(w, 0, w, h);
-			sprites[1][1] = sh.getSubimage(w, h, w, h);
-			sprites[1][2] = sh.getSubimage(w, h*2, w, h);
-			sprites[1][3] = sh.getSubimage(w, h*3, w, h);
-			sprites[2][0] = sh.getSubimage(w*2, 0, w, h);
-			sprites[2][1] = sh.getSubimage(w*2, h, w, h);
-			sprites[2][2] = sh.getSubimage(w*2, h*2, w, h);
-			sprites[2][3] = sh.getSubimage(w*2, h*3, w, h);
-			sprites[3][0] = sh.getSubimage(w*3, 0, w, h);
-			sprites[3][1] = sh.getSubimage(w*3, h, w, h);
-			sprites[3][2] = sh.getSubimage(w*3, h*2, w, h);
-			sprites[3][3] = sh.getSubimage(w*3, h*3, w, h);
+			// Load the column in the first dimension of the array and
+			// Load the row in the second dimension of the array
+			int tempWidth = sh.getWidth();
+			int tempHeight = sh.getHeight();
+			for (int i = 0; i < tempWidth/w; i++) {
+				for (int j = 0; j < tempHeight/h; j++) {
+					sprites[i][j] = sh.getSubimage(i*w, j*h, w, h);
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

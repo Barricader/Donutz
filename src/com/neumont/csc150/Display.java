@@ -161,7 +161,7 @@ public class Display extends Canvas implements Runnable {
 		}
 		else {
 			// Render the area if loaded
-			if (d.getCurArea() != null) {
+			if (d.getCurArea() != null && d.getLoadPerc() >= 1.0) {
 				d.getCurArea().render(g);
 			}
 			

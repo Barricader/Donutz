@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -24,19 +25,22 @@ import org.json.simple.parser.ParseException;
  */
 public class Area {
 	private int w, h;
-	private Vector<Tile> tiles;
+	private Vector<Vector<Tile>> tiles;
 	private String imgPath, path;
 	private Donutz don;
+	private int colLayer;
 	
 	public Area() {
 		path = "";
-		tiles = new Vector<Tile>();
+		tiles = new Vector<Vector<Tile>>();
+		colLayer = -1;
 	}
 	
 	public Area(String path, Donutz d) {
 		this.path = path;
-		tiles = new Vector<Tile>();
+		tiles = new Vector<Vector<Tile>>();
 		don = d;
+		colLayer = -1;
 		
 		load();
 	}
@@ -54,54 +58,118 @@ public class Area {
 			
 			JSONArray layers = (JSONArray) obj.get("layers");
 			JSONArray tilesets = (JSONArray) obj.get("tilesets");
+			ArrayList<JSONObject> tileLayers = new ArrayList<JSONObject>();
+			ArrayList<JSONObject> tileTilesets = new ArrayList<JSONObject>();
+			
+			for (int i = 0; i < layers.size(); i++) {
+				tileLayers.add((JSONObject) layers.get(i));
+				if (!(boolean) tileLayers.get(i).get("visible")) {
+					colLayer = i;
+				}
+			}
+			
 			JSONObject layObj = (JSONObject) layers.get(0);
+			
+			for (int i = 0; i < tilesets.size(); i++) {
+				tileTilesets.add((JSONObject) tilesets.get(i));
+			}
+			
 			JSONObject tsObj = (JSONObject) tilesets.get(0);
+			
+			ArrayList<String> imgPaths = new ArrayList<String>();
+			for (int i = 0; i < tileTilesets.size(); i++) {
+				imgPaths.add((String) tileTilesets.get(i).get("image"));
+			}
 			imgPath = (String) tsObj.get("image");
 			
 			int tempW = (int) ((long)tsObj.get("tilewidth"));
 			int tempH = (int) ((long)tsObj.get("tileheight"));
-			int imgW = (int) ((long)tsObj.get("imagewidth")); 
 			
-			w = (int) ((long)layObj.get("width"));
-			h = (int) ((long)layObj.get("height"));
+			ArrayList<Integer> imgWidths = new ArrayList<Integer>();
 			
-			JSONArray data = (JSONArray) layObj.get("data");
-			Object[] d = data.toArray();
+			for (int i = 0; i < tileTilesets.size(); i++) {
+				imgWidths.add((int) ((long)tileTilesets.get(i).get("imagewidth")));
+			}
+			
+			ArrayList<Integer> widths = new ArrayList<Integer>();
+			ArrayList<Integer> heights = new ArrayList<Integer>();
+			
+			for (int i = 0; i < tileLayers.size(); i++) {
+				widths.add((int) ((long)tileLayers.get(i).get("width")));
+				heights.add((int) ((long)tileLayers.get(i).get("height")));
+			}
+			
+			w = widths.get(0);
+			h = heights.get(0);
+			
+			ArrayList<JSONArray> datas = new ArrayList<JSONArray>();
+			ArrayList<Object[]> finalData = new ArrayList<Object[]>();
+			
+			for (int i = 0; i < tileLayers.size(); i++) {
+				datas.add((JSONArray) tileLayers.get(i).get("data"));
+				finalData.add(datas.get(i).toArray());
+			}
+			
+			ArrayList<Integer> tileIDs = new ArrayList<Integer>();
+			ArrayList<Integer> tileCounts = new ArrayList<Integer>();
+			for (int i = 0; i < tileTilesets.size(); i++) {
+				tileIDs.add((int) ((long) tileTilesets.get(i).get("firstgid")));
+				tileCounts.add((int) ((long) tileTilesets.get(i).get("tilecount")));
+			}
 			
 			// Creates a cache to store the images used and the tile pulls from the
 			// cache when it loads the image, this speeds of loading time drastically
 			// because it is not repeatedly using the image from the sprite sheet
-			int k = 0;
+			int index;
+			int loadedFiles = 0, totalFiles = 0;
+			for (int i = 0; i < tileLayers.size(); i++) {
+				totalFiles += widths.get(i)*heights.get(i);
+			}
 			HashMap<Integer, BufferedImage> cache = new HashMap<Integer, BufferedImage>();
-			for (int i = 0; i < h; i++) {
-				for (int j = 0; j < w; j++) { 
-					int tempID = Integer.parseInt(d[k].toString());
+			for (int k = 0; k < tileLayers.size(); k++) {
+				Vector<Tile> temp = new Vector<Tile>();
+				index = 0;
+				System.out.println("Loading layer " + k + "...");
+				for (int i = 0; i < heights.get(k); i++) {
+					for (int j = 0; j < widths.get(k); j++) {
+						int tempID = Integer.parseInt(finalData.get(k)[index].toString());
+						int curTS = 0;
 					
-					if (!cache.containsKey(tempID)) {
-						BufferedImage sp;
-						try {
-							BufferedImage sh = ImageIO.read(new File(imgPath));
-							
-							int tempX = 0;
-							int tempY = 0;
-							if (tempID != 0) {
-								tempX = ((tempID - 1) * tempW) % imgW;
-								tempY = (((tempID - 1) * tempH) / imgW) * tempH;
+						for (int l = 0; l < tileIDs.size(); l++) {
+							if (tempID >= tileIDs.get(l) && tempID < tileIDs.get(l) + tileCounts.get(l)) {
+								curTS = l;
+								break;
 							}
-							
-							sp = sh.getSubimage(tempX, tempY, tempW, tempH);
-							cache.put(tempID, sp);
-						} catch (IOException e) {
-							e.printStackTrace();
 						}
+						
+						if (!cache.containsKey(tempID)) {
+							BufferedImage sp;
+							try {
+								BufferedImage sh = ImageIO.read(new File(imgPaths.get(curTS)));
+								
+								int tempX = 0;
+								int tempY = 0;
+								if (tempID != 0) {
+									tempX = ((tempID - tileIDs.get(curTS)) * tempW) % imgWidths.get(curTS);
+									tempY = (((tempID - tileIDs.get(curTS)) * tempH) / imgWidths.get(curTS)) * tempH;
+								}
+								
+								sp = sh.getSubimage(tempX, tempY, tempW, tempH);
+								cache.put(tempID, sp);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+						
+						temp.add(new Tile(cache.get(tempID), tempW * j, tempH * i, tempW, tempH, tempID));
+						index++;
+						loadedFiles++;
+						
+						// Update the load percent
+						don.setLoadPerc((double)(loadedFiles / (double)totalFiles));
 					}
-					
-					tiles.add(new Tile(cache.get(tempID), tempW * j, tempH * i, tempW, tempH, tempID));
-					k++;
-					
-					// Update the load percent
-					don.setLoadPerc(k / (double)(w*h));
 				}
+				tiles.add(temp);
 			}
 
 			System.out.println("Loading: " + path + " successful");
@@ -119,10 +187,14 @@ public class Area {
 	 * @param g Graphics object to draw on
 	 */
 	public void render(Graphics g) {
-		for (int i = 0; i < tiles.size(); i++) {
-			if (tiles.get(i).getX() > don.getCamX()/2 - tiles.get(i).getWidth() && tiles.get(i).getX() < don.getCamX()/2 + Display.WIDTH/2) {
-				if (tiles.get(i).getY() > don.getCamY()/2 - tiles.get(i).getHeight() && tiles.get(i).getY() < don.getCamY()/2 + Display.HEIGHT/2) {
-					tiles.get(i).render(g);
+		for (int j = 0; j < tiles.size(); j++) {
+			if (j != colLayer) {
+				for (int i = 0; i < tiles.get(j).size(); i++) {
+					if (tiles.get(j).get(i).getX() > don.getCamX()/2 - tiles.get(j).get(i).getWidth() && tiles.get(j).get(i).getX() < don.getCamX()/2 + Display.WIDTH/2) {
+						if (tiles.get(j).get(i).getY() > don.getCamY()/2 - tiles.get(j).get(i).getHeight() && tiles.get(j).get(i).getY() < don.getCamY()/2 + Display.HEIGHT/2) {
+							tiles.get(j).get(i).render(g);
+						}
+					}
 				}
 			}
 		}
@@ -143,13 +215,9 @@ public class Area {
 	public void setHeight(int h) {
 		this.h = h;
 	}
-
-	public Vector<Tile> getTiles() {
+	
+	public Vector<Vector<Tile>> getTiles() {
 		return tiles;
-	}
-
-	public void setTiles(Vector<Tile> tiles) {
-		this.tiles = tiles;
 	}
 
 	public String getImgPath() {

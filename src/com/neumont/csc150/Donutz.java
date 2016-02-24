@@ -118,15 +118,16 @@ public class Donutz {
 	/**
 	 * Load an area
 	 */
-	public void load() {
+	public void load(String path) {
 		Donutz temp = this;
 		Thread t = new Thread("load") {
 			public void run() {
 				CUR_TIP = TIPS[r.nextInt(TIPS.length)];
-				curArea = new Area("LostHaven2.json", temp);
+				// Load the map
+				curArea = new Area(path, temp);
 				
-				maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).getWidth()) - Display.WIDTH/2;
-				maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).getHeight()) - Display.HEIGHT/2;
+				maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).get(0).getWidth()) - Display.WIDTH/2;
+				maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).get(0).getHeight()) - Display.HEIGHT/2;
 				maxOffsetX *= 2;
 				maxOffsetY *= 2;
 				minOffsetX = 0;
@@ -140,6 +141,9 @@ public class Donutz {
 				
 				p.setDx(0);
 				p.setDy(0);
+				
+				p.setX(maxOffsetX / 2 - Display.WIDTH/4);
+				p.setY(maxOffsetY / 2 - Display.HEIGHT);
 				
 				try {
 					this.join();
@@ -215,7 +219,7 @@ public class Donutz {
 		// New game
 		if (selector == 0) {
 			inMenu = false;
-			load();
+			load("FLH.json");
 		}
 		// Load Game
 		else if(selector == 1){

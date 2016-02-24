@@ -18,7 +18,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	
 	// States of keys
 	public boolean i = false, w = false, s = false, up = false, down = false, space = false,
-			esc = false, enter = false;
+			esc = false, enter = false, shift = false;
 	
 	private int mx, my;
 	private Timer t;
@@ -68,6 +68,10 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 			case KeyEvent.VK_ENTER:
 				enter = true;
 				break;
+			case KeyEvent.VK_SHIFT:
+				d.getPlayer().setSprinting(true);
+				shift = true;
+				break;
 		}
 	}
 
@@ -98,6 +102,10 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 			case KeyEvent.VK_ENTER:
 				enter = false;
 				break;
+			case KeyEvent.VK_SHIFT:
+				d.getPlayer().setSprinting(false);
+				shift = false;
+				break;
 		}
 	}
 
@@ -108,6 +116,8 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	 * to the coordinates of the mouse
 	 */
 	public void mousePressed(MouseEvent e) {
+//		mx = e.getX()/2;
+//		my = e.getY()/2;
 		Point temp = new Point(e.getX()/2, e.getY()/2);
 		if (!d.getPlayer().getRect().contains(temp)) {
 			if (e.getButton() == MouseEvent.BUTTON1) {

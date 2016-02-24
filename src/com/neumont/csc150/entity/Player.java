@@ -20,8 +20,10 @@ import com.neumont.csc150.item.Item;
 
 // TODO: add variables for combat such as a WEAPON class and hp and skill points and what not
 public class Player extends Entity {
+	public static final int MAX_SPEED = 3;
 	private boolean moving = false;
 	private boolean hide = false;
+	private boolean sprinting;
 	private double destX, destY;
 	private BufferedImage[][] sprites;
 	private int step;
@@ -29,12 +31,13 @@ public class Player extends Entity {
 	private Vector<Item> items;
 
 	public Player(double x, double y) {
-		super(x, y, 3);
+		super(x, y, MAX_SPEED);
 		w = 32;
 		h = 32;
 		direction = 0;
 		destX = x;
 		destY = y;
+		sprinting = false;
 
 		// A timer that just animates the player
 		step = 0;
@@ -62,21 +65,20 @@ public class Player extends Entity {
 			dy = 0;
 		}
 		
-		super.update();
-		
 		// Only move the player if they are not already at the destination
-		if ((destX > x - 4 && destX < x + 4) && (destY > y - 4 && destY < y + 4)) {
+		if ((x > destX - 4 && x < destX + 4) && (y > destY- 4 && y < destY + 4)) {
 			dx = 0;
 			dy = 0;
 		}
 		
-//		if (destX < 0 || destX > Display.WIDTH) {
-//			dx = 0;
-//		}
-//		
-//		if (destY < 0 || destY > Display.HEIGHT) {
-//			dy = 0;
-//		}
+		if (sprinting) {
+			speed = MAX_SPEED + 2;
+		}
+		else {
+			speed = MAX_SPEED;
+		}
+		
+		super.update();
 		
 		if (x < 0) {
 			x = 0;
@@ -169,17 +171,15 @@ public class Player extends Entity {
 	 * Sets the current velocity of the player
 	 */
 	public void setVelocity(int x, int y) {
-		if ((x < this.x - 4 || x > this.x + 4) && (y < this.y - 4 || y > this.y + 4)) {
-			super.setVelocity(x, y);
-			
-			destX = x;
-			destY = y;
-			
-			// Complicated math for finding the direction of the players
-			direction = -Math.atan2(y - this.y, x - this.x) * 180 / Math.PI;
-			if (direction < 0) {
-				direction += 360;
-			}
+		super.setVelocity(x, y);
+
+		destX = x;
+		destY = y;
+
+		// Complicated math for finding the direction of the players
+		direction = -Math.atan2(y - this.y, x - this.x) * 180 / Math.PI;
+		if (direction < 0) {
+			direction += 360;
 		}
 	}
 	
@@ -242,5 +242,9 @@ public class Player extends Entity {
 	
 	public boolean isMoving() {
 		return moving;
+	}
+	
+	public void setSprinting(boolean s) {
+		sprinting = s;
 	}
 }

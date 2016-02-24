@@ -138,6 +138,9 @@ public class Donutz {
 				
 				loaded = true;
 				
+				p.setDx(0);
+				p.setDy(0);
+				
 				try {
 					this.join();
 				} catch (InterruptedException e) {
@@ -154,6 +157,7 @@ public class Donutz {
 	 */
 	private void playerUpdate() {
 		if (!p.isDead()) {
+			p.setSprinting(d.getListener().shift);
 			
 			p.update();
 			camX = (int) (p.getX() - Display.WIDTH / 4) * 2;

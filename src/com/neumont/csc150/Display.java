@@ -9,6 +9,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Robot;
+import java.awt.event.InputEvent;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -202,7 +203,9 @@ public class Display extends Canvas implements Runnable {
 		// Used to move mouse to the middle of the window
 		Robot r = new Robot();
 		r.mouseMove(game.frame.getLocationOnScreen().x + WIDTH /2, game.frame.getLocationOnScreen().y + HEIGHT/2);
-
+		r.mousePress(InputEvent.BUTTON1_MASK);
+		r.mouseRelease(InputEvent.BUTTON2_MASK);
+		
 		game.start();
 	}
 }

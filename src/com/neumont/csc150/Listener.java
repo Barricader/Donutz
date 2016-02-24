@@ -17,7 +17,8 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	private Donutz d;
 	
 	// States of keys
-	public boolean i = false, w = false, e = false, r = false, space = false, esc = false, enter = false;
+	public boolean i = false, w = false, s = false, up = false, down = false, space = false,
+			esc = false, enter = false;
 	
 	private int mx, my;
 	private Timer t;
@@ -48,11 +49,14 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 			case KeyEvent.VK_W:
 				w = true;
 				break;
-			case KeyEvent.VK_E:
-				e = true;
+			case KeyEvent.VK_S:
+				s = true;
 				break;
-			case KeyEvent.VK_R:
-				r = true;
+			case KeyEvent.VK_UP:
+				up = true;
+				break;
+			case KeyEvent.VK_DOWN:
+				down = true;
 				break;
 			case KeyEvent.VK_SPACE:
 				space = true;
@@ -76,11 +80,14 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 			case KeyEvent.VK_W:
 				w = false;
 				break;
-			case KeyEvent.VK_E:
-				e = false;
+			case KeyEvent.VK_S:
+				s = false;
 				break;
-			case KeyEvent.VK_R:
-				r = false;
+			case KeyEvent.VK_UP:
+				up = false;
+				break;
+			case KeyEvent.VK_DOWN:
+				down = false;
 				break;
 			case KeyEvent.VK_SPACE:
 				space = false;

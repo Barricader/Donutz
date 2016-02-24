@@ -184,13 +184,17 @@ public class Donutz {
 	 * Update the menu
 	 */
 	private void menuUpdate() {
-		if ((d.getListener().e) && menuDelay <= 0) {
+		if ((d.getListener().s || d.getListener().down) && menuDelay <= 0) {
 			selector++;
 			menuDelay = 20;
 		}
-		else if ((d.getListener().w) && menuDelay <= 0) {
+		else if ((d.getListener().w || d.getListener().up) && menuDelay <= 0) {
 			selector--;
 			menuDelay = 20;
+		}
+		
+		if (d.getListener().enter) {
+			chooseSelected();
 		}
 		if (menuDelay > 0) {
 			menuDelay--;
@@ -206,7 +210,7 @@ public class Donutz {
 	public void chooseSelected() {
 		// New game
 		if (selector == 0) {
-			restart();
+			load();
 			inMenu = false;
 		}
 		// Load Game
@@ -215,7 +219,7 @@ public class Donutz {
 		}
 		//	Exit
 		else if(selector == 2){
-			System.exit(0);
+			running = false;
 		}
 	}
 	

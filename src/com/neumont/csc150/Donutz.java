@@ -52,7 +52,7 @@ public class Donutz {
 		showGameOver = false;
 		inMenu = true;
 		running = true;
-		end = true;
+		end = false;
 		loaded = false;
 		invOpen = false;
 		
@@ -103,9 +103,9 @@ public class Donutz {
 	 **/
 	public void update() {
 		if (!inMenu) {
-			if (!loaded) {
-				load();
-			}
+//			if (!loaded) {
+//				load();
+//			}
 			if (!end && loadPerc >= 1.0) {
 				playerUpdate();
 			}
@@ -136,6 +136,8 @@ public class Donutz {
 				
 				areas.add(curArea);
 				
+				loaded = true;
+				
 				try {
 					this.join();
 				} catch (InterruptedException e) {
@@ -145,8 +147,6 @@ public class Donutz {
 		};
 		
 		t.start();
-		
-		loaded = true;
 	}
 	
 	/**
@@ -210,8 +210,8 @@ public class Donutz {
 	public void chooseSelected() {
 		// New game
 		if (selector == 0) {
-			load();
 			inMenu = false;
+			load();
 		}
 		// Load Game
 		else if(selector == 1){

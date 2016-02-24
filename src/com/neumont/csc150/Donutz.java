@@ -50,9 +50,9 @@ public class Donutz {
 		loadPerc = 0.0;
 		
 		showGameOver = false;
-		inMenu = false;
+		inMenu = true;
 		running = true;
-		end = false;
+		end = true;
 		loaded = false;
 		invOpen = false;
 		
@@ -183,39 +183,45 @@ public class Donutz {
 	/**
 	 * Update the menu
 	 */
-	@Deprecated
 	private void menuUpdate() {
-//		if ((d.getListener().s || d.getListener().down) && menuDelay <= 0) {
-//			selector++;
-//			menuDelay = 20;
-//		}
-//		else if ((d.getListener().w || d.getListener().up) && menuDelay <= 0) {
-//			selector--;
-//			menuDelay = 20;
-//		}
-		
+		if ((d.getListener().e) && menuDelay <= 0) {
+			selector++;
+			menuDelay = 20;
+		}
+		else if ((d.getListener().w) && menuDelay <= 0) {
+			selector--;
+			menuDelay = 20;
+		}
 		if (menuDelay > 0) {
 			menuDelay--;
 		}
+		if(selector >= 3){
+			selector = 0;
+		}
+		else if(selector <= -1){
+			selector = 2;
+		}
 	}
 
-	@Deprecated
 	public void chooseSelected() {
-		// Play game
-		if (selector % 2 == 0) {
+		// New game
+		if (selector == 0) {
 			restart();
 			inMenu = false;
 		}
-		// Show highscores
-		else {
+		// Load Game
+		else if(selector == 1){
 			showGameOver = true;
+		}
+		//	Exit
+		else if(selector == 2){
+			System.exit(0);
 		}
 	}
 	
 	/**
 	 * Restart and init the game
 	 */
-	@Deprecated
 	public void restart() {
 		r = new Random();
 		
@@ -321,7 +327,7 @@ public class Donutz {
 	
 	public void checkpoint() {
 		//end = false;
-		//ssave();
+		//save();
 		//howGameOver = true;
 	}
 	

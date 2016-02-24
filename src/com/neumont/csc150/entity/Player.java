@@ -9,12 +9,14 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 import com.neumont.csc150.Display;
 import com.neumont.csc150.Donutz;
+import com.neumont.csc150.item.Item;
 
 // TODO: add variables for combat such as a WEAPON class and hp and skill points and what not
 public class Player extends Entity {
@@ -24,6 +26,7 @@ public class Player extends Entity {
 	private BufferedImage[][] sprites;
 	private int step;
 	private Timer stepTime;
+	private Vector<Item> items;
 
 	public Player(double x, double y) {
 		super(x, y, 3);
@@ -45,6 +48,8 @@ public class Player extends Entity {
 		});
 		
 		stepTime.start();
+		
+		items = new Vector<Item>();
 	
 		sprites = new BufferedImage[8][4];
 	}
@@ -147,7 +152,6 @@ public class Player extends Entity {
 //		}
 		
 		Graphics2D g2d = (Graphics2D)g;
-		AffineTransform old = g2d.getTransform();
 		
 		AffineTransform af = new AffineTransform();
 		af.rotate(Math.toRadians(-(direction-90)), x, y);
@@ -159,8 +163,6 @@ public class Player extends Entity {
 		else {
 			g.drawImage(sprites[0][0], (int)x - w/2, (int)y - h/2, null);
 		}
-		
-		g2d.transform(old);
 	}
 	
 	/**

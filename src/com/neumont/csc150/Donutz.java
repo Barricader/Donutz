@@ -28,6 +28,7 @@ public class Donutz {
 	private boolean inMenu;
 	private boolean running;
 	private boolean loaded;
+	private boolean invOpen;
 	
 	private int selector;
 	private int menuDelay;
@@ -53,6 +54,7 @@ public class Donutz {
 		running = true;
 		end = false;
 		loaded = false;
+		invOpen = false;
 		
 		selector = 0;
 		menuDelay = 0;
@@ -381,6 +383,14 @@ public class Donutz {
 	
 	public double getLoadPerc() {
 		return loadPerc;
+	}
+	
+	public void setInvOpen(boolean open) {
+		invOpen = open;
+	}
+	
+	public boolean getInvOpen() {
+		return invOpen;
 	}
 	
 	public static Donutz getInstance() {

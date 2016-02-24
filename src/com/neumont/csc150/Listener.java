@@ -17,7 +17,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	private Donutz d;
 	
 	// States of keys
-	public boolean q = false, w = false, e = false, r = false, space = false, esc = false, enter = false;
+	public boolean i = false, w = false, e = false, r = false, space = false, esc = false, enter = false;
 	
 	private int mx, my;
 	private Timer t;
@@ -42,8 +42,8 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
 	public void keyPressed(KeyEvent ke) {
 		switch (ke.getKeyCode()) {
-			case KeyEvent.VK_Q:
-				q = true;
+			case KeyEvent.VK_I:
+				i = true;
 				break;
 			case KeyEvent.VK_W:
 				w = true;
@@ -69,8 +69,9 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
 	public void keyReleased(KeyEvent ke) {
 		switch (ke.getKeyCode()) {
-			case KeyEvent.VK_Q:
-				q = false;
+			case KeyEvent.VK_I:
+				i = false;
+				d.setInvOpen(!d.getInvOpen());
 				break;
 			case KeyEvent.VK_W:
 				w = false;

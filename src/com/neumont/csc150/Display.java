@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Robot;
 import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -104,6 +105,7 @@ public class Display extends Canvas implements Runnable {
 		g.translate(-d.getCamX(), -d.getCamY());
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.scale(2.0, 2.0);
+		AffineTransform old = g2d.getTransform();
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
 		
@@ -113,7 +115,16 @@ public class Display extends Canvas implements Runnable {
 		}
 		
 		if (d.getLoadPerc() >= 1.0) {
-			d.getPlayer().render(g);
+			//if (!d.getInvOpen()) {
+				d.getPlayer().render(g);
+			//}
+			if (d.getInvOpen()) {
+//				AffineTransform af = new AffineTransform();
+//				af.rotate(0, d.getPlayer().getX(), d.getPlayer().getY());
+				//g2d.transform(old);
+				g.setColor(Color.GRAY);
+				g.fillRect(WIDTH / 4 - 100 + d.getCamX()/2, HEIGHT / 4 - 100 + d.getCamY()/2, 200, 200);
+			}
 		}
 		else {
 			// If the area is not loaded yet, draw the load screen

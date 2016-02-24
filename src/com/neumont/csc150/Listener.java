@@ -10,18 +10,19 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Handles the mouse input from the Display
+ * Handles the mouse and keyboard input from the Display
  * @author JoJones
  */
 public class Listener implements KeyListener, MouseListener, MouseMotionListener {
 	private Donutz d;
 	
 	// States of keys
-	public boolean q = false, w = false, e = false, r = false, space = false, esc = false, enter = false;
+	public boolean i = false, w = false, s = false, up = false, down = false, space = false,
+			esc = false, enter = false;
 	
-	int mx, my;
-	Timer t;
-	TimerTask tt;
+	private int mx, my;
+	private Timer t;
+	private TimerTask tt;
 	
 	Listener(Donutz d) {
 		this.d = d;
@@ -42,17 +43,20 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
 	public void keyPressed(KeyEvent ke) {
 		switch (ke.getKeyCode()) {
-			case KeyEvent.VK_Q:
-				q = true;
+			case KeyEvent.VK_I:
+				i = true;
 				break;
 			case KeyEvent.VK_W:
 				w = true;
 				break;
-			case KeyEvent.VK_E:
-				e = true;
+			case KeyEvent.VK_S:
+				s = true;
 				break;
-			case KeyEvent.VK_R:
-				r = true;
+			case KeyEvent.VK_UP:
+				up = true;
+				break;
+			case KeyEvent.VK_DOWN:
+				down = true;
 				break;
 			case KeyEvent.VK_SPACE:
 				space = true;
@@ -69,17 +73,21 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
 	public void keyReleased(KeyEvent ke) {
 		switch (ke.getKeyCode()) {
-			case KeyEvent.VK_Q:
-				q = false;
+			case KeyEvent.VK_I:
+				i = false;
+				d.setInvOpen(!d.getInvOpen());
 				break;
 			case KeyEvent.VK_W:
 				w = false;
 				break;
-			case KeyEvent.VK_E:
-				e = false;
+			case KeyEvent.VK_S:
+				s = false;
 				break;
-			case KeyEvent.VK_R:
-				r = false;
+			case KeyEvent.VK_UP:
+				up = false;
+				break;
+			case KeyEvent.VK_DOWN:
+				down = false;
 				break;
 			case KeyEvent.VK_SPACE:
 				space = false;
@@ -95,6 +103,10 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
 	public void mouseClicked(MouseEvent e) {}
 
+	/**
+	 * Checks when the mouse is pressed and sets the players velocity
+	 * to the coordinates of the mouse
+	 */
 	public void mousePressed(MouseEvent e) {
 		Point temp = new Point(e.getX()/2, e.getY()/2);
 		if (!d.getPlayer().getRect().contains(temp)) {
@@ -128,30 +140,12 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 		}
 	}
 
+	/**
+	 * Resets the timer task
+	 */
 	public void mouseReleased(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
 			if (!tt.cancel()) {
-//				tt = new TimerTask() {
-//					public void run() {
-//						int newX = mx;
-//						int newY = my;
-//										
-//						if (d.getPlayer().getX() > Display.WIDTH / 4) {
-//							newX = (int) ((mx - Display.WIDTH / 4) + d.getPlayer().getX());
-//						}
-//						if (d.getPlayer().getX() > d.getMaxOffsetX() - (Display.WIDTH * (3.0/4.0))) {
-//							newX = (mx - Display.WIDTH/4) + (d.getMaxOffsetX() - Display.WIDTH + Display.WIDTH/4);
-//						}
-//						if (d.getPlayer().getY() > Display.HEIGHT / 4) {
-//							newY = (int) ((my - Display.HEIGHT / 4) + d.getPlayer().getY());
-//						}
-//						if (d.getPlayer().getY() > d.getMaxOffsetY() - Display.HEIGHT*2) {
-//							newY = (my - Display.HEIGHT/4) + (d.getMaxOffsetY() - Display.HEIGHT*2 + Display.HEIGHT/2);
-//						} 
-//						
-//						d.getPlayer().setVelocity(newX, newY);
-//					}
-//				};
 			}
 		}
 	}
@@ -160,11 +154,17 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 
 	public void mouseExited(MouseEvent e) {}
 	
+	/**
+	 * Updates the current x and y of the mouse
+	 */
 	public void mouseDragged(MouseEvent e) {
 		mx = e.getX()/2;
 		my = e.getY()/2;
 	}
 
+	/**
+	 * Updates the current x and y of the mouse
+	 */
 	public void mouseMoved(MouseEvent e) {
 		mx = e.getX()/2;
 		my = e.getY()/2;

@@ -10,6 +10,7 @@ public class Donutz {
 	public static final String[] TIPS = { "Don't die", "Attack enemies", "Fear the Donutz", "Acquire space dollars", "Explore", "Get better gear" };
 	public static String CUR_TIP = "";
 	public static boolean DEBUG = false;
+	private static Donutz instance;
 //	private Vector<Asteroid> ast;
 //	private Vector<Bullet> bul;
 //	private Vector<Particle> par;
@@ -27,6 +28,7 @@ public class Donutz {
 	private boolean inMenu;
 	private boolean running;
 	private boolean loaded;
+	private boolean invOpen;
 	
 	private int selector;
 	private int menuDelay;
@@ -43,33 +45,30 @@ public class Donutz {
 		r = new Random();
 		
 		areas = new Vector<Area>();
-		//areas.add(new Area("LostHaven.json"));
-		//curArea = areas.get(0);
-		
-//		ast = new Vector<Asteroid>();
-//		bul = new Vector<Bullet>();
-//		par = new Vector<Particle>();
 		
 		curArea = null;
 		loadPerc = 0.0;
 		
-		//load();
-		
 		showGameOver = false;
-		inMenu = false;
+		inMenu = true;
 		running = true;
 		end = false;
 		loaded = false;
+		invOpen = false;
 		
 		selector = 0;
 		menuDelay = 0;
 		
-		p = new Player(Display.WIDTH / 4, Display.HEIGHT / 4, 3);
+		p = new Player(Display.WIDTH / 4, Display.HEIGHT / 4);
 		
 		camX = (int) (p.getX() - Display.WIDTH / 4);
 		camY = (int) (p.getY() - Display.HEIGHT / 4);
 		
 		this.d = d;
+		
+		if (instance == null) {
+			instance = this;
+		}
 	}
 	
 	public void run() {
@@ -79,8 +78,6 @@ public class Donutz {
 		double delta = 0;
 		int frames = 0;
 		// Game loop
-		
-		//areas.add(new Area("dirtMap.json"));
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -106,15 +103,11 @@ public class Donutz {
 	 **/
 	public void update() {
 		if (!inMenu) {
-			if (!loaded) {
-				load();
-				//curArea = new Area("LostHaven.json", this);
-			}
+//			if (!loaded) {
+//				load();
+//			}
 			if (!end && loadPerc >= 1.0) {
 				playerUpdate();
-			}
-			else {
-				//loadUpdate();
 			}
 		}
 		else {
@@ -141,6 +134,10 @@ public class Donutz {
 				
 				p.load("player.png");
 				
+				areas.add(curArea);
+				
+				loaded = true;
+				
 				try {
 					this.join();
 				} catch (InterruptedException e) {
@@ -150,8 +147,6 @@ public class Donutz {
 		};
 		
 		t.start();
-		
-		loaded = true;
 	}
 	
 	/**
@@ -189,29 +184,42 @@ public class Donutz {
 	 * Update the menu
 	 */
 	private void menuUpdate() {
-//		if ((d.getListener().s || d.getListener().down) && menuDelay <= 0) {
-//			selector++;
-//			menuDelay = 20;
-//		}
-//		else if ((d.getListener().w || d.getListener().up) && menuDelay <= 0) {
-//			selector--;
-//			menuDelay = 20;
-//		}
+		if ((d.getListener().s || d.getListener().down) && menuDelay <= 0) {
+			selector++;
+			menuDelay = 20;
+		}
+		else if ((d.getListener().w || d.getListener().up) && menuDelay <= 0) {
+			selector--;
+			menuDelay = 20;
+		}
 		
+		if (d.getListener().enter) {
+			chooseSelected();
+		}
 		if (menuDelay > 0) {
 			menuDelay--;
+		}
+		if(selector >= 3){
+			selector = 0;
+		}
+		else if(selector <= -1){
+			selector = 2;
 		}
 	}
 
 	public void chooseSelected() {
-		// Play game
-		if (selector % 2 == 0) {
-			restart();
+		// New game
+		if (selector == 0) {
 			inMenu = false;
+			load();
 		}
-		// Show highscores
-		else {
+		// Load Game
+		else if(selector == 1){
 			showGameOver = true;
+		}
+		//	Exit
+		else if(selector == 2){
+			running = false;
 		}
 	}
 	
@@ -228,7 +236,7 @@ public class Donutz {
 //		bul = new Vector<Bullet>();
 //		par = new Vector<Particle>();
 		
-		p = new Player(Display.WIDTH/2 - 10, Display.HEIGHT/2 - 10, 3);
+		p = new Player(Display.WIDTH/2 - 10, Display.HEIGHT/2 - 10);
 		
 		loaded = true;
 		//b.hide();
@@ -323,7 +331,7 @@ public class Donutz {
 	
 	public void checkpoint() {
 		//end = false;
-		//ssave();
+		//save();
 		//howGameOver = true;
 	}
 	
@@ -385,5 +393,17 @@ public class Donutz {
 	
 	public double getLoadPerc() {
 		return loadPerc;
+	}
+	
+	public void setInvOpen(boolean open) {
+		invOpen = open;
+	}
+	
+	public boolean getInvOpen() {
+		return invOpen;
+	}
+	
+	public static Donutz getInstance() {
+		return instance;
 	}
 }

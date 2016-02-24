@@ -1,35 +1,42 @@
 package com.neumont.csc150.entity;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
 import com.neumont.csc150.Display;
+import com.neumont.csc150.Donutz;
+import com.neumont.csc150.item.Item;
 
+// TODO: add variables for combat such as a WEAPON class and hp and skill points and what not
 public class Player extends Entity {
-	public static final int MAX_SPEED_MULTIPLIER = 3;
 	private boolean moving = false;
 	private boolean hide = false;
 	private double destX, destY;
 	private BufferedImage[][] sprites;
 	private int step;
 	private Timer stepTime;
+	private Vector<Item> items;
 
-	public Player(double x, double y, double speed) {
-		super(x, y, speed);
+	public Player(double x, double y) {
+		super(x, y, 3);
 		w = 32;
 		h = 32;
 		direction = 0;
 		destX = x;
 		destY = y;
 
+		// A timer that just animates the player
 		step = 0;
 		stepTime = new Timer(150, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -41,17 +48,35 @@ public class Player extends Entity {
 		});
 		
 		stepTime.start();
+		
+		items = new Vector<Item>();
 	
-		sprites = new BufferedImage[4][4];
+		sprites = new BufferedImage[8][4];
 	}
 	
 	public void update() {
+		if (x + dx < 16 || x + dx > Donutz.getInstance().getMaxOffsetX() - Display.WIDTH/2 - 16) {
+			dx = 0;
+		}
+		if (y + dy < 16 || y + dy > Donutz.getInstance().getMaxOffsetY() - Display.HEIGHT*1.5 - 134) {
+			dy = 0;
+		}
+		
 		super.update();
 		
+		// Only move the player if they are not already at the destination
 		if ((destX > x - 4 && destX < x + 4) && (destY > y - 4 && destY < y + 4)) {
 			dx = 0;
 			dy = 0;
 		}
+		
+//		if (destX < 0 || destX > Display.WIDTH) {
+//			dx = 0;
+//		}
+//		
+//		if (destY < 0 || destY > Display.HEIGHT) {
+//			dy = 0;
+//		}
 		
 		if (x < 0) {
 			x = 0;
@@ -60,6 +85,7 @@ public class Player extends Entity {
 			y = 0;
 		}
 		
+		// If the player's rate of change isn't zero, then he must be moving
 		if (dx != 0.0 && dy != 0.0) {
 			moving = true;
 		}
@@ -68,46 +94,80 @@ public class Player extends Entity {
 		}
 	}
 	
+	/**
+	 * Draw the player
+	 */
 	public void render(Graphics g) {
+//		if (moving) {
+//			if (direction < 22.5 || direction > 337.5) {
+//				g.drawImage(sprites[3][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 67.5 && direction < 112.5) {
+//				g.drawImage(sprites[0][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 157.5 && direction < 202.5) {
+//				g.drawImage(sprites[2][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 247.5 && direction <= 292.5) {
+//				g.drawImage(sprites[1][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 22.5 && direction < 67.5) {
+//				g.drawImage(sprites[6][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 112.5 && direction < 157.5) {
+//				g.drawImage(sprites[5][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 202.5 && direction <= 247.5) {
+//				g.drawImage(sprites[7][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 292.5 && direction <= 337.5) {
+//				g.drawImage(sprites[4][step], (int)x - w/2, (int)y - h/2, null);
+//			}
+//		}
+//		else {
+//			if (direction < 22.5 || direction > 337.5) {
+//				g.drawImage(sprites[3][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 67.5 && direction < 112.5) {
+//				g.drawImage(sprites[0][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 157.5 && direction < 202.5) {
+//				g.drawImage(sprites[2][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 247.5 && direction <= 292.5) {
+//				g.drawImage(sprites[1][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 22.5 && direction < 67.5) {
+//				g.drawImage(sprites[6][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 112.5 && direction < 157.5) {
+//				g.drawImage(sprites[5][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 202.5 && direction <= 247.5) {
+//				g.drawImage(sprites[7][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//			else if (direction >= 292.5 && direction <= 337.5) {
+//				g.drawImage(sprites[4][0], (int)x - w/2, (int)y - h/2, null);
+//			}
+//		}
+		
+		Graphics2D g2d = (Graphics2D)g;
+		
+		AffineTransform af = new AffineTransform();
+		af.rotate(Math.toRadians(-(direction-90)), x, y);
+		g2d.transform(af);
+		
 		if (moving) {
-			if (direction < 45 || direction > 315) {
-				g.drawImage(sprites[3][step], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 45 && direction < 135) {
-				g.drawImage(sprites[0][step], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 135 && direction < 225) {
-				g.drawImage(sprites[2][step], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 225 && direction <= 315) {
-				g.drawImage(sprites[1][step], (int)x - w/2, (int)y - h/2, null);
-			}
+			g.drawImage(sprites[0][step], (int)x - w/2, (int)y - h/2, null);
 		}
 		else {
-			if (direction < 45 || direction > 315) {
-				g.drawImage(sprites[3][0], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 45 && direction < 135) {
-				g.drawImage(sprites[0][0], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 135 && direction < 225) {
-				g.drawImage(sprites[2][0], (int)x - w/2, (int)y - h/2, null);
-			}
-			else if (direction >= 225 && direction <= 315) {
-				g.drawImage(sprites[1][0], (int)x - w/2, (int)y - h/2, null);
-			}
+			g.drawImage(sprites[0][0], (int)x - w/2, (int)y - h/2, null);
 		}
 	}
 	
-	// Reinitialize the player
-	public void restart() {
-		x = Display.WIDTH / 2 - 10;
-		y = Display.HEIGHT / 2 - 10;
-		dx = 0.0;
-		dy = 0.0;
-		direction = 0.0;
-	}
-	
+	/**
+	 * Sets the current velocity of the player
+	 */
 	public void setVelocity(int x, int y) {
 		if ((x < this.x - 4 || x > this.x + 4) && (y < this.y - 4 || y > this.y + 4)) {
 			super.setVelocity(x, y);
@@ -115,7 +175,7 @@ public class Player extends Entity {
 			destX = x;
 			destY = y;
 			
-			moving = true;
+			// Complicated math for finding the direction of the players
 			direction = -Math.atan2(y - this.y, x - this.x) * 180 / Math.PI;
 			if (direction < 0) {
 				direction += 360;
@@ -131,29 +191,25 @@ public class Player extends Entity {
 		try {
 			BufferedImage sh = ImageIO.read(new File(sheet));
 			
-			sprites[0][0] = sh.getSubimage(0, 0, w, h);
-			sprites[0][1] = sh.getSubimage(0, h, w, h);
-			sprites[0][2] = sh.getSubimage(0, h*2, w, h);
-			sprites[0][3] = sh.getSubimage(0, h*3, w, h);
-			sprites[1][0] = sh.getSubimage(w, 0, w, h);
-			sprites[1][1] = sh.getSubimage(w, h, w, h);
-			sprites[1][2] = sh.getSubimage(w, h*2, w, h);
-			sprites[1][3] = sh.getSubimage(w, h*3, w, h);
-			sprites[2][0] = sh.getSubimage(w*2, 0, w, h);
-			sprites[2][1] = sh.getSubimage(w*2, h, w, h);
-			sprites[2][2] = sh.getSubimage(w*2, h*2, w, h);
-			sprites[2][3] = sh.getSubimage(w*2, h*3, w, h);
-			sprites[3][0] = sh.getSubimage(w*3, 0, w, h);
-			sprites[3][1] = sh.getSubimage(w*3, h, w, h);
-			sprites[3][2] = sh.getSubimage(w*3, h*2, w, h);
-			sprites[3][3] = sh.getSubimage(w*3, h*3, w, h);
+			// Load the column in the first dimension of the array and
+			// Load the row in the second dimension of the array
+			int tempWidth = sh.getWidth();
+			int tempHeight = sh.getHeight();
+			for (int i = 0; i < tempWidth/w; i++) {
+				for (int j = 0; j < tempHeight/h; j++) {
+					sprites[i][j] = sh.getSubimage(i*w, j*h, w, h);
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * Collision checking
+	 */
 	public boolean collide(Entity e) {
-		Rectangle r = new Rectangle((int)x - 10, (int)y - 10, w, h);
+		Rectangle r = new Rectangle((int)x - w/2, (int)y - w/2, w, h);
 		Rectangle r2 = new Rectangle((int)e.getX(), (int)e.getY(), e.getWidth(), e.getHeight());
 		
 		if (r.intersects(r2)) {
@@ -163,8 +219,12 @@ public class Player extends Entity {
 		return false;
 	}
 	
+	/**
+	 *  Get the player's collision box
+	 * @return The collision box
+	 */
 	public Rectangle getRect() {
-		Rectangle r = new Rectangle((int)x - 10, (int)y - 10, w, h);
+		Rectangle r = new Rectangle((int)x - w/2, (int)y - w/2, w, h);
 		return r;
 	}
 	

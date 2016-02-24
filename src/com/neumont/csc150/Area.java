@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -18,6 +17,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+/**
+ * Area in the game, such as the town, forest or etc
+ * @author JoJones
+ *
+ */
 public class Area {
 	private int w, h;
 	private Vector<Tile> tiles;
@@ -37,11 +41,12 @@ public class Area {
 		load();
 	}
 	
+	/**
+	 * Load the tiles and the sprite sheet for the tiles
+	 */
 	public void load() {
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(path));
-			
-			System.out.println("Loading: " + path + " successful");
 			
 			JSONParser jp = new JSONParser();
 			JSONObject obj = new JSONObject();
@@ -63,8 +68,9 @@ public class Area {
 			JSONArray data = (JSONArray) layObj.get("data");
 			Object[] d = data.toArray();
 			
-			System.out.println("Loaded data");
-			
+			// Creates a cache to store the images used and the tile pulls from the
+			// cache when it loads the image, this speeds of loading time drastically
+			// because it is not repeatedly using the image from the sprite sheet
 			int k = 0;
 			HashMap<Integer, BufferedImage> cache = new HashMap<Integer, BufferedImage>();
 			for (int i = 0; i < h; i++) {
@@ -91,12 +97,14 @@ public class Area {
 					}
 					
 					tiles.add(new Tile(cache.get(tempID), tempW * j, tempH * i, tempW, tempH, tempID));
-					//tiles.add(new Tile(imgPath, tempW * j, tempH * i, tempW, tempH, tempID, imgW));
 					k++;
 					
+					// Update the load percent
 					don.setLoadPerc(k / (double)(w*h));
 				}
 			}
+
+			System.out.println("Loading: " + path + " successful");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -106,6 +114,10 @@ public class Area {
 		}
 	}
 	
+	/**
+	 * Renders the map, only renders a tile if it is on screen
+	 * @param g Graphics object to draw on
+	 */
 	public void render(Graphics g) {
 		for (int i = 0; i < tiles.size(); i++) {
 			if (tiles.get(i).getX() > don.getCamX()/2 - tiles.get(i).getWidth() && tiles.get(i).getX() < don.getCamX()/2 + Display.WIDTH/2) {

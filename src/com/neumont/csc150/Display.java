@@ -7,8 +7,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Robot;
+import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
@@ -18,6 +20,7 @@ import java.io.IOException;
 import java.text.DecimalFormat;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 /**
@@ -45,6 +48,7 @@ public class Display extends Canvas implements Runnable {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
 		setPreferredSize(size);
 		frame = new JFrame();
+		frame.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon("DonutCursor.png").getImage(),new Point(0,0),"custom cursor"));
 		
 		d = new Donutz(this);
 		

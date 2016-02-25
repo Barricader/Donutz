@@ -1,6 +1,5 @@
 package com.neumont.csc150.entity;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -25,7 +24,7 @@ public class Enemy extends Entity {
 		super.dead = false;
 	}
 	
-	public Enemy(double x,double y, double speed,double health, EnemyType type){
+	public Enemy(double x,double y, double speed,double health, EnemyType type,int dam){
 		super(x, y, speed);
 		super.collides = false;
 		super.dead = false;
@@ -33,7 +32,7 @@ public class Enemy extends Entity {
 		h = 32;
 		this.health = health;
 		this.type = type;
-		
+		setMaxDam(dam);
 	}
 
 	@Override
@@ -100,11 +99,16 @@ public class Enemy extends Entity {
 	
 	}
 	
-	public int attack(int minDam,int maxDam){	
-		setMaxDam(maxDam);
+	public int attack(){	
 		r = new Random();
 		int damage = r.nextInt(getMaxDam());
 		return damage;
+	}
+	
+	
+	
+	public void dodge(){
+		
 	}
 	
 	

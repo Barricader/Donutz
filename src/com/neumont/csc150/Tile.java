@@ -1,6 +1,7 @@
 package com.neumont.csc150;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 /**
@@ -36,6 +37,10 @@ public class Tile {
 		if (ID != 0) {
 			g.drawImage(sprite, x, y, null);
 		}
+	}
+	
+	public Rectangle getRect() {
+		return new Rectangle(x, y, w, h);
 	}
 	
 	public int getX() {

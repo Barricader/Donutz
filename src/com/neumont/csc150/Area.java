@@ -26,6 +26,7 @@ import org.json.simple.parser.ParseException;
 public class Area {
 	private int w, h;
 	private Vector<Vector<Tile>> tiles;
+	private ArrayList<Integer> aboves;
 	private String imgPath, path;
 	private Donutz don;
 	private int colLayer;
@@ -33,12 +34,14 @@ public class Area {
 	public Area() {
 		path = "";
 		tiles = new Vector<Vector<Tile>>();
+		aboves = new ArrayList<Integer>();
 		colLayer = -1;
 	}
 	
 	public Area(String path, Donutz d) {
 		this.path = path;
 		tiles = new Vector<Vector<Tile>>();
+		aboves = new ArrayList<Integer>();
 		don = d;
 		colLayer = -1;
 		
@@ -66,9 +69,11 @@ public class Area {
 				if (!(boolean) tileLayers.get(i).get("visible")) {
 					colLayer = i;
 				}
+				
+				if ((boolean) tileLayers.get(i).get("above")) {
+					aboves.add(i);
+				}
 			}
-			
-			JSONObject layObj = (JSONObject) layers.get(0);
 			
 			for (int i = 0; i < tilesets.size(); i++) {
 				tileTilesets.add((JSONObject) tilesets.get(i));
@@ -186,13 +191,15 @@ public class Area {
 	 * Renders the map, only renders a tile if it is on screen
 	 * @param g Graphics object to draw on
 	 */
-	public void render(Graphics g) {
+	public void render(Graphics g, boolean renAbove) {
 		for (int j = 0; j < tiles.size(); j++) {
 			if (j != colLayer) {
-				for (int i = 0; i < tiles.get(j).size(); i++) {
-					if (tiles.get(j).get(i).getX() > don.getCamX()/2 - tiles.get(j).get(i).getWidth() && tiles.get(j).get(i).getX() < don.getCamX()/2 + Display.WIDTH/2) {
-						if (tiles.get(j).get(i).getY() > don.getCamY()/2 - tiles.get(j).get(i).getHeight() && tiles.get(j).get(i).getY() < don.getCamY()/2 + Display.HEIGHT/2) {
-							tiles.get(j).get(i).render(g);
+				if (renAbove && aboves.contains(j) || (!renAbove && !aboves.contains(j))) {
+					for (int i = 0; i < tiles.get(j).size(); i++) {
+						if (tiles.get(j).get(i).getX() > don.getCamX()/2 - tiles.get(j).get(i).getWidth() && tiles.get(j).get(i).getX() < don.getCamX()/2 + Display.WIDTH/2) {
+							if (tiles.get(j).get(i).getY() > don.getCamY()/2 - tiles.get(j).get(i).getHeight() && tiles.get(j).get(i).getY() < don.getCamY()/2 + Display.HEIGHT/2) {
+								tiles.get(j).get(i).render(g);
+							}
 						}
 					}
 				}
@@ -218,6 +225,10 @@ public class Area {
 	
 	public Vector<Vector<Tile>> getTiles() {
 		return tiles;
+	}
+	
+	public Vector<Tile> getColLayer() {
+		return tiles.get(colLayer);
 	}
 
 	public String getImgPath() {

@@ -13,6 +13,7 @@ import java.awt.Robot;
 import java.awt.Toolkit;
 import java.awt.event.InputEvent;
 import java.awt.event.WindowEvent;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -166,11 +167,16 @@ public class Display extends Canvas implements Runnable {
 		else {
 			// Render the area if loaded
 			if (d.getCurArea() != null && d.getLoadPerc() >= 1.0) {
-				d.getCurArea().render(g);
+				d.getCurArea().render(g, false);
 			}
 			
 			if (d.getLoadPerc() >= 1.0) {
 				d.getPlayer().render(g);
+				d.getCurArea().render(g, true);
+				if (d.getInvOpen()) {
+					g2d.setColor(Color.GRAY);
+					g2d.fillRect(WIDTH / 4 - 100 + d.getCamX()/2, HEIGHT / 4 - 100 + d.getCamY()/2, 200, 200);
+				}
 			}
 			else {
 				// If the area is not loaded yet, draw the load screen

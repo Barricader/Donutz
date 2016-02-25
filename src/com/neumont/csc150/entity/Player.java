@@ -6,6 +6,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,6 +17,7 @@ import javax.swing.Timer;
 
 import com.neumont.csc150.Display;
 import com.neumont.csc150.Donutz;
+import com.neumont.csc150.Tile;
 import com.neumont.csc150.item.Item;
 
 // TODO: add variables for combat such as a WEAPON class and hp and skill points and what not
@@ -71,6 +73,36 @@ public class Player extends Entity {
 			dy = 0;
 		}
 		
+		Vector<Tile> tColLayer = Donutz.getInstance().getCurArea().getColLayer();
+		Rectangle temp = getRect();
+		
+		for (int i = 0; i < tColLayer.size(); i++) {
+			if (tColLayer.get(i).getID() != 0) {
+				Rectangle t = tColLayer.get(i).getRect();
+				if ((t.x + t.width > temp.x + dx - 16 && t.x < temp.x + temp.width + 16) &&
+					(t.y + t.height > temp.y + dy - 16 && t.y < temp.y + temp.height + 16)) {
+					
+					if (t.x + t.width > temp.x+4 + dx && t.x < temp.x+4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
+						dx = 0;
+					}
+					
+					if (t.x < temp.x + temp.width-4 + dx && t.x + t.width > temp.x + temp.width-4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
+						dx = 0;
+					}
+					
+					if (t.y + t.height > temp.y+4 + dy && t.y < temp.y+4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
+						dy = 0;
+					}
+					
+					if (t.y < temp.y + temp.height-4 + dy && t.y + t.height > temp.y + temp.height-4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
+						dy = 0;
+					}
+				}
+			}
+		}
+		
+		// TODO: stop movement when colliding and not holding down mouse
+		
 		if (sprinting) {
 			speed = MAX_SPEED + 2;
 		}
@@ -79,13 +111,6 @@ public class Player extends Entity {
 		}
 		
 		super.update();
-		
-		if (x < 0) {
-			x = 0;
-		}
-		if (y < 0) {
-			y = 0;
-		}
 		
 		// If the player's rate of change isn't zero, then he must be moving
 		if (dx != 0.0 && dy != 0.0) {
@@ -100,59 +125,8 @@ public class Player extends Entity {
 	 * Draw the player
 	 */
 	public void render(Graphics g) {
-//		if (moving) {
-//			if (direction < 22.5 || direction > 337.5) {
-//				g.drawImage(sprites[3][step], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 67.5 && direction < 112.5) {
-//				g.drawImage(sprites[0][step], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 157.5 && direction < 202.5) {
-//				g.drawImage(sprites[2][step], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 247.5 && direction <= 292.5) {
-//				g.drawImage(sprites[1][step], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 22.5 && direction < 67.5) {
-//				g.drawImage(sprites[6][step], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 112.5 && direction < 157.5) {
-//				g.drawImage(sprites[5][step], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 202.5 && direction <= 247.5) {
-//				g.drawImage(sprites[7][step], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 292.5 && direction <= 337.5) {
-//				g.drawImage(sprites[4][step], (int)x - w/2, (int)y - h/2, null);
-//			}
-//		}
-//		else {
-//			if (direction < 22.5 || direction > 337.5) {
-//				g.drawImage(sprites[3][0], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 67.5 && direction < 112.5) {
-//				g.drawImage(sprites[0][0], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 157.5 && direction < 202.5) {
-//				g.drawImage(sprites[2][0], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 247.5 && direction <= 292.5) {
-//				g.drawImage(sprites[1][0], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 22.5 && direction < 67.5) {
-//				g.drawImage(sprites[6][0], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 112.5 && direction < 157.5) {
-//				g.drawImage(sprites[5][0], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 202.5 && direction <= 247.5) {
-//				g.drawImage(sprites[7][0], (int)x - w/2, (int)y - h/2, null);
-//			}
-//			else if (direction >= 292.5 && direction <= 337.5) {
-//				g.drawImage(sprites[4][0], (int)x - w/2, (int)y - h/2, null);
-//			}
-//		}
-		
+//		Rectangle r = new Rectangle((int)x - w/2, (int)y - w/2, w, h);
+//		g.drawRect(r.x, r.y, r.width, r.height);
 		Graphics2D g2d = (Graphics2D)g;
 		
 		AffineTransform af = new AffineTransform();
@@ -164,6 +138,12 @@ public class Player extends Entity {
 		}
 		else {
 			g.drawImage(sprites[0][0], (int)x - w/2, (int)y - h/2, null);
+		}
+		
+		try {
+			g2d.transform(af.createInverse());
+		} catch (NoninvertibleTransformException e) {
+			e.printStackTrace();
 		}
 	}
 	

@@ -219,7 +219,7 @@ public class Donutz {
 		// New game
 		if (selector == 0) {
 			inMenu = false;
-			load("FLH.json");
+			load("LostHaven.json");
 		}
 		// Load Game
 		else if(selector == 1){

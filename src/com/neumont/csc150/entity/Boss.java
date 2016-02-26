@@ -18,17 +18,21 @@ public class Boss extends Enemy {
 		
 	}
 	
-	public int attack(){
-		
+	public int attack(){	
 		int damage = 0;
 		return damage;
 	}
 	
-	public void specialAttack(){
-		
+	public int specialAttack(){
+		int damage = 0;
+		return damage;
 	}
 	
 	public void specialDefense(){
+		
+	}
+	
+	public void dialouge(){
 		
 	}
 	
@@ -36,7 +40,7 @@ public class Boss extends Enemy {
 		try{
 			BufferedImage buf = ImageIO.read(new File(path));
 			sprites[0] = buf.getSubimage((int)x, (int)y, w, h);
-			
+			sprites[1] = buf.getSubimage((int)x, (int)y, w, h);			
 		}catch(IOException e){
 			e.printStackTrace();
 		}

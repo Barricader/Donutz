@@ -37,24 +37,32 @@ public class Enemy extends Entity {
 
 	@Override
 	public void render(Graphics g) {
-		
-		if(this.type == EnemyType.HEAVY){
+			if(this.type == EnemyType.HEAVY){
 			g.drawImage(sprites[0], (int)x, (int)y, null);
+			if(collides = true){
+				g.drawImage(sprites[1], (int)x, (int)y, null);
+			}
 		}
 		
 		if(this.type == EnemyType.FAST){
-			g.drawImage(sprites[1], (int)x, (int)y, null);
-
+			g.drawImage(sprites[2], (int)x, (int)y, null);
+			if(collides = true){
+				g.drawImage(sprites[3], (int)x, (int)y, null);
+			}
 		}
 		
 		if(this.type == EnemyType.RANGED){
-			g.drawImage(sprites[2], (int)x, (int)y, null);
-
+			g.drawImage(sprites[4], (int)x, (int)y, null);
+			if(collides = true){
+				g.drawImage(sprites[5], (int)x, (int)y, null);
+			}
 		}
 		
 		if(this.type == EnemyType.MELEE){
-			g.drawImage(sprites[3], (int)x, (int)y, null);
-
+			g.drawImage(sprites[6], (int)x, (int)y, null);
+			if(collides = true){
+				g.drawImage(sprites[7], (int)x, (int)y, null);
+			}
 		}
 	}
 	
@@ -65,33 +73,34 @@ public class Enemy extends Entity {
 		if(r.intersects(r2)){
 			return true;
 		}
-		
-		return false;
-		
+		return false;		
 	}
 	
-	public void load(String i){
-		
+	public void load(String i){		
 		try {
 			BufferedImage buff = ImageIO.read(new File(i));
 			
 		if(this.type == EnemyType.HEAVY){
 			sprites[0] = buff.getSubimage(0, 0, this.w, this.h);
+			sprites[1] = buff.getSubimage(0, 0, this.w, this.h);
+			
 		}
 		
 		if(this.type == EnemyType.FAST){
-			sprites[1] = buff.getSubimage(0, 0, this.w, this.h);
-
+			sprites[2] = buff.getSubimage(0, 0, this.w, this.h);
+			sprites[3] = buff.getSubimage(0, 0, this.w, this.h);
 		}
 		
 		if(this.type == EnemyType.RANGED){
-			sprites[2] = buff.getSubimage(0, 0, this.w, this.h);
-
+			sprites[4] = buff.getSubimage(0, 0, this.w, this.h);
+			sprites[5] = buff.getSubimage(0, 0, this.w, this.h);
+			
 		}
 		
 		if(this.type == EnemyType.MELEE){
-			sprites[3] = buff.getSubimage(0, 0, this.w, this.h);
-
+			sprites[6] = buff.getSubimage(0, 0, this.w, this.h);
+			sprites[7] = buff.getSubimage(0, 0, this.w, this.h);
+			
 		}
 		}catch(IOException e){
 			e.printStackTrace();
@@ -101,7 +110,7 @@ public class Enemy extends Entity {
 	
 	public int attack(){	
 		r = new Random();
-		int damage = r.nextInt(getMaxDam());
+		int damage = r.nextInt(getMaxDam())+1;
 		return damage;
 	}
 	

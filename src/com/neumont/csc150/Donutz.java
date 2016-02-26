@@ -27,7 +27,7 @@ public class Donutz {
 	private boolean end;
 	private boolean inMenu;
 	private boolean running;
-	private boolean loaded;
+	//private boolean loaded;
 	private boolean invOpen;
 	
 	private int selector;
@@ -53,7 +53,7 @@ public class Donutz {
 		inMenu = true;
 		running = true;
 		end = false;
-		loaded = false;
+		//loaded = false;
 		invOpen = false;
 		
 		selector = 0;
@@ -137,7 +137,7 @@ public class Donutz {
 				
 				areas.add(curArea);
 				
-				loaded = true;
+				//loaded = true;
 				
 				p.setDx(0);
 				p.setDy(0);
@@ -164,6 +164,7 @@ public class Donutz {
 			p.setSprinting(d.getListener().shift);
 			
 			p.update();
+			
 			camX = (int) (p.getX() - Display.WIDTH / 4) * 2;
 			camY = (int) (p.getY() - Display.HEIGHT / 4) * 2;
 			
@@ -230,26 +231,7 @@ public class Donutz {
 			running = false;
 		}
 	}
-	
-	/**
-	 * Restart and init the game
-	 */
-	public void restart() {
-		r = new Random();
-		
-		end = false;
-		showGameOver = false;
-		
-//		ast = new Vector<Asteroid>();
-//		bul = new Vector<Bullet>();
-//		par = new Vector<Particle>();
-		
-		p = new Player(Display.WIDTH/2 - 10, Display.HEIGHT/2 - 10);
-		
-		loaded = true;
-		//b.hide();
-	}
-	
+
 	/*
 	 * Save the state of the game
 	 * @param name - Name of file to save to

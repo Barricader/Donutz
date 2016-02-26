@@ -120,7 +120,7 @@ public abstract class Entity {
 		this.dy = dy;
 	}
 
-	public boolean isCollides() {
+	public boolean isColliding() {
 		return collides;
 	}
 

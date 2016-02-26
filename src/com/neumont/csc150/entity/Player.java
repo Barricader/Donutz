@@ -72,10 +72,11 @@ public class Player extends Entity {
 			dx = 0;
 			dy = 0;
 		}
-		
+
 		Vector<Tile> tColLayer = Donutz.getInstance().getCurArea().getColLayer();
 		Rectangle temp = getRect();
 		
+		//collides = false;
 		for (int i = 0; i < tColLayer.size(); i++) {
 			if (tColLayer.get(i).getID() != 0) {
 				Rectangle t = tColLayer.get(i).getRect();
@@ -83,23 +84,31 @@ public class Player extends Entity {
 					(t.y + t.height > temp.y + dy - 16 && t.y < temp.y + temp.height + 16)) {
 					
 					if (t.x + t.width > temp.x+4 + dx && t.x < temp.x+4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
-						if (dx < 0)
+						if (dx < 0) {
 							dx = 0;
+							collides = true;
+						}
 					}
 					
 					if (t.x < temp.x + temp.width-4 + dx && t.x + t.width > temp.x + temp.width-4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
-						if (dx > 0)
+						if (dx > 0) {
 							dx = 0;
+							collides = true;
+						}
 					}
 					
 					if (t.y + t.height > temp.y+4 + dy && t.y < temp.y+4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
-						if (dy < 0)
+						if (dy < 0) {
 							dy = 0;
+							collides = true;
+						}
 					}
 					
 					if (t.y < temp.y + temp.height-4 + dy && t.y + t.height > temp.y + temp.height-4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
-						if (dy > 0)
+						if (dy > 0) {
 							dy = 0;
+							collides = true;
+						}
 					}
 				}
 			}

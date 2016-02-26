@@ -21,6 +21,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 			esc = false, enter = false, shift = false;
 	
 	private int mx, my;
+	private boolean mPressed;
 	private Timer t;
 	private TimerTask tt;
 	
@@ -35,6 +36,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 			}
 		};
 		
+		mPressed = false;
 		mx = 0;
 		my = 0;
 	}
@@ -121,6 +123,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 		Point temp = new Point(e.getX()/2, e.getY()/2);
 		if (!d.getPlayer().getRect().contains(temp)) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
+				mPressed = true;
 				t = new Timer();
 				if (!tt.cancel()) {
 					tt = new TimerTask() {
@@ -155,6 +158,12 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	 */
 	public void mouseReleased(MouseEvent e) {
 		if (e.getButton() == MouseEvent.BUTTON1) {
+			mPressed = false;
+			if (d.getPlayer().isColliding()) {
+				d.getPlayer().setDx(0);
+				d.getPlayer().setDy(0);
+				d.getPlayer().setCollides(false);
+			}
 			if (!tt.cancel()) {
 			}
 		}
@@ -178,5 +187,9 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	public void mouseMoved(MouseEvent e) {
 		mx = e.getX()/2;
 		my = e.getY()/2;
+	}
+	
+	public boolean isMPressed() {
+		return mPressed;
 	}
 }

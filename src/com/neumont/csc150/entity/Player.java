@@ -83,19 +83,23 @@ public class Player extends Entity {
 					(t.y + t.height > temp.y + dy - 16 && t.y < temp.y + temp.height + 16)) {
 					
 					if (t.x + t.width > temp.x+4 + dx && t.x < temp.x+4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
-						dx = 0;
+						if (dx < 0)
+							dx = 0;
 					}
 					
 					if (t.x < temp.x + temp.width-4 + dx && t.x + t.width > temp.x + temp.width-4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
-						dx = 0;
+						if (dx > 0)
+							dx = 0;
 					}
 					
 					if (t.y + t.height > temp.y+4 + dy && t.y < temp.y+4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
-						dy = 0;
+						if (dy < 0)
+							dy = 0;
 					}
 					
 					if (t.y < temp.y + temp.height-4 + dy && t.y + t.height > temp.y + temp.height-4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
-						dy = 0;
+						if (dy > 0)
+							dy = 0;
 					}
 				}
 			}
@@ -125,7 +129,7 @@ public class Player extends Entity {
 	 * Draw the player
 	 */
 	public void render(Graphics g) {
-//		Rectangle r = new Rectangle((int)x - w/2, (int)y - w/2, w, h);
+//		Rectangle r = new Rectangle((int)x - w/2, (int)y - w/2, w, h);	// DEBUG
 //		g.drawRect(r.x, r.y, r.width, r.height);
 		Graphics2D g2d = (Graphics2D)g;
 		

@@ -9,6 +9,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -27,6 +29,7 @@ public class Area {
 	private int w, h;
 	private Vector<Vector<Tile>> tiles;
 	private ArrayList<Integer> aboves;
+	private HashMap<Integer, String> teleporters;
 	private String imgPath, path;
 	private Donutz don;
 	private int colLayer;
@@ -35,6 +38,7 @@ public class Area {
 		path = "";
 		tiles = new Vector<Vector<Tile>>();
 		aboves = new ArrayList<Integer>();
+		teleporters = new HashMap<Integer, String>();
 		colLayer = -1;
 	}
 	
@@ -42,6 +46,7 @@ public class Area {
 		this.path = path;
 		tiles = new Vector<Vector<Tile>>();
 		aboves = new ArrayList<Integer>();
+		teleporters = new HashMap<Integer, String>();
 		don = d;
 		colLayer = -1;
 		
@@ -66,12 +71,16 @@ public class Area {
 			
 			for (int i = 0; i < layers.size(); i++) {
 				tileLayers.add((JSONObject) layers.get(i));
-				if (!(boolean) tileLayers.get(i).get("visible")) {
+				if ((boolean) tileLayers.get(i).get("collidable")) {
 					colLayer = i;
 				}
 				
 				if ((boolean) tileLayers.get(i).get("above")) {
 					aboves.add(i);
+				}
+				
+				if ((boolean) tileLayers.get(i).get("teleport")) {
+					teleporters.put(i, (String) tileLayers.get(i).get("location"));
 				}
 			}
 			
@@ -193,14 +202,10 @@ public class Area {
 	 */
 	public void render(Graphics g, boolean renAbove) {
 		for (int j = 0; j < tiles.size(); j++) {
-			if (j != colLayer) {
+			if (j != colLayer && teleporters.get(j) == null) {
 				if (renAbove && aboves.contains(j) || (!renAbove && !aboves.contains(j))) {
 					for (int i = 0; i < tiles.get(j).size(); i++) {
-						if (tiles.get(j).get(i).getX() > don.getCamX()/2 - tiles.get(j).get(i).getWidth() && tiles.get(j).get(i).getX() < don.getCamX()/2 + Display.WIDTH/2) {
-							if (tiles.get(j).get(i).getY() > don.getCamY()/2 - tiles.get(j).get(i).getHeight() && tiles.get(j).get(i).getY() < don.getCamY()/2 + Display.HEIGHT/2) {
-								tiles.get(j).get(i).render(g);
-							}
-						}
+						tiles.get(j).get(i).render(g);
 					}
 				}
 			}
@@ -227,8 +232,32 @@ public class Area {
 		return tiles;
 	}
 	
+	public String getLocation(int i) {
+		return teleporters.get(i);
+	}
+	
+	public HashMap<Integer, String> getTPMap() {
+		return teleporters;
+	}
+	
+	public Vector<Vector<Tile>> getTeleportLayers() {
+		Vector<Vector<Tile>> temp = new Vector<Vector<Tile>>();
+		Set<Integer> keys = teleporters.keySet();
+		Iterator<Integer> iter = keys.iterator();
+		while (iter.hasNext()) {
+			temp.add(tiles.get(iter.next()));
+		}
+		
+		return temp;
+	}
+	
 	public Vector<Tile> getColLayer() {
-		return tiles.get(colLayer);
+		if (colLayer != -1) {
+			return tiles.get(colLayer);
+		}
+		else {
+			return null;
+		}
 	}
 
 	public String getImgPath() {

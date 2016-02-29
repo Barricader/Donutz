@@ -74,47 +74,65 @@ public class Player extends Entity {
 		}
 
 		Vector<Tile> tColLayer = Donutz.getInstance().getCurArea().getColLayer();
+		Vector<Vector<Tile>> exitLayers = Donutz.getInstance().getCurArea().getTeleportLayers();
 		Rectangle temp = getRect();
 		
 		//collides = false;
-		for (int i = 0; i < tColLayer.size(); i++) {
-			if (tColLayer.get(i).getID() != 0) {
-				Rectangle t = tColLayer.get(i).getRect();
-				if ((t.x + t.width > temp.x + dx - 16 && t.x < temp.x + temp.width + 16) &&
-					(t.y + t.height > temp.y + dy - 16 && t.y < temp.y + temp.height + 16)) {
-					
-					if (t.x + t.width > temp.x+4 + dx && t.x < temp.x+4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
-						if (dx < 0) {
-							dx = 0;
-							collides = true;
+		if (tColLayer != null) {
+			for (int i = 0; i < tColLayer.size(); i++) {
+				if (tColLayer.get(i).getID() != 0) {
+					Rectangle t = tColLayer.get(i).getRect();
+					if ((t.x + t.width > temp.x + dx - 16 && t.x < temp.x + temp.width + 16) &&
+						(t.y + t.height > temp.y + dy - 16 && t.y < temp.y + temp.height + 16)) {
+						
+						if (t.x + t.width > temp.x+4 + dx && t.x < temp.x+4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
+							if (dx < 0) {
+								dx = 0;
+								collides = true;
+							}
 						}
-					}
-					
-					if (t.x < temp.x + temp.width-4 + dx && t.x + t.width > temp.x + temp.width-4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
-						if (dx > 0) {
-							dx = 0;
-							collides = true;
+						
+						if (t.x < temp.x + temp.width-4 + dx && t.x + t.width > temp.x + temp.width-4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
+							if (dx > 0) {
+								dx = 0;
+								collides = true;
+							}
 						}
-					}
-					
-					if (t.y + t.height > temp.y+4 + dy && t.y < temp.y+4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
-						if (dy < 0) {
-							dy = 0;
-							collides = true;
+						
+						if (t.y + t.height > temp.y+4 + dy && t.y < temp.y+4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
+							if (dy < 0) {
+								dy = 0;
+								collides = true;
+							}
 						}
-					}
-					
-					if (t.y < temp.y + temp.height-4 + dy && t.y + t.height > temp.y + temp.height-4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
-						if (dy > 0) {
-							dy = 0;
-							collides = true;
+						
+						if (t.y < temp.y + temp.height-4 + dy && t.y + t.height > temp.y + temp.height-4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
+							if (dy > 0) {
+								dy = 0;
+								collides = true;
+							}
 						}
 					}
 				}
 			}
 		}
 		
-		// TODO: stop movement when colliding and not holding down mouse
+		Object[] tempKeys = Donutz.getInstance().getCurArea().getTPMap().keySet().toArray();
+		//Set<Integer> tempKeys = Donutz.getInstance().getCurArea().getTPMap().keySet();
+		//Iterator i = tempKeys.iterator();
+		
+		for (int j = 0; j < exitLayers.size(); j++) {
+			for (int i = 0; i < exitLayers.get(j).size(); i++) {
+				if (exitLayers.get(j).get(i).getID() != 0) {
+					if (getRect().intersects(exitLayers.get(j).get(i).getRect())) {
+						int tempIndex = Integer.parseInt(tempKeys[j].toString());
+						Donutz.getInstance().requestTP(Donutz.getInstance().getCurArea().getLocation(tempIndex));
+					}
+				}
+			}
+		}
+		
+		// TODO: fix reading from the key set and stuff 
 		
 		if (sprinting) {
 			speed = MAX_SPEED + 2;

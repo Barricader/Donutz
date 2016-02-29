@@ -1,5 +1,6 @@
 package com.neumont.csc150;
 
+import java.awt.Rectangle;
 import java.util.Random;
 import java.util.Vector;
 
@@ -16,6 +17,7 @@ public class Donutz {
 //	private Vector<Particle> par;
 	private Vector<Area> areas;
 	private Area curArea;
+	private Rectangle tempExitRect;
 	private Player p;
 	
 	private int maxOffsetX, maxOffsetY, minOffsetX, minOffsetY;
@@ -48,6 +50,8 @@ public class Donutz {
 		
 		curArea = null;
 		loadPerc = 0.0;
+		
+		tempExitRect = new Rectangle();
 		
 		showGameOver = false;
 		inMenu = true;
@@ -103,9 +107,6 @@ public class Donutz {
 	 **/
 	public void update() {
 		if (!inMenu) {
-//			if (!loaded) {
-//				load();
-//			}
 			if (!end && loadPerc >= 1.0) {
 				playerUpdate();
 			}
@@ -119,41 +120,61 @@ public class Donutz {
 	 * Load an area
 	 */
 	public void load(String path) {
-		Donutz temp = this;
-		Thread t = new Thread("load") {
-			public void run() {
-				CUR_TIP = TIPS[r.nextInt(TIPS.length)];
-				// Load the map
-				curArea = new Area(path, temp);
-				
-				maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).get(0).getWidth()) - Display.WIDTH/2;
-				maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).get(0).getHeight()) - Display.HEIGHT/2;
-				maxOffsetX *= 2;
-				maxOffsetY *= 2;
-				minOffsetX = 0;
-				minOffsetY = 0;
-				
-				p.load("player.png");
-				
-				areas.add(curArea);
-				
-				//loaded = true;
-				
-				p.setDx(0);
-				p.setDy(0);
-				
-				p.setX(maxOffsetX / 2 - Display.WIDTH/4);
-				p.setY(maxOffsetY / 2 - Display.HEIGHT);
-				
-				try {
-					this.join();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
+		if (!(path.equals("LostHaven.json") && areas.size() > 1)) {
+			Donutz temp = this;
+			loadPerc = 0.0;
+			Thread t = new Thread("load") {
+				public void run() {
+					CUR_TIP = TIPS[r.nextInt(TIPS.length)];
+					// Load the map
+					curArea = new Area(path, temp);
+					
+					if (path.equals("LostHaven.json")) {
+						maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).get(0).getWidth()) - Display.WIDTH/2;
+						maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).get(0).getHeight()) - Display.HEIGHT/2;
+						maxOffsetX *= 2;
+						maxOffsetY *= 2;
+						minOffsetX = 0;
+						minOffsetY = 0;
+						
+						p.load("player.png");
+					}
+					
+					areas.add(curArea);
+					
+					//loaded = true;
+					
+					p.setDx(0);
+					p.setDy(0);
+					
+					if (path.equals("LostHaven.json")) {
+						p.setX(maxOffsetX / 2 - Display.WIDTH/4);
+						p.setY(maxOffsetY / 2 - Display.HEIGHT);
+					}
+					else {
+						p.setX(80);
+						p.setY(850);
+					}
+					
+					
+					try {
+						this.join();
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
 				}
-			}
-		};
-		
-		t.start();
+			};
+			
+			t.start();
+		}
+		else {
+			curArea = areas.get(0);
+			p.setDx(0);
+			p.setDy(0);
+			
+			p.setX(maxOffsetX - Display.WIDTH/2 - 80);
+			p.setY(940);
+		}
 	}
 	
 	/**
@@ -230,6 +251,10 @@ public class Donutz {
 		else if(selector == 2){
 			running = false;
 		}
+	}
+	
+	public void requestTP(String location) {
+		load(location + ".json");
 	}
 
 	/*

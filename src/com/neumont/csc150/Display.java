@@ -42,7 +42,9 @@ public class Display extends Canvas implements Runnable {
 	
 	private int loadAngle;
 	private BufferedImage loadImage;
-	private BufferedImage loadImage2;
+	private BufferedImage menuImage;
+
+	private int invX;
 
 	public Display() {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
@@ -58,12 +60,14 @@ public class Display extends Canvas implements Runnable {
 		addMouseListener(l);
 		addMouseMotionListener(l);
 		
+		invX = WIDTH/2;
+		
 		// Used for loading screen to show percent loaded
 		df = new DecimalFormat("##.#%");
 		loadAngle = 0;
 		try {
 			loadImage = ImageIO.read(new File("earth.png"));
-			loadImage2 = ImageIO.read(new File("Donut.png"));
+			menuImage = ImageIO.read(new File("Donut.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -121,24 +125,12 @@ public class Display extends Canvas implements Runnable {
 		if (d.isInMenu()) {
 			g.setFont(new Font("LucidaConsole", Font.PLAIN, 64));
 			g.drawString("DONUTZ", WIDTH / 2 - 450, HEIGHT / 4 - 10);
-			g.drawImage(loadImage2, WIDTH / 2 - 175, HEIGHT / 2 - 250, null);
+			g.drawImage(menuImage, WIDTH / 2 - 175, HEIGHT / 2 - 250, null);
 			g.drawRect(WIDTH / 2 - 450, HEIGHT / 2 - 250, WIDTH / 2 - 370, HEIGHT / 2 - 290);
 			g.setFont(new Font("LucidaConsole", Font.PLAIN, 18));
 			g.drawString("New Game", WIDTH / 2 - 450, HEIGHT / 2 - 140);
 			g.drawString("Load Game", WIDTH / 2 - 450, HEIGHT / 2 - 120);
 			g.drawString("Exit", WIDTH / 2 - 450, HEIGHT / 2 - 100);
-		
-//		if (d.getLoadPerc() >= 1.0) {
-//			//if (!d.getInvOpen()) {
-//				d.getPlayer().render(g);
-//			//}
-//			if (d.getInvOpen()) {
-////				AffineTransform af = new AffineTransform();
-////				af.rotate(0, d.getPlayer().getX(), d.getPlayer().getY());
-//				//g2d.transform(old);
-//				g.setColor(Color.GRAY);
-//				g.fillRect(WIDTH / 4 - 100 + d.getCamX()/2, HEIGHT / 4 - 100 + d.getCamY()/2, 200, 200);
-//			}
 			
 			Polygon p = new Polygon();
 			
@@ -172,9 +164,20 @@ public class Display extends Canvas implements Runnable {
 			if (d.getLoadPerc() >= 1.0) {
 				d.getPlayer().render(g);
 				d.getCurArea().render(g, true);
+				
 				if (d.getInvOpen()) {
-					g2d.setColor(Color.GRAY);
-					g2d.fillRect(WIDTH / 4 - 100 + d.getCamX()/2, HEIGHT / 4 - 100 + d.getCamY()/2, 200, 200);
+					if (invX > WIDTH/2 - 196) {
+						invX -= 3;
+					}
+					g2d.setColor(new Color(140, 140, 140, 200));
+					g2d.fillRect(invX + d.getCamX()/2, HEIGHT / 4 - 100 + d.getCamY()/2, 200, 200);
+				}
+				if (!d.getInvOpen()) {
+					if (invX < WIDTH/2) {
+						invX += 3;
+						g2d.setColor(new Color(140, 140, 140, 200));
+						g2d.fillRect(invX + d.getCamX()/2, HEIGHT / 4 - 100 + d.getCamY()/2, 200, 200);
+					}
 				}
 			}
 			else {

@@ -120,61 +120,63 @@ public class Donutz {
 	 * Load an area
 	 */
 	public void load(String path) {
-		if (!(path.equals("LostHaven.json") && areas.size() > 1)) {
-			Donutz temp = this;
-			loadPerc = 0.0;
-			Thread t = new Thread("load") {
-				public void run() {
+		Thread t = new Thread("load") {
+			public void run() {
+				boolean notYetLoaded = true;
+				for (int i = 0; i < areas.size(); i++) {
+					if (areas.get(i).getPath().equals(path)) {
+						curArea = areas.get(i);
+						notYetLoaded = false;
+					}
+				}
+
+				if (notYetLoaded) {
+					loadPerc = 0.0;
 					CUR_TIP = TIPS[r.nextInt(TIPS.length)];
 					// Load the map
-					curArea = new Area(path, temp);
-					
-					if (path.equals("LostHaven.json")) {
-						maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).get(0).getWidth()) - Display.WIDTH/2;
-						maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).get(0).getHeight()) - Display.HEIGHT/2;
+					curArea = new Area(path);
+
+					if (areas.size() == 0) {
+						maxOffsetX = (curArea.getWidth() * curArea.getTiles().get(0).get(0).getWidth())
+								- Display.WIDTH / 2;
+						maxOffsetY = (curArea.getHeight() * curArea.getTiles().get(0).get(0).getHeight())
+								- Display.HEIGHT / 2;
 						maxOffsetX *= 2;
 						maxOffsetY *= 2;
 						minOffsetX = 0;
 						minOffsetY = 0;
-						
+
 						p.load("player.png");
 					}
-					
+
 					areas.add(curArea);
-					
-					//loaded = true;
-					
-					p.setDx(0);
-					p.setDy(0);
-					
-					if (path.equals("LostHaven.json")) {
-						p.setX(maxOffsetX / 2 - Display.WIDTH/4);
-						p.setY(maxOffsetY / 2 - Display.HEIGHT);
-					}
-					else {
-						p.setX(80);
-						p.setY(850);
-					}
-					
-					
-					try {
-						this.join();
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
 				}
-			};
-			
-			t.start();
-		}
-		else {
-			curArea = areas.get(0);
-			p.setDx(0);
-			p.setDy(0);
-			
-			p.setX(maxOffsetX - Display.WIDTH/2 - 80);
-			p.setY(940);
-		}
+
+				p.setDx(0);
+				p.setDy(0);
+
+				if (path.equals("LostHaven.json") && areas.size() == 1) {
+					p.setX(maxOffsetX / 2 - Display.WIDTH / 4);
+					p.setY(maxOffsetY / 2 - Display.HEIGHT);
+				}
+				else if (path.equals("LostHaven.json") && areas.size() > 1) {
+					p.setX(maxOffsetX - Display.WIDTH/2 - 80);
+					p.setY(940);
+				}
+				else if (path.equals("Eternal_Forest.json")) {
+					p.setX(80);
+					p.setY(850);
+				}
+
+				try {
+					this.join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+
+		t.start();
 	}
 	
 	/**

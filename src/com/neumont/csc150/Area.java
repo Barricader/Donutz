@@ -31,7 +31,6 @@ public class Area {
 	private ArrayList<Integer> aboves;
 	private HashMap<Integer, String> teleporters;
 	private String imgPath, path;
-	private Donutz don;
 	private int colLayer;
 	
 	public Area() {
@@ -42,12 +41,11 @@ public class Area {
 		colLayer = -1;
 	}
 	
-	public Area(String path, Donutz d) {
+	public Area(String path) {
 		this.path = path;
 		tiles = new Vector<Vector<Tile>>();
 		aboves = new ArrayList<Integer>();
 		teleporters = new HashMap<Integer, String>();
-		don = d;
 		colLayer = -1;
 		
 		load();
@@ -143,7 +141,7 @@ public class Area {
 			for (int k = 0; k < tileLayers.size(); k++) {
 				Vector<Tile> temp = new Vector<Tile>();
 				index = 0;
-				System.out.println("Loading layer " + k + "...");
+				//System.out.println("Loading layer " + k + "...");
 				for (int i = 0; i < heights.get(k); i++) {
 					for (int j = 0; j < widths.get(k); j++) {
 						int tempID = Integer.parseInt(finalData.get(k)[index].toString());
@@ -180,7 +178,7 @@ public class Area {
 						loadedFiles++;
 						
 						// Update the load percent
-						don.setLoadPerc((double)(loadedFiles / (double)totalFiles));
+						Donutz.getInstance().setLoadPerc((double)(loadedFiles / (double)totalFiles));
 					}
 				}
 				tiles.add(temp);
@@ -258,6 +256,10 @@ public class Area {
 		else {
 			return null;
 		}
+	}
+	
+	public String getPath() {
+		return path;
 	}
 
 	public String getImgPath() {

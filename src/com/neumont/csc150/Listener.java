@@ -9,6 +9,8 @@ import java.awt.event.MouseMotionListener;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import com.neumont.csc150.item.Weapon;
+
 /**
  * Handles the mouse and keyboard input from the Display
  * @author JoJones
@@ -60,6 +62,8 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 			case KeyEvent.VK_DOWN:
 				down = true;
 				break;
+			case KeyEvent.VK_P:
+				break;
 			case KeyEvent.VK_SPACE:
 				space = true;
 				break;
@@ -95,6 +99,9 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 			case KeyEvent.VK_DOWN:
 				down = false;
 				break;
+			case KeyEvent.VK_P:
+				d.getPlayer().addItem(new Weapon("Brick Breaker", 1, "BB.png", 20));
+				break;
 			case KeyEvent.VK_SPACE:
 				space = false;
 				break;
@@ -118,8 +125,6 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	 * to the coordinates of the mouse
 	 */
 	public void mousePressed(MouseEvent e) {
-//		mx = e.getX()/2;
-//		my = e.getY()/2;
 		Point temp = new Point(e.getX()/2, e.getY()/2);
 		if (!d.getPlayer().getRect().contains(temp)) {
 			if (e.getButton() == MouseEvent.BUTTON1) {

@@ -166,17 +166,15 @@ public class Display extends Canvas implements Runnable {
 				d.getCurArea().render(g, true);
 				
 				if (d.getInvOpen()) {
-					if (invX > WIDTH/2 - 196) {
+					if (invX > WIDTH/2 - 198) {
 						invX -= 3;
 					}
-					g2d.setColor(new Color(140, 140, 140, 200));
-					g2d.fillRect(invX + d.getCamX()/2, HEIGHT / 4 - 100 + d.getCamY()/2, 200, 200);
+					drawInv(g2d);
 				}
 				if (!d.getInvOpen()) {
 					if (invX < WIDTH/2) {
 						invX += 3;
-						g2d.setColor(new Color(140, 140, 140, 200));
-						g2d.fillRect(invX + d.getCamX()/2, HEIGHT / 4 - 100 + d.getCamY()/2, 200, 200);
+						drawInv(g2d);
 					}
 				}
 			}
@@ -192,6 +190,23 @@ public class Display extends Canvas implements Runnable {
 		}
 		g.dispose();
 		bs.show();
+	}
+	
+	private void drawInv(Graphics2D g2d) {
+		g2d.setColor(new Color(140, 140, 140, 200));
+		g2d.fillRect(invX + d.getCamX()/2, HEIGHT/4 - 100 + d.getCamY()/2, 200, 200);
+		
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 5; j++) {
+				g2d.setColor(new Color(200, 200, 200, 140));
+				//g2d.fillRect(invX + d.getCamX() /2 + j*40 + 4, HEIGHT/4 - 100 + d.getCamY()/2 + i*40 + 4, 32, 32);
+				if (d.getPlayer().getItems().size() > i*5 + j) {
+					// TODO: add cap to inventory on player
+					g2d.drawImage(d.getPlayer().getItems().get(i*5 + j).getSprite(),
+						invX + d.getCamX() /2 + j*40 + 4, HEIGHT/4 - 100 + d.getCamY()/2 + i*40 + 4, null);
+				}
+			}
+		}
 	}
 	
 	public JFrame getFrame() {

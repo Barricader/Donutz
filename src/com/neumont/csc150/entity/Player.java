@@ -230,6 +230,14 @@ public class Player extends Entity {
 		return false;
 	}
 	
+	public Vector<Item> getItems() {
+		return items;
+	}
+	
+	public void addItem(Item i) {
+		items.add(i);
+	}
+	
 	/**
 	 *  Get the player's collision box
 	 * @return The collision box

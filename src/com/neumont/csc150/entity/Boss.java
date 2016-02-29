@@ -1,5 +1,6 @@
 package com.neumont.csc150.entity;
 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -15,7 +16,13 @@ public class Boss extends Enemy {
 		super.collides = false;
 		w = 32;
 		h = 32;
-		
+	}
+	
+	public void render(Graphics g){
+		g.drawImage(sprites[0],(int)x,(int)y,null);
+		if(collides = true){
+			g.drawImage(sprites[1], (int)x, (int)y,null);
+		}		
 	}
 	
 	public int attack(){	
@@ -23,17 +30,14 @@ public class Boss extends Enemy {
 		return damage;
 	}
 	
-	public int specialAttack(){
-		int damage = 0;
-		return damage;
+	public void specialAttack(){
+		//Increases the boss' maxDamage when health gets to a certain level *Still time to decide effect
+		setMaxDam(getMaxDam()+20);
 	}
 	
 	public void specialDefense(){
-		
-	}
-	
-	public void dialouge(){
-		
+		//Increases the boss' speed to increase dodge rate when health gets to a certain level *Still time to decide effect
+		setSpeed(getSpeed()+10);
 	}
 	
 	public void load(String path){
@@ -45,5 +49,4 @@ public class Boss extends Enemy {
 			e.printStackTrace();
 		}
 	}
-
 }

@@ -239,10 +239,10 @@ public class Display extends Canvas implements Runnable {
 		return l;
 	}
 	
-	static boolean test;
+	//static boolean start;
 	public static void main(String[] args) throws AWTException {
 		Display game = new Display();
-		//game.frame.setResizable(false);
+		game.frame.setResizable(false);
 		game.frame.setTitle("Donutz");
 		game.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		game.frame.add(game);
@@ -250,38 +250,38 @@ public class Display extends Canvas implements Runnable {
 		game.frame.setLocationRelativeTo(null);
 		game.frame.setVisible(true);
 		
-		test = false;
-		game.frame.addComponentListener(new ComponentListener() {
-			public void componentResized(ComponentEvent e) {
-				if (test) {
-					WIDTH = e.getComponent().getWidth();
-					HEIGHT = e.getComponent().getHeight();
-					
-					game.d.setMaxOffsetX(game.d.getCurArea().getWidth() * game.d.getCurArea().getTiles().get(0).get(0).getWidth()
-							- Display.WIDTH / 2);
-					game.d.setMaxOffsetY(game.d.getCurArea().getHeight() * game.d.getCurArea().getTiles().get(0).get(0).getHeight()
-							- Display.HEIGHT / 2);
-					game.d.setMaxOffsetX(game.d.getMaxOffsetX()*2);
-					game.d.setMaxOffsetY(game.d.getMaxOffsetY()*2);
-					
-					if (game.d.getInvOpen()) {
-						game.invX = WIDTH/2 - 198;
-					}
-					else {
-						game.invX = WIDTH/2;
-					}
-				}
-				else {
-					test = true;
-				}
-			}
-			
-			public void componentMoved(ComponentEvent e) {}
-
-			public void componentShown(ComponentEvent e) {	}
-
-			public void componentHidden(ComponentEvent e) {}
-		});
+//		start = true;
+//		game.frame.addComponentListener(new ComponentListener() {
+//			public void componentResized(ComponentEvent e) {
+//				if (!start) {
+//					WIDTH = e.getComponent().getWidth();
+//					HEIGHT = e.getComponent().getHeight();
+//					
+//					game.d.setMaxOffsetX(game.d.getCurArea().getWidth() * game.d.getCurArea().getTiles().get(0).get(0).getWidth()
+//							- WIDTH / 2 + (WIDTH/2 - 1280/2));
+//					game.d.setMaxOffsetY(game.d.getCurArea().getHeight() * game.d.getCurArea().getTiles().get(0).get(0).getHeight()
+//							- HEIGHT / 2 + (HEIGHT/2 - 720/2));
+//					game.d.setMaxOffsetX(game.d.getMaxOffsetX()*2);
+//					game.d.setMaxOffsetY(game.d.getMaxOffsetY()*2);
+//					
+//					if (game.d.getInvOpen()) {
+//						game.invX = WIDTH/2 - 198;
+//					}
+//					else {
+//						game.invX = WIDTH/2;
+//					}
+//				}
+//				else {
+//					start = false;
+//				}
+//			}
+//			
+//			public void componentMoved(ComponentEvent e) {}
+//
+//			public void componentShown(ComponentEvent e) {	}
+//
+//			public void componentHidden(ComponentEvent e) {}
+//		});
 		
 		// Used to move mouse to the middle of the window
 		Robot r = new Robot();

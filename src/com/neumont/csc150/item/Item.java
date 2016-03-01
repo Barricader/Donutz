@@ -20,16 +20,13 @@ public abstract class Item {
 	}
 	
 	protected void load(String path) {
-		try {
-			sprite = ImageIO.read(new File(path));
-		} catch (IOException e) {
-			e.printStackTrace();
+		if (path != "null") {
+			try {
+				sprite = ImageIO.read(new File(path));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-	}
-	
-	// TODO: move drawing to display class when you have your inventory open
-	public void render(Graphics g) {
-		//g.drawImage(sprite, x, y, null);
 	}
 	
 	public int getID() {

@@ -62,8 +62,6 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 			case KeyEvent.VK_DOWN:
 				down = true;
 				break;
-			case KeyEvent.VK_P:
-				break;
 			case KeyEvent.VK_SPACE:
 				space = true;
 				break;
@@ -85,7 +83,9 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 		switch (ke.getKeyCode()) {
 			case KeyEvent.VK_I:
 				i = false;
-				d.setInvOpen(!d.getInvOpen());
+				if (d.getLoadPerc() == 1.0) {
+					d.setInvOpen(!d.getInvOpen());
+				}
 				break;
 			case KeyEvent.VK_W:
 				w = false;
@@ -101,6 +101,9 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 				break;
 			case KeyEvent.VK_P:
 				d.getPlayer().addItem(new Weapon("Brick Breaker", 1, "BB.png", 20));
+				break;
+			case KeyEvent.VK_C:
+				d.getPlayer().setEWeapon(new Weapon("Brick Breaker", 1, "BB.png", 20));
 				break;
 			case KeyEvent.VK_SPACE:
 				space = false;
@@ -133,23 +136,25 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 				if (!tt.cancel()) {
 					tt = new TimerTask() {
 						public void run() {
-							int newX = mx;
-							int newY = my;
-							
-							if (d.getPlayer().getX() > Display.WIDTH / 4) {
-								newX = (int) ((mx - Display.WIDTH / 4) + d.getPlayer().getX());
+							if (!d.getInvOpen()) {
+								int newX = mx;
+								int newY = my;
+								
+								if (d.getPlayer().getX() > Display.WIDTH / 4) {
+									newX = (int) ((mx - Display.WIDTH / 4) + d.getPlayer().getX());
+								}
+								if (d.getPlayer().getX() > d.getMaxOffsetX() - (Display.WIDTH * (3.0/4.0))) {
+									newX = (mx - Display.WIDTH/4) + (d.getMaxOffsetX() - Display.WIDTH + Display.WIDTH/4);
+								}
+								if (d.getPlayer().getY() > Display.HEIGHT / 4) {
+									newY = (int) ((my - Display.HEIGHT / 4) + d.getPlayer().getY());
+								}
+								if (d.getPlayer().getY() > d.getMaxOffsetY() - Display.HEIGHT*2) {
+									newY = (my - Display.HEIGHT/4) + (d.getMaxOffsetY() - Display.HEIGHT*2 + 60);
+								}
+								
+								d.getPlayer().setVelocity(newX, newY);
 							}
-							if (d.getPlayer().getX() > d.getMaxOffsetX() - (Display.WIDTH * (3.0/4.0))) {
-								newX = (mx - Display.WIDTH/4) + (d.getMaxOffsetX() - Display.WIDTH + Display.WIDTH/4);
-							}
-							if (d.getPlayer().getY() > Display.HEIGHT / 4) {
-								newY = (int) ((my - Display.HEIGHT / 4) + d.getPlayer().getY());
-							}
-							if (d.getPlayer().getY() > d.getMaxOffsetY() - Display.HEIGHT*2) {
-								newY = (my - Display.HEIGHT/4) + (d.getMaxOffsetY() - Display.HEIGHT*2 + 60);
-							}
-							
-							d.getPlayer().setVelocity(newX, newY);
 						}
 					};
 				}

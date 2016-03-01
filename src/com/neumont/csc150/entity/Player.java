@@ -19,10 +19,11 @@ import com.neumont.csc150.Display;
 import com.neumont.csc150.Donutz;
 import com.neumont.csc150.Tile;
 import com.neumont.csc150.item.Item;
+import com.neumont.csc150.item.Weapon;
 
 // TODO: add variables for combat such as a WEAPON class and hp and skill points and what not
 public class Player extends Entity {
-	public static final int MAX_SPEED = 3;
+	public static final int MAX_SPEED = 3, MAX_INVENTORY = 15;
 	private boolean moving = false;
 	private boolean hide = false;
 	private boolean sprinting;
@@ -31,6 +32,7 @@ public class Player extends Entity {
 	private int step;
 	private Timer stepTime;
 	private Vector<Item> items;
+	private Weapon eWeapon;
 
 	public Player(double x, double y) {
 		super(x, y, MAX_SPEED);
@@ -45,16 +47,25 @@ public class Player extends Entity {
 		step = 0;
 		stepTime = new Timer(150, new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				step++;
-				if (step > 3) {
-					step = 0;
+				if (!Donutz.getInstance().getInvOpen()) {
+					step++;
+					if (step > 3) {
+						step = 0;
+					}
 				}
 			}
 		});
 		
-		stepTime.start();
-		
+
 		items = new Vector<Item>();
+		
+		for (int i = 0; i < MAX_INVENTORY; i++) {
+			items.add(null);
+		}
+		
+		eWeapon = null;
+		
+		stepTime.start();
 	
 		sprites = new BufferedImage[8][4];
 	}
@@ -234,8 +245,30 @@ public class Player extends Entity {
 		return items;
 	}
 	
-	public void addItem(Item i) {
-		items.add(i);
+	public void setEWeapon(Weapon w) {
+		eWeapon = w;
+	}
+	
+	public Weapon getEWeapon() {
+		return eWeapon;
+	}
+	
+	public void addItem(Item it) {
+//		for (int i = 0; i < items.size(); i++) {
+//			if (items.get(i).getName().equals("null")) {
+//				items.set(i, it);
+//				return;
+//			}
+//		}
+		
+		for (int i = 0; i < items.size(); i++) {
+			if (items.get(i) == null) {
+				items.set(i, it);
+				return;
+			}
+		}
+		
+		System.out.println("NO FREE SPACES");
 	}
 	
 	/**

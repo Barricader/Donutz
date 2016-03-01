@@ -15,6 +15,9 @@ import java.awt.event.InputEvent;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -165,18 +168,7 @@ public class Display extends Canvas implements Runnable {
 				d.getPlayer().render(g);
 				d.getCurArea().render(g, true);
 				
-				if (d.getInvOpen()) {
-					if (invX > WIDTH/2 - 198) {
-						invX -= 3;
-					}
-					drawInv(g2d);
-				}
-				if (!d.getInvOpen()) {
-					if (invX < WIDTH/2) {
-						invX += 3;
-						drawInv(g2d);
-					}
-				}
+				drawInv(g2d);
 			}
 			else {
 				// If the area is not loaded yet, draw the load screen
@@ -196,17 +188,39 @@ public class Display extends Canvas implements Runnable {
 		g2d.setColor(new Color(140, 140, 140, 200));
 		g2d.fillRect(invX + d.getCamX()/2, HEIGHT/4 - 100 + d.getCamY()/2, 200, 200);
 		
+
+		g2d.setColor(new Color(220, 220, 220, 240));
+		g2d.drawString("Equipped", invX + d.getCamX()/2 + 130, HEIGHT/4 - 100 + d.getCamY()/2 + 15);
+		
+		g2d.setColor(new Color(200, 200, 200, 140));
+		g2d.drawRect(invX + d.getCamX()/2 + 140, HEIGHT/4 - 100 + d.getCamY()/2 + 20, 32, 32);
+		if (d.getPlayer().getEWeapon() != null) { 
+			g2d.drawImage(d.getPlayer().getEWeapon().getSprite(), invX + d.getCamX()/2 + 140, HEIGHT/4 - 100 + d.getCamY()/2 + 20, null);
+		}
+		
 		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 5; j++) {
-				g2d.setColor(new Color(200, 200, 200, 140));
-				//g2d.fillRect(invX + d.getCamX() /2 + j*40 + 4, HEIGHT/4 - 100 + d.getCamY()/2 + i*40 + 4, 32, 32);
-				if (d.getPlayer().getItems().size() > i*5 + j) {
-					// TODO: add cap to inventory on player
-					g2d.drawImage(d.getPlayer().getItems().get(i*5 + j).getSprite(),
+			for (int j = 0; j < 3; j++) {
+				g2d.drawRect(invX + d.getCamX() /2 + j*40 + 4, HEIGHT/4 - 100 + d.getCamY()/2 + i*40 + 4, 32, 32);
+//				if (d.getPlayer().getItems().size() > i*3 + j) {
+//					// TODO: add cap to inventory on player
+//					g2d.drawImage(d.getPlayer().getItems().get(i*3 + j).getSprite(),
+//						invX + d.getCamX() /2 + j*40 + 4, HEIGHT/4 - 100 + d.getCamY()/2 + i*40 + 4, null);
+//				}
+				
+				if (d.getPlayer().getItems().get(i*3 + j) != null) {
+					g2d.drawImage(d.getPlayer().getItems().get(i*3 + j).getSprite(),
 						invX + d.getCamX() /2 + j*40 + 4, HEIGHT/4 - 100 + d.getCamY()/2 + i*40 + 4, null);
 				}
 			}
 		}
+	}
+	
+	public void setInvX(int x) {
+		invX = x;
+	}
+	
+	public int getInvX() {
+		return invX;
 	}
 	
 	public JFrame getFrame() {

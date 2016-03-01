@@ -57,7 +57,6 @@ public class Donutz {
 		inMenu = true;
 		running = true;
 		end = false;
-		//loaded = false;
 		invOpen = false;
 		
 		selector = 0;
@@ -107,8 +106,14 @@ public class Donutz {
 	 **/
 	public void update() {
 		if (!inMenu) {
-			if (!end && loadPerc >= 1.0) {
+			if (!end && loadPerc >= 1.0 && !invOpen) {
+				if (d.getInvX() < Display.WIDTH/2) {
+					d.setInvX(d.getInvX() + 6);
+				}
 				playerUpdate();
+			}
+			else if (!end && loadPerc >= 1.0 && invOpen) {
+				invUpdate();
 			}
 		}
 		else {
@@ -177,6 +182,12 @@ public class Donutz {
 		};
 
 		t.start();
+	}
+	
+	private void invUpdate() {
+		if (d.getInvX() > Display.WIDTH/2 - 194) {
+			d.setInvX(d.getInvX() - 6);
+		}
 	}
 	
 	/**

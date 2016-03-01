@@ -33,6 +33,8 @@ public class Player extends Entity {
 	private Timer stepTime;
 	private Vector<Item> items;
 	private Weapon eWeapon;
+	private int curHP, maxHP;
+	private int minDmg, maxDmg;
 
 	public Player(double x, double y) {
 		super(x, y, MAX_SPEED);
@@ -42,6 +44,11 @@ public class Player extends Entity {
 		destX = x;
 		destY = y;
 		sprinting = false;
+		maxHP = 100;
+		curHP = 100;
+		
+		minDmg = 1;
+		maxDmg = 2;
 
 		// A timer that just animates the player
 		step = 0;
@@ -250,7 +257,12 @@ public class Player extends Entity {
 	}
 	
 	public Weapon getEWeapon() {
-		return eWeapon;
+		if (eWeapon != null) {
+			return eWeapon;
+		}
+		else {
+			return new Weapon("null", -1, "null", 1);
+		}
 	}
 	
 	public void addItem(Item it) {
@@ -298,5 +310,37 @@ public class Player extends Entity {
 	
 	public void setSprinting(boolean s) {
 		sprinting = s;
+	}
+
+	public int getCurHP() {
+		return curHP;
+	}
+
+	public void setCurHP(int curHP) {
+		this.curHP = curHP;
+	}
+
+	public int getMaxHP() {
+		return maxHP;
+	}
+
+	public void setMaxHP(int maxHP) {
+		this.maxHP = maxHP;
+	}
+
+	public int getMinDmg() {
+		return minDmg;
+	}
+
+	public void setMinDmg(int minDmg) {
+		this.minDmg = minDmg;
+	}
+
+	public int getMaxDmg() {
+		return maxDmg;
+	}
+
+	public void setMaxDmg(int maxDmg) {
+		this.maxDmg = maxDmg;
 	}
 }

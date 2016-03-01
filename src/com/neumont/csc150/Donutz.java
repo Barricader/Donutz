@@ -1,6 +1,5 @@
 package com.neumont.csc150;
 
-import java.awt.Rectangle;
 import java.util.Random;
 import java.util.Vector;
 
@@ -12,12 +11,8 @@ public class Donutz {
 	public static String CUR_TIP = "";
 	public static boolean DEBUG = false;
 	private static Donutz instance;
-//	private Vector<Asteroid> ast;
-//	private Vector<Bullet> bul;
-//	private Vector<Particle> par;
 	private Vector<Area> areas;
 	private Area curArea;
-	private Rectangle tempExitRect;
 	private Player p;
 	
 	private int maxOffsetX, maxOffsetY, minOffsetX, minOffsetY;
@@ -50,8 +45,6 @@ public class Donutz {
 		
 		curArea = null;
 		loadPerc = 0.0;
-		
-		tempExitRect = new Rectangle();
 		
 		showGameOver = false;
 		inMenu = true;
@@ -109,6 +102,9 @@ public class Donutz {
 			if (!end && loadPerc >= 1.0 && !invOpen) {
 				if (d.getInvX() < Display.WIDTH/2) {
 					d.setInvX(d.getInvX() + 6);
+				}
+				else if (d.getInvX() != Display.WIDTH/2) {
+					d.setInvX(Display.WIDTH/2);
 				}
 				playerUpdate();
 			}
@@ -185,8 +181,11 @@ public class Donutz {
 	}
 	
 	private void invUpdate() {
-		if (d.getInvX() > Display.WIDTH/2 - 194) {
+		if (d.getInvX() > Display.WIDTH/2 - 198) {
 			d.setInvX(d.getInvX() - 6);
+		}
+		else if (d.getInvX() != Display.WIDTH/2 - 198) {
+			d.setInvX(Display.WIDTH/2 - 198);
 		}
 	}
 	

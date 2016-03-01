@@ -129,37 +129,42 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	 */
 	public void mousePressed(MouseEvent e) {
 		Point temp = new Point(e.getX()/2, e.getY()/2);
-		if (!d.getPlayer().getRect().contains(temp)) {
-			if (e.getButton() == MouseEvent.BUTTON1) {
-				mPressed = true;
-				t = new Timer();
-				if (!tt.cancel()) {
-					tt = new TimerTask() {
-						public void run() {
-							if (!d.getInvOpen()) {
-								int newX = mx;
-								int newY = my;
-								
-								if (d.getPlayer().getX() > Display.WIDTH / 4) {
-									newX = (int) ((mx - Display.WIDTH / 4) + d.getPlayer().getX());
+		if (!d.getInvOpen()) {
+			if (!d.getPlayer().getRect().contains(temp)) {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					mPressed = true;
+					t = new Timer();
+					if (!tt.cancel()) {
+						tt = new TimerTask() {
+							public void run() {
+								if (!d.getInvOpen()) {
+									int newX = mx;
+									int newY = my;
+									
+									if (d.getPlayer().getX() > Display.WIDTH / 4) {
+										newX = (int) ((mx - Display.WIDTH / 4) + d.getPlayer().getX());
+									}
+									if (d.getPlayer().getX() > d.getMaxOffsetX() - (Display.WIDTH * (3.0/4.0))) {
+										newX = (mx - Display.WIDTH/4) + (d.getMaxOffsetX() - Display.WIDTH + Display.WIDTH/4);
+									}
+									if (d.getPlayer().getY() > Display.HEIGHT / 4) {
+										newY = (int) ((my - Display.HEIGHT / 4) + d.getPlayer().getY());
+									}
+									if (d.getPlayer().getY() > d.getMaxOffsetY() - Display.HEIGHT*2) {
+										newY = (my - Display.HEIGHT/4) + (d.getMaxOffsetY() - Display.HEIGHT*2 + 60);
+									}
+									
+									d.getPlayer().setVelocity(newX, newY);
 								}
-								if (d.getPlayer().getX() > d.getMaxOffsetX() - (Display.WIDTH * (3.0/4.0))) {
-									newX = (mx - Display.WIDTH/4) + (d.getMaxOffsetX() - Display.WIDTH + Display.WIDTH/4);
-								}
-								if (d.getPlayer().getY() > Display.HEIGHT / 4) {
-									newY = (int) ((my - Display.HEIGHT / 4) + d.getPlayer().getY());
-								}
-								if (d.getPlayer().getY() > d.getMaxOffsetY() - Display.HEIGHT*2) {
-									newY = (my - Display.HEIGHT/4) + (d.getMaxOffsetY() - Display.HEIGHT*2 + 60);
-								}
-								
-								d.getPlayer().setVelocity(newX, newY);
 							}
-						}
-					};
+						};
+					}
+					t.scheduleAtFixedRate(tt, 0, 100);
 				}
-				t.scheduleAtFixedRate(tt, 0, 100);
 			}
+		}
+		else {
+			// Insert drag and drop stuff here
 		}
 	}
 

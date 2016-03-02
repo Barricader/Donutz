@@ -22,7 +22,6 @@ public class AudioPlayer {
 	        
 	        clip.addLineListener(new LineListener() {
 				public void update(LineEvent event) {
-					event.getType();
 					if (event.getType() == Type.STOP && playing) {
 						play();
 					}

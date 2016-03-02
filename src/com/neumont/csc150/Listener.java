@@ -135,7 +135,6 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 						d.getForest1().stop();
 						d.getForest2();
 						d.getForest2().play();
-						System.out.println("Song");
 					}
 				}
 				break;

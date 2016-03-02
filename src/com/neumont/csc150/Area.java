@@ -141,7 +141,6 @@ public class Area {
 			for (int k = 0; k < tileLayers.size(); k++) {
 				Vector<Tile> temp = new Vector<Tile>();
 				index = 0;
-				//System.out.println("Loading layer " + k + "...");
 				for (int i = 0; i < heights.get(k); i++) {
 					for (int j = 0; j < widths.get(k); j++) {
 						int tempID = Integer.parseInt(finalData.get(k)[index].toString());
@@ -183,8 +182,6 @@ public class Area {
 				}
 				tiles.add(temp);
 			}
-
-			System.out.println("Loading: " + path + " successful");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

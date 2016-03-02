@@ -129,6 +129,15 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 				break;
 			case KeyEvent.VK_ENTER:
 				enter = false;
+				if(d.getPlayer().getX() >= 288 && d.getPlayer().getX() <= 320 && d.getPlayer().getY() >= 1850 && d.getPlayer().getY() >= 1865){
+					if(d.isInForest1() == true){
+						d.setInForest1(false);
+						d.getForest1().stop();
+						d.getForest2();
+						d.getForest2().play();
+						System.out.println("Song");
+					}
+				}
 				break;
 			case KeyEvent.VK_SHIFT:
 				d.getPlayer().setSprinting(false);

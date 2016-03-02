@@ -3,6 +3,7 @@ package com.neumont.csc150;
 import java.util.Random;
 import java.util.Vector;
 
+import com.neumont.csc150.audio.AudioPlayer;
 import com.neumont.csc150.entity.Player;
 
 public class Donutz {
@@ -22,7 +23,7 @@ public class Donutz {
 
 	boolean showGameOver;
 	private boolean end;
-	private boolean inMenu;
+	private boolean inMenu, inTown, inForest1, inForest2;
 	private boolean running;
 	//private boolean loaded;
 	private boolean invOpen;
@@ -33,6 +34,8 @@ public class Donutz {
 	private Random r;
 	
 	private Display d;
+	
+	private AudioPlayer ap, town = new AudioPlayer("Town.wav"), forest1 = new AudioPlayer("Forest1.wav");;
 	
 	public Donutz() {
 		this(null);
@@ -163,12 +166,38 @@ public class Donutz {
 				else if (path.equals("LostHaven.json") && areas.size() > 1) {
 					p.setX(maxOffsetX - Display.WIDTH/2 - 80);
 					p.setY(940);
+					inTown = true;
+					inForest1 = false;
 				}
 				else if (path.equals("Eternal_Forest.json")) {
 					p.setX(80);
 					p.setY(850);
+					inTown = false;
+					inForest1 = true;
 				}
-
+				
+				//Plays Song for current area
+				if (path.equals("LostHaven.json")){
+					if(inTown = true){
+						town.play();
+					}
+				}
+				else{
+					if(inTown == false){
+						town.stop();
+					}
+				}
+				if(path.equals("Eternal_Forest.json")){
+					if(inForest1 = true){
+						forest1.play();
+					}
+				}
+				else{
+					if(inForest1 == false){
+						forest1.stop();
+					}
+				}
+				
 				try {
 					this.join();
 				} catch (InterruptedException e) {
@@ -263,6 +292,12 @@ public class Donutz {
 		else if(selector == 2){
 			running = false;
 		}
+	}
+	/**
+	 * Sets ap to String s (in other words, to a song)
+	 * */
+	public void playSong(String s){
+		setAp(new AudioPlayer(s));
 	}
 	
 	public void requestTP(String location) {
@@ -432,5 +467,13 @@ public class Donutz {
 	
 	public static Donutz getInstance() {
 		return instance;
+	}
+
+	public AudioPlayer getAp() {
+		return ap;
+	}
+
+	public void setAp(AudioPlayer ap) {
+		this.ap = ap;
 	}
 }

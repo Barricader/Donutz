@@ -25,6 +25,8 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
+import com.neumont.csc150.audio.AudioPlayer;
+
 /**
  * The view of the user
  * @author JoJones
@@ -112,6 +114,16 @@ public class Display extends Canvas implements Runnable {
 	 * @throws IOException 
 	 **/
 	public void render() {
+		if(d.isInMenu() == true){
+			if(d.getAp() == null){
+				d.playSong("Menu.wav");
+				d.getAp().play();
+			}
+		}
+		else{
+			d.getAp().stop();
+			d.getAp().close();
+		}
 		// Create a triple buffering strategy to create very smooth animations and movements
 		BufferStrategy bs = getBufferStrategy();
 		if (bs == null) {

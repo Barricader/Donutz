@@ -54,7 +54,7 @@ public class Display extends Canvas implements Runnable {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
 		setPreferredSize(size);
 		frame = new JFrame();
-		frame.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon("DonutCursor.png").getImage(),new Point(0,0),"custom cursor"));
+		frame.setCursor(Toolkit.getDefaultToolkit().createCustomCursor(new ImageIcon("DonutCursor.png").getImage(),new Point(16,16),"custom cursor"));
 		
 		d = new Donutz(this);
 		

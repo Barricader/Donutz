@@ -181,6 +181,10 @@ public class Display extends Canvas implements Runnable {
 				d.getCurArea().render(g, true);
 				
 				drawInv(g2d);
+				
+				if (d.getSelected() != null) {
+					g2d.drawImage(d.getSelected().getSprite(), l.getMx()+d.getCamX()/2 - d.getSelected().getSprite().getWidth()/2, l.getMy()+d.getCamY()/2- d.getSelected().getSprite().getHeight()/2, null);
+				}
 			}
 			else {
 				// If the area is not loaded yet, draw the load screen

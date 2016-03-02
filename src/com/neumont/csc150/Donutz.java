@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import com.neumont.csc150.audio.AudioPlayer;
 import com.neumont.csc150.entity.Player;
+import com.neumont.csc150.item.Item;
 
 public class Donutz {
 	public static final String DEFAULT_FILE = "save.json";
@@ -15,6 +16,8 @@ public class Donutz {
 	private Vector<Area> areas;
 	private Area curArea;
 	private Player p;
+	private Item selected;
+	private int lastSelected;
 	
 	private int maxOffsetX, maxOffsetY, minOffsetX, minOffsetY;
 	private int camX, camY;
@@ -25,7 +28,6 @@ public class Donutz {
 	private boolean end;
 	private boolean inMenu, inTown, inForest1, inForest2;
 	private boolean running;
-	//private boolean loaded;
 	private boolean invOpen;
 	
 	private int selector;
@@ -35,7 +37,7 @@ public class Donutz {
 	
 	private Display d;
 	
-	private AudioPlayer ap, town = new AudioPlayer("Town.wav"), forest1 = new AudioPlayer("Forest1.wav");;
+	private AudioPlayer ap, town = new AudioPlayer("Town.wav"), forest1 = new AudioPlayer("Forest2.wav");;
 	
 	public Donutz() {
 		this(null);
@@ -45,6 +47,8 @@ public class Donutz {
 		r = new Random();
 		
 		areas = new Vector<Area>();
+		selected = null;
+		lastSelected = -1;
 		
 		curArea = null;
 		loadPerc = 0.0;
@@ -475,5 +479,25 @@ public class Donutz {
 
 	public void setAp(AudioPlayer ap) {
 		this.ap = ap;
+	}
+	
+	public Display getDisplay() {
+		return d;
+	}
+	
+	public Item getSelected() {
+		return selected;
+	}
+	
+	public void setSelected(Item item) {
+		selected = item;
+	}
+
+	public int getLastSelected() {
+		return lastSelected;
+	}
+
+	public void setLastSelected(int lastSelected) {
+		this.lastSelected = lastSelected;
 	}
 }

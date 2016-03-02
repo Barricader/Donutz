@@ -1,6 +1,7 @@
 package com.neumont.csc150;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -85,6 +86,21 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 				i = false;
 				if (d.getLoadPerc() == 1.0) {
 					d.setInvOpen(!d.getInvOpen());
+					
+					if (!d.getInvOpen()) {
+						if (d.getLastSelected() != -1) {
+							if (d.getLastSelected() != 100) {
+								d.getPlayer().getItems().set(d.getLastSelected(), d.getSelected());
+								d.setSelected(null);
+							}
+							else {
+								d.getPlayer().setEWeapon((Weapon) d.getSelected());
+								d.setSelected(null);
+							}
+							
+							d.setLastSelected(-1);
+						}
+					}
 				}
 				break;
 			case KeyEvent.VK_W:
@@ -164,7 +180,39 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 			}
 		}
 		else {
-			// Insert drag and drop stuff here
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				for (int i = 0; i < d.getPlayer().getItems().size(); i++) {
+					Rectangle itemBox = new Rectangle(d.getDisplay().getInvX() + (i%3*40) + 4, Display.HEIGHT/4 - 100 + i/3*40 + 4, 32, 32);			
+					if (itemBox.contains(temp)) {
+						if (d.getSelected() == null && d.getPlayer().getItems().get(i) != null) {
+							d.setSelected(d.getPlayer().getItems().get(i));
+							d.getPlayer().getItems().set(i, null);
+							d.setLastSelected(i);
+						}
+						else if (d.getSelected() != null && d.getPlayer().getItems().get(i) == null) {
+							d.getPlayer().getItems().set(i, d.getSelected());
+							d.setSelected(null);
+							d.setLastSelected(-1);
+						}
+					}
+				}
+				
+				Rectangle equipBox = new Rectangle(d.getDisplay().getInvX() + 140, Display.HEIGHT/4 - 100 + 25, 32, 32);			
+				if (equipBox.contains(temp)) {
+					if (d.getSelected() == null && !d.getPlayer().getEWeapon().getName().equals("null")) {
+						d.setSelected(d.getPlayer().getEWeapon());
+						d.getPlayer().setEWeapon(null);
+						d.setLastSelected(100);
+					}
+					else if (d.getSelected() != null && d.getPlayer().getEWeapon().getName().equals("null")) {
+						if (d.getSelected().getClass().getSimpleName().equals("Weapon")) {
+							d.getPlayer().setEWeapon((Weapon) d.getSelected());
+							d.setSelected(null);
+							d.setLastSelected(-1);
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -206,5 +254,13 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	
 	public boolean isMPressed() {
 		return mPressed;
+	}
+	
+	public int getMx() {
+		return mx;
+	}
+	
+	public int getMy() {
+		return my;
 	}
 }

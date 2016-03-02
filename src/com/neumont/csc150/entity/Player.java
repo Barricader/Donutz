@@ -266,13 +266,6 @@ public class Player extends Entity {
 	}
 	
 	public void addItem(Item it) {
-//		for (int i = 0; i < items.size(); i++) {
-//			if (items.get(i).getName().equals("null")) {
-//				items.set(i, it);
-//				return;
-//			}
-//		}
-		
 		for (int i = 0; i < items.size(); i++) {
 			if (items.get(i) == null) {
 				items.set(i, it);

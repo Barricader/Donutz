@@ -23,7 +23,8 @@ public class Donutz {
 
 	boolean showGameOver;
 	private boolean end;
-	private boolean inMenu, inTown, inForest1, inForest2;
+	private boolean inMenu, inTown, inForest1;
+	
 	private boolean running;
 	//private boolean loaded;
 	private boolean invOpen;
@@ -35,8 +36,9 @@ public class Donutz {
 	
 	private Display d;
 	
-	private AudioPlayer ap, town = new AudioPlayer("Town.wav"), forest1 = new AudioPlayer("Forest1.wav");;
+	private AudioPlayer ap, town = new AudioPlayer("Town.wav"), forest1 = new AudioPlayer("Forest1.wav"), forest2 = new AudioPlayer("Forest2.wav");
 	
+
 	public Donutz() {
 		this(null);
 	}
@@ -179,6 +181,7 @@ public class Donutz {
 				//Plays Song for current area
 				if (path.equals("LostHaven.json")){
 					if(inTown = true){
+						forest2.stop();
 						town.play();
 					}
 				}
@@ -189,6 +192,7 @@ public class Donutz {
 				}
 				if(path.equals("Eternal_Forest.json")){
 					if(inForest1 = true){
+						forest2.stop();
 						forest1.play();
 					}
 				}
@@ -391,6 +395,14 @@ public class Donutz {
 		return inMenu;
 	}
 	
+	public boolean isInForest1() {
+		return inForest1;
+	}
+
+	public void setInForest1(boolean inForest1) {
+		this.inForest1 = inForest1;
+	}
+	
 	public void checkpoint() {
 		//end = false;
 		//save();
@@ -475,5 +487,21 @@ public class Donutz {
 
 	public void setAp(AudioPlayer ap) {
 		this.ap = ap;
+	}
+
+	public AudioPlayer getForest2() {
+		return forest2;
+	}
+
+	public void setForest2(AudioPlayer forest2) {
+		this.forest2 = forest2;
+	}
+	
+	public AudioPlayer getForest1() {
+		return forest1;
+	}
+
+	public void setForest1(AudioPlayer forest1) {
+		this.forest1 = forest1;
 	}
 }

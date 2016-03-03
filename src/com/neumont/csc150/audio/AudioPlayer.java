@@ -41,7 +41,7 @@ public class AudioPlayer {
 		}
 		stop();
 		clip.start();
-		
+		clip.loop(1000);
 		playing = true;
 	}
 

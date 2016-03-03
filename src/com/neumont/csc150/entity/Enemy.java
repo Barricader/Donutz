@@ -11,7 +11,8 @@ import javax.imageio.ImageIO;
 
 public class Enemy extends Entity {
 
-	private double health;
+	private int maxHealth;
+	private int curHealth;
 	private int maxDam;
 	private EnemyType type;
 	protected BufferedImage[][] sprites;
@@ -23,13 +24,14 @@ public class Enemy extends Entity {
 		super.dead = false;
 	}
 
-	public Enemy(double x, double y, double speed, double health, EnemyType type, int dam) {
+	public Enemy(double x, double y, double speed, int health, EnemyType type, int dam) {
 		super(x, y, speed);
 		super.collides = false;
 		super.dead = false;
 		w = 32;
 		h = 32;
-		this.health = health;
+		this.maxHealth = health;
+		this.curHealth = health;
 		this.type = type;
 		this.maxDam = dam;
 	}
@@ -127,12 +129,20 @@ public class Enemy extends Entity {
 		return r;
 	}
 
-	public double getHealth() {
-		return health;
+	public int getMaxHealth() {
+		return maxHealth;
 	}
 
-	public void setHealth(double health) {
-		this.health = health;
+	public void setMaxHealth(int mHealth) {
+		this.maxHealth = mHealth;
+	}
+	
+	public int getCurHealth() {
+		return curHealth;
+	}
+
+	public void setCurHealth(int cHealth) {
+		this.curHealth = cHealth;
 	}
 
 	public EnemyType getType() {

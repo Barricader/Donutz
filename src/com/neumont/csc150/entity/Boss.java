@@ -13,7 +13,7 @@ public class Boss extends Enemy {
 		super(x,y,speed);
 	}
 
-	public Boss(double x, double y, double speed, double health, EnemyType type, int dam) {
+	public Boss(double x, double y, double speed, int health, EnemyType type, int dam) {
 		super(x, y, speed, health, type, dam);
 		super.dead = false;
 		super.collides = false;

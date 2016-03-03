@@ -136,6 +136,7 @@
          "above":false,
          "collidable":false,
          "teleport":true,
+         "location":"LostHaven",
          "width":60,
          "x":0,
          "y":0
@@ -150,6 +151,7 @@
          "above":false,
          "collidable":false,
          "teleport":true,
+         "location":"Eternal_Forest",
          "width":60,
          "x":0,
          "y":0

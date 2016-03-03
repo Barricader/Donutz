@@ -66,7 +66,6 @@ public class Enemy extends Entity {
 		}
 	}
 	
-	
 	public boolean collide(Entity e){
 		Rectangle r = new Rectangle((int)this.x,(int)this.y,this.w,this.h);
 		Rectangle r2 = new Rectangle((int)e.getX(),(int)e.getY(),e.getWidth(),e.getHeight());

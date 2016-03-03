@@ -124,6 +124,7 @@ public class Display extends Canvas implements Runnable {
 			d.getAp().stop();
 			d.getAp().close();
 		}
+		
 		// Create a triple buffering strategy to create very smooth animations and movements
 		BufferStrategy bs = getBufferStrategy();
 		if (bs == null) {

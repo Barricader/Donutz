@@ -26,20 +26,22 @@ public class Donutz {
 
 	boolean showGameOver;
 	private boolean end;
-	private boolean inMenu, inTown, inForest1;
+	private boolean inMenu, inCombat = false, inTown, inForest1, inCave;
 	
 	private boolean running;
 	private boolean invOpen;
 	
 	private int selector;
 	private int menuDelay;
+	private int combatCounter;
 	
 	private Random r;
 	
 	private Display d;
 	
 
-	private AudioPlayer ap, town = new AudioPlayer("Town.wav"), forest1 = new AudioPlayer("Forest1.wav"), forest2 = new AudioPlayer("Forest2.wav");
+	private AudioPlayer ap, town = new AudioPlayer("Town.wav"), forest1 = new AudioPlayer("Forest1.wav"), forest2 = new AudioPlayer("Forest2.wav"),
+			battle = new AudioPlayer("Battle.wav"), cave = new AudioPlayer("Cave.wav");
 	
 	public Donutz() {
 		this(null);
@@ -116,6 +118,10 @@ public class Donutz {
 					d.setInvX(Display.WIDTH/2);
 				}
 				playerUpdate();
+				if(combatCounter >= 600){
+					combatCounter = 0;
+					setInCombat(true);
+				}
 			}
 			else if (!end && loadPerc >= 1.0 && invOpen) {
 				invUpdate();
@@ -123,6 +129,9 @@ public class Donutz {
 		}
 		else {
 			menuUpdate();
+		}
+		if(inCombat == true){
+			combatUpdate();
 		}
 	}
 	
@@ -257,6 +266,7 @@ public class Donutz {
 				end = true;
 			}
 		}
+		combatCounter += 1;
 	}
 	
 	/**
@@ -301,11 +311,62 @@ public class Donutz {
 			running = false;
 		}
 	}
+	
+	/**
+	 * Update the combat menu
+	 */
+	private void combatUpdate() {
+		if ((d.getListener().s || d.getListener().down) && menuDelay <= 0) {
+			selector++;
+			menuDelay = 20;
+		}
+		else if ((d.getListener().w || d.getListener().up) && menuDelay <= 0) {
+			selector--;
+			menuDelay = 20;
+		}
+		
+		if (d.getListener().enter) {
+			chooseAction();
+		}
+		if (menuDelay > 0) {
+			menuDelay--;
+		}
+		if(selector >= 3){
+			selector = 0;
+		}
+		else if(selector <= -1){
+			selector = 2;
+		}
+	}
+	
+	public void chooseAction(){
+		// Attack
+		if (selector == 0) {
+			
+		}
+		// Item
+		else if(selector == 1){
+			
+		}
+		//	Run
+		else if(selector == 2){
+			
+		}
+	}
 	/**
 	 * Sets ap to String s (in other words, to a song)
 	 * */
 	public void playSong(String s){
 		setAp(new AudioPlayer(s));
+	}
+	
+	public void battleSong(){
+		if(inCombat == true){
+			battle.play();
+		}
+		else{
+			battle.stop();
+		}
 	}
 	
 	public void requestTP(String location) {
@@ -527,5 +588,21 @@ public class Donutz {
 
 	public void setForest1(AudioPlayer forest1) {
 		this.forest1 = forest1;
+	}
+
+	public boolean isInCombat() {
+		return inCombat;
+	}
+
+	public void setInCombat(boolean inCombat) {
+		this.inCombat = inCombat;
+	}
+
+	public AudioPlayer getCave() {
+		return cave;
+	}
+
+	public void setCave(AudioPlayer cave) {
+		this.cave = cave;
 	}
 }

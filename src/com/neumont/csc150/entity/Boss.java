@@ -8,8 +8,8 @@ public class Boss extends Enemy {
 		super(x,y,speed);
 	}
 
-	public Boss(double x, double y, double speed, int health, EnemyType type, int dam) {
-		super(x, y, speed, health, type, dam);
+	public Boss(double x, double y, double speed, int health, EnemyType type, int maxDam,int minDam) {
+		super(x, y, speed, health, type, maxDam,minDam);
 		super.dead = false;
 		super.collides = false;
 		w = 32;
@@ -24,16 +24,18 @@ public class Boss extends Enemy {
 	}
 
 	public int attack() {
-		int damage = r.nextInt(getMaxDam()) + 1;
+		int damage = r.nextInt(getMaxDam()) + getMinDam();
 		return damage;
 	}
 
 	public int specialAttack() {
 		// Increases the boss' maxDamage when health gets to a certain level
 		// *Still time to decide effect
-		int attack = getMaxDam() + 20;
-		setMaxDam(attack);
-		return r.nextInt(getMaxDam()) + 1;
+		int maxAttack = getMaxDam() + 20;
+		int minAttack = getMinDam() + 10;
+		setMaxDam(maxAttack);
+		setMinDam(minAttack);
+		return r.nextInt(getMaxDam()) + getMinDam();
 	}
 
 	public void specialDefense() {

@@ -13,7 +13,7 @@ public class Enemy extends Entity {
 
 	private int maxHealth;
 	private int curHealth;
-	private int maxDam;
+	private int minDam,maxDam;
 	private EnemyType type;
 	protected BufferedImage[][] sprites;
 	protected Random r;
@@ -24,7 +24,7 @@ public class Enemy extends Entity {
 		super.dead = false;
 	}
 
-	public Enemy(double x, double y, double speed, int health, EnemyType type, int dam) {
+	public Enemy(double x, double y, double speed, int health, EnemyType type, int maxDam,int minDam) {
 		super(x, y, speed);
 		super.collides = false;
 		super.dead = false;
@@ -33,7 +33,8 @@ public class Enemy extends Entity {
 		this.maxHealth = health;
 		this.curHealth = health;
 		this.type = type;
-		this.maxDam = dam;
+		this.maxDam = maxDam;
+		this.minDam = minDam;
 	}
 
 	@Override
@@ -105,7 +106,7 @@ public class Enemy extends Entity {
 	}
 
 	public int attack() {
-		int damage = r.nextInt(getMaxDam()) + 1;
+		int damage = r.nextInt(getMaxDam()) + getMinDam();
 		return damage;
 	}
 	
@@ -113,10 +114,10 @@ public class Enemy extends Entity {
 		int attack = getMaxDam() + 5;
 		if(this.type == EnemyType.HEAVY){
 		attack = getMaxDam() + 10;
-		return r.nextInt(attack) + 1;
+		return r.nextInt(attack) + getMinDam();
 		}
 		else
-			return r.nextInt(attack) + 1;
+			return r.nextInt(attack) + getMinDam();
 	}
 
 	public double dodge() {
@@ -159,6 +160,14 @@ public class Enemy extends Entity {
 
 	public void setMaxDam(int maxDam) {
 		this.maxDam = maxDam;
+	}
+	
+	public int getMinDam() {
+		return minDam;
+	}
+
+	public void setMinDam(int minDam) {
+		this.minDam = minDam;
 	}
 	
 }

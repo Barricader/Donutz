@@ -26,12 +26,16 @@ public class Combat {
 		do{
 			if(choice == true){
 			//player attacks
-			e.attack();
+			//recieveDam(2, p.a);
+			//enemy attacks
+			recieveDam(1, e.attack());
 			checkIsDead(p, e);
 			}
 			else{
-				e.attack();
+				//enemy attacks
+				recieveDam(1, e.attack());				
 				//player attacks
+				//recieveDam(2, p.a);
 				checkIsDead(p, e);
 			}
 		}while(p.isDead() == false && e.isDead() == false);
@@ -58,4 +62,19 @@ public class Combat {
 			return false;
 		}
 	}
+	
+	public int recieveDam(int id,int damage){
+		switch(id){
+		case 1:
+		int change = p.getCurHP() - damage;
+		p.setCurHP(change);
+		return p.getCurHP();
+		case 2:
+			int change1 = e.getCurHealth() - damage;
+			e.setCurHealth(change1);
+			return e.getCurHealth();
+		}
+		return 0;
+	}
+
 }

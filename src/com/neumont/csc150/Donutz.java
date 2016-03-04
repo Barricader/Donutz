@@ -222,8 +222,8 @@ public class Donutz {
 				else if (path.equals("Doom_Cavern.json") && curIndex == 1) {
 					p.setX(340);
 					p.setY(280);
-					inTown = false;
-					inForest1 = true;
+					inForest1 = false;
+					inCave = true;
 				}
 				
 				//Plays Song for current area
@@ -248,6 +248,18 @@ public class Donutz {
 				else {
 					if (inForest1 == false) {
 						forest1.stop();
+					}
+				}
+				
+				if (path.equals("Doom_Cavern.json")) {
+					if (inCave = true) {
+						forest1.stop();
+						cave.play();
+					}
+				}
+				else {
+					if (inCave == false) {
+						cave.stop();
 					}
 				}
 				

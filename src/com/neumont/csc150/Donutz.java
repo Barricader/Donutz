@@ -243,6 +243,7 @@ public class Donutz {
 					if (inForest1 = true) {
 						forest2.stop();
 						forest1.play();
+						cave.stop();
 					}
 				}
 				else {

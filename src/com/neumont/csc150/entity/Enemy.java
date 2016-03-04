@@ -103,12 +103,12 @@ public class Enemy extends Entity {
 			e.printStackTrace();
 		}
 	}
-
+//	Attack method--------------------------------------------
 	public int attack() {
 		int damage = r.nextInt(getMaxDam()) + 1;
 		return damage;
 	}
-	
+//	Special Attack method------------------------------------
 	public int specialAttack(){
 		int attack = getMaxDam() + 5;
 		if(this.type == EnemyType.HEAVY){
@@ -118,7 +118,7 @@ public class Enemy extends Entity {
 		else
 			return r.nextInt(attack) + 1;
 	}
-
+//	Dodge Method---------------------------------------------
 	public double dodge() {
 		double dodge = getSpeed()/100;
 		return dodge;

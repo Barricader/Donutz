@@ -26,8 +26,8 @@ public class Combat {
 		do{
 			if(choice == true){
 			//player attacks
-			e.attack();
-			checkIsDead(p, e);
+				p.attack();
+				checkIsDead(p, e);
 			}
 			else{
 				e.attack();

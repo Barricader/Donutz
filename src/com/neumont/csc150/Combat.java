@@ -27,15 +27,13 @@ public class Combat {
 			if(choice == true){
 			//player attacks
 			//recieveDam(2, p.a);
-			//enemy attacks
-				p.attack();
+				recieveDam(2, p.attack());
 				checkIsDead(p, e);
 			}
 			else{
 				//enemy attacks
-				recieveDam(1, e.attack());				
-				//player attacks
 				//recieveDam(2, p.a);
+				recieveDam(1, e.attack());
 				checkIsDead(p, e);
 			}
 		}while(p.isDead() == false && e.isDead() == false);

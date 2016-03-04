@@ -177,7 +177,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 					if (e.getButton() == MouseEvent.BUTTON1) {
 						mPressed = true;
 						t = new Timer();
-						if (!tt.cancel()) {
+						if (!tt.cancel() || tt.cancel()) {
 							tt = new TimerTask() {
 								public void run() {
 									if (!d.getInvOpen()) {
@@ -202,6 +202,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 								}
 							};
 						}
+						
 						t.scheduleAtFixedRate(tt, 0, 100);
 					}
 				}
@@ -246,7 +247,8 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 						d.getPlayer().setDy(0);
 						d.getPlayer().setCollides(false);
 					}
-					if (!tt.cancel()) {
+					if (tt.cancel()) {
+						t.cancel();
 					}
 				}
 				else {

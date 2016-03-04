@@ -177,26 +177,28 @@ public class Display extends Canvas implements Runnable {
 			g.fillPolygon(p);
 		}
 		else {
-			if (d.getCurArea() != null && d.getLoadPerc() >= 1.0) {
-				d.getCurArea().render(g, false);
-				drawChests(g);
-				d.getPlayer().render(g);
-				d.getCurArea().render(g, true);
-				
-				drawChestInv(g, d.getAreas().indexOf(d.getCurArea()), d.getCurChestInv());
-				drawInv(g2d);
-				
-				if (d.getSelected() != null) {
-					g2d.drawImage(d.getSelected().getSprite(), l.getMx()+d.getCamX()/2 - d.getSelected().getSprite().getWidth()/2, l.getMy()+d.getCamY()/2- d.getSelected().getSprite().getHeight()/2, null);
+			if (d.getLoadPerc() >= 1.0) {
+				if (d.getCurArea() != null) {
+					d.getCurArea().render(g, false);
+					drawChests(g);
+					d.getPlayer().render(g);
+					d.getCurArea().render(g, true);
+					
+					drawChestInv(g, d.getAreas().indexOf(d.getCurArea()), d.getCurChestInv());
+					drawInv(g2d);
+					
+					if (d.getSelected() != null) {
+						g2d.drawImage(d.getSelected().getSprite(), l.getMx()+d.getCamX()/2 - d.getSelected().getSprite().getWidth()/2, l.getMy()+d.getCamY()/2- d.getSelected().getSprite().getHeight()/2, null);
+					}
 				}
 			}
 			else {
 				// If the area is not loaded yet, draw the load screen
-				g.drawImage(loadImage, 0, 0, null);
+				g.drawImage(loadImage, d.getCamX()/2, d.getCamY()/2, null);
 				g.setColor(Color.WHITE);
-				g.drawString("Pro tip: " + Donutz.CUR_TIP, (int)(WIDTH/4-(Donutz.CUR_TIP.length() * 4.75)), HEIGHT / 3 - 20);
-				g.drawString("Loading: " + df.format(d.getLoadPerc()), WIDTH / 4 - 40, HEIGHT / 4 - 10);
-				g.drawArc(WIDTH/4-10, HEIGHT/4-70, 20, 20, loadAngle, 60);
+				g.drawString("Pro tip: " + Donutz.CUR_TIP, d.getCamX()/2 + (int)(WIDTH/4-(Donutz.CUR_TIP.length() * 4.75)), d.getCamY()/2 + HEIGHT / 3 - 20);
+				g.drawString("Loading: " + df.format(d.getLoadPerc()), d.getCamX()/2 + WIDTH / 4 - 40, d.getCamY()/2 + HEIGHT / 4 - 10);
+				g.drawArc(d.getCamX()/2 + WIDTH/4-10, d.getCamY()/2 + HEIGHT/4-70, 20, 20, loadAngle, 60);
 				loadAngle++;
 			}
 		}

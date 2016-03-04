@@ -229,6 +229,7 @@ public class Donutz {
 				//Plays Song for current area
 				if (path.equals("LostHaven.json")) {
 					if (inTown = true) {
+						forest1.stop();
 						forest2.stop();
 						town.play();
 					}
@@ -255,6 +256,7 @@ public class Donutz {
 				if (path.equals("Doom_Cavern.json")) {
 					if (inCave = true) {
 						forest1.stop();
+						forest2.stop();
 						cave.play();
 					}
 				}

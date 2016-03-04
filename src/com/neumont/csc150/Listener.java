@@ -176,6 +176,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 				if (!d.getPlayer().getRect().contains(temp)) {
 					if (e.getButton() == MouseEvent.BUTTON1) {
 						mPressed = true;
+						t.cancel();
 						t = new Timer();
 						if (!tt.cancel() || tt.cancel()) {
 							tt = new TimerTask() {

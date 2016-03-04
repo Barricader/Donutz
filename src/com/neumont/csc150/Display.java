@@ -20,12 +20,14 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 import com.neumont.csc150.audio.AudioPlayer;
+import com.neumont.csc150.entity.Chest;
 
 /**
  * The view of the user
@@ -51,6 +53,7 @@ public class Display extends Canvas implements Runnable {
 	private BufferedImage dmgImage;
 
 	private int invX;
+	private int chestInvX;
 
 	public Display() {
 		Dimension size = new Dimension(WIDTH, HEIGHT);
@@ -67,6 +70,7 @@ public class Display extends Canvas implements Runnable {
 		addMouseMotionListener(l);
 		
 		invX = WIDTH/2;
+		chestInvX = -150;
 		
 		// Used for loading screen to show percent loaded
 		df = new DecimalFormat("##.#%");
@@ -177,9 +181,11 @@ public class Display extends Canvas implements Runnable {
 		else {
 			if (d.getCurArea() != null && d.getLoadPerc() >= 1.0) {
 				d.getCurArea().render(g, false);
+				drawChests(g);
 				d.getPlayer().render(g);
 				d.getCurArea().render(g, true);
 				
+				drawChestInv(g, d.getAreas().indexOf(d.getCurArea()), d.getCurChestInv());
 				drawInv(g2d);
 				
 				if (d.getSelected() != null) {
@@ -198,6 +204,40 @@ public class Display extends Canvas implements Runnable {
 		}
 		g.dispose();
 		bs.show();
+	}
+	
+	private void drawChests(Graphics g) {
+		Vector<Chest> tempChests = d.getChests().get(d.getAreas().indexOf(d.getCurArea()));
+		for (int i = 0; i < tempChests.size(); i++) {
+			tempChests.get(i).render(g);
+		}
+	}
+	
+	private void drawChestInv(Graphics g2d, int mapIndex, int chestIndex) {
+		//if (chestIndex != -1) {
+			g2d.setFont(new Font("LucidaConsole", Font.PLAIN, 16));
+			g2d.setColor(new Color(140, 140, 140, 200));
+			g2d.fillRect(chestInvX + d.getCamX()/2, HEIGHT/4 - 50 + d.getCamY()/2, 120, 100);
+			
+	
+			g2d.setColor(new Color(220, 220, 220, 240));
+			g2d.drawString("Chest", chestInvX + d.getCamX()/2 + 40, HEIGHT/4 - 50 + d.getCamY()/2 + 15);
+	
+			g2d.setColor(new Color(200, 200, 200, 140));
+			
+			for (int i = 0; i < 2; i++) {
+				for (int j = 0; j < 3; j++) {
+					g2d.drawRect(chestInvX + d.getCamX()/2 + j*40 + 4, HEIGHT/4 - 50 + d.getCamY()/2 + i*40 + 24, 32, 32);
+					
+					if (chestIndex != -1) {
+						if (d.getChests().get(mapIndex).get(chestIndex).getItems().get(i*3 + j) != null) {
+							g2d.drawImage(d.getChests().get(mapIndex).get(chestIndex).getItems().get(i*3 + j).getSprite(),
+									chestInvX + d.getCamX()/2 + j*40 + 4, HEIGHT/4 - 50 + d.getCamY()/2 + i*40 + 24, null);	
+						}
+					}
+				}
+			}
+		//}
 	}
 	
 	private void drawInv(Graphics2D g2d) {
@@ -245,6 +285,14 @@ public class Display extends Canvas implements Runnable {
 	
 	public int getInvX() {
 		return invX;
+	}
+	
+	public void setChestInvX(int x) {
+		chestInvX = x;
+	}
+	
+	public int getChestInvX() {
+		return chestInvX;
 	}
 	
 	public JFrame getFrame() {

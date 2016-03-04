@@ -26,6 +26,10 @@ public class Chest extends Entity {
 	private boolean hide = false;
 	private BufferedImage[] sprites;
 	private Vector<Item> items;
+	
+	private boolean opened;
+	private int inc;
+	private int curFrame;
 
 	public Chest(double x, double y) {
 		super(x, y, 0);
@@ -40,24 +44,53 @@ public class Chest extends Entity {
 		}
 	
 		sprites = new BufferedImage[4];
+		
+		opened = false;
+		inc = 0;
+		curFrame = 0;
+		
+		load("chest.png");
+		
+		addItem(new Weapon("Brick Breaker", 1, "BB.png", 20));
 	}
 	
-	public void update() {
+	// TODO: check if player is near this chest and output it to the donutz chest update loop
+	public void update(boolean test) {
+		if (opened && curFrame < 3) {
+			inc++;
+			
+			if (inc % 10 == 0) {
+				curFrame++;
+			}
+		}
 		
+		Rectangle temp = getRect();
+		temp.x -= 8;
+		temp.y -= 8;
+		temp.width += 16;
+		temp.height += 16;
+		
+		if (!getRect().intersects(Donutz.getInstance().getPlayer().getRect())) {
+			Donutz.getInstance().setCurChestInv(-1);
+		}
+		
+		if (opened && true && Donutz.getInstance().getCurChestInv() == -1) {
+			// TODO: set this as curChestINV
+			test = true;
+		}
+		//else if (opened//TODO: check if this is already current, if so then hide if no player near) {
+				
 	}
 	
 	/**
-	 * Draw the player
+	 * Draw the chest
 	 */
 	public void render(Graphics g) {
-//		Rectangle r = new Rectangle((int)x - w/2, (int)y - w/2, w, h);	// DEBUG
-//		g.drawRect(r.x, r.y, r.width, r.height);
-		
-		g.drawImage(sprites[0], (int)x - w/2, (int)y - h/2, null);
+		g.drawImage(sprites[curFrame], (int)x - w/2, (int)y - h/2, null);
 	}
 	
 	/**
-	 * Load the player's sprite sheet into memory
+	 * Load the chest's sprite sheet into memory
 	 * @param sheet
 	 */
 	public void load(String sheet) {
@@ -66,7 +99,7 @@ public class Chest extends Entity {
 			
 			int tempHeight = sh.getHeight();
 			for (int i = 0; i < tempHeight/h; i++) {
-				sprites[i] = sh.getSubimage(w, i*h, w, h);
+				sprites[i] = sh.getSubimage(0, i*h, w, h);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -87,6 +120,10 @@ public class Chest extends Entity {
 		return false;
 	}
 	
+	public void setOpened(boolean flag) {
+		opened = flag;
+	}
+	
 	public Vector<Item> getItems() {
 		return items;
 	}
@@ -99,7 +136,7 @@ public class Chest extends Entity {
 			}
 		}
 		
-		System.out.println("NO FREE SPACES");
+		System.out.println("NO FREE SPACES FOR CHEST");
 	}
 	
 	/**

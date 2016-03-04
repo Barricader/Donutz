@@ -21,7 +21,7 @@ import com.neumont.csc150.Tile;
 import com.neumont.csc150.item.Item;
 import com.neumont.csc150.item.Weapon;
 
-// TODO: add variables for combat such as a WEAPON class and hp and skill points and what not
+// TODO: add variables for skill points and what not
 public class Player extends Entity {
 	public static final int MAX_SPEED = 3, MAX_INVENTORY = 15;
 	private boolean moving = false;
@@ -95,7 +95,6 @@ public class Player extends Entity {
 		Vector<Vector<Tile>> exitLayers = Donutz.getInstance().getCurArea().getTeleportLayers();
 		Rectangle temp = getRect();
 		
-		//collides = false;
 		if (tColLayer != null) {
 			for (int i = 0; i < tColLayer.size(); i++) {
 				if (tColLayer.get(i).getID() != 0) {
@@ -135,10 +134,46 @@ public class Player extends Entity {
 			}
 		}
 		
-		Object[] tempKeys = Donutz.getInstance().getCurArea().getTPMap().keySet().toArray();
-		//Set<Integer> tempKeys = Donutz.getInstance().getCurArea().getTPMap().keySet();
-		//Iterator i = tempKeys.iterator();
+		if (Donutz.getInstance().getAreas().size() > 0) {
+			Vector<Chest> tempChests = Donutz.getInstance().getChests().get(Donutz.getInstance().getAreas().indexOf(Donutz.getInstance().getCurArea()));
+			for (int i = 0; i < tempChests.size(); i++) {
+				Rectangle t = tempChests.get(i).getRect();
+				if ((t.x + t.width > temp.x + dx - 16 && t.x < temp.x + temp.width + 16) &&
+						(t.y + t.height > temp.y + dy - 16 && t.y < temp.y + temp.height + 16)) {
+	
+					if (t.x + t.width > temp.x+4 + dx && t.x < temp.x+4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
+						if (dx < 0) {
+							dx = 0;
+							collides = true;
+						}
+					}
+	
+					if (t.x < temp.x + temp.width-4 + dx && t.x + t.width > temp.x + temp.width-4 + dx && t.y < temp.y + temp.height-6 + dy && t.y + t.height > temp.y+6 + dy) {
+						if (dx > 0) {
+							dx = 0;
+							collides = true;
+						}
+					}
+	
+					if (t.y + t.height > temp.y+4 + dy && t.y < temp.y+4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
+						if (dy < 0) {
+							dy = 0;
+							collides = true;
+						}
+					}
+	
+					if (t.y < temp.y + temp.height-4 + dy && t.y + t.height > temp.y + temp.height-4 + dy && t.x < temp.x + temp.width-8 + dx && t.x + t.width > temp.x+8 + dx) {
+						if (dy > 0) {
+							dy = 0;
+							collides = true;
+						}
+					}
+				}
+			}
+		}
 		
+		Object[] tempKeys = Donutz.getInstance().getCurArea().getTPMap().keySet().toArray();
+
 		for (int j = 0; j < exitLayers.size(); j++) {
 			for (int i = 0; i < exitLayers.get(j).size(); i++) {
 				if (exitLayers.get(j).get(i).getID() != 0) {

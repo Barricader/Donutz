@@ -9,7 +9,9 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Vector;
 
+import com.neumont.csc150.entity.Chest;
 import com.neumont.csc150.item.Weapon;
 
 /**
@@ -129,12 +131,28 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 				break;
 			case KeyEvent.VK_ENTER:
 				enter = false;
-				if(d.getPlayer().getX() >= 288 && d.getPlayer().getX() <= 320 && d.getPlayer().getY() >= 1850 && d.getPlayer().getY() >= 1865){
-					if(d.isInForest1() == true){
-						d.setInForest1(false);
-						d.getForest1().stop();
-						d.getForest2();
-						d.getForest2().play();
+				if (!d.isInMenu() && d.getLoadPerc() == 1.0) {
+					if (d.getPlayer().getX() >= 288 && d.getPlayer().getX() <= 320 && d.getPlayer().getY() >= 1850 && d.getPlayer().getY() >= 1865) {
+						if (d.isInForest1() == true) {
+							d.setInForest1(false);
+							d.getForest1().stop();
+							d.getForest2();
+							d.getForest2().play();
+						}
+					}
+					
+					Rectangle temp = d.getPlayer().getRect();
+					temp.x -= 8;
+					temp.y -= 8;
+					temp.width += 16;
+					temp.height += 16;
+					Vector<Chest> tempChests = Donutz.getInstance().getChests().get(Donutz.getInstance().getAreas().indexOf(Donutz.getInstance().getCurArea()));
+					for (int i = 0; i < tempChests.size(); i++) {
+						Rectangle t = tempChests.get(i).getRect();
+						if (temp.intersects(t)) {
+							tempChests.get(i).setOpened(true);
+							d.setCurChestInv(i);
+						}
 					}
 				}
 				break;
@@ -153,70 +171,60 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	 */
 	public void mousePressed(MouseEvent e) {
 		Point temp = new Point(e.getX()/2, e.getY()/2);
-		if (!d.getInvOpen()) {
-			if (!d.getPlayer().getRect().contains(temp)) {
-				if (e.getButton() == MouseEvent.BUTTON1) {
-					mPressed = true;
-					t = new Timer();
-					if (!tt.cancel()) {
-						tt = new TimerTask() {
-							public void run() {
-								if (!d.getInvOpen()) {
-									int newX = mx;
-									int newY = my;
-									
-									if (d.getPlayer().getX() > Display.WIDTH / 4) {
-										newX = (int) ((mx - Display.WIDTH / 4) + d.getPlayer().getX());
+		if (!d.isInMenu() && d.getLoadPerc() == 1.0) {
+			if (!d.getInvOpen()) {
+				if (!d.getPlayer().getRect().contains(temp)) {
+					if (e.getButton() == MouseEvent.BUTTON1) {
+						mPressed = true;
+						t = new Timer();
+						if (!tt.cancel()) {
+							tt = new TimerTask() {
+								public void run() {
+									if (!d.getInvOpen()) {
+										int newX = mx;
+										int newY = my;
+										
+										if (d.getPlayer().getX() > Display.WIDTH / 4) {
+											newX = (int) ((mx - Display.WIDTH / 4) + d.getPlayer().getX());
+										}
+										if (d.getPlayer().getX() > d.getMaxOffsetX() - (Display.WIDTH * (3.0/4.0))) {
+											newX = (mx - Display.WIDTH/4) + (d.getMaxOffsetX() - Display.WIDTH + Display.WIDTH/4);
+										}
+										if (d.getPlayer().getY() > Display.HEIGHT / 4) {
+											newY = (int) ((my - Display.HEIGHT / 4) + d.getPlayer().getY());
+										}
+										if (d.getPlayer().getY() > d.getMaxOffsetY() - Display.HEIGHT*2) {
+											newY = (my - Display.HEIGHT/4) + (d.getMaxOffsetY() - Display.HEIGHT*2 + 60);
+										}
+										
+										d.getPlayer().setVelocity(newX, newY);
 									}
-									if (d.getPlayer().getX() > d.getMaxOffsetX() - (Display.WIDTH * (3.0/4.0))) {
-										newX = (mx - Display.WIDTH/4) + (d.getMaxOffsetX() - Display.WIDTH + Display.WIDTH/4);
-									}
-									if (d.getPlayer().getY() > Display.HEIGHT / 4) {
-										newY = (int) ((my - Display.HEIGHT / 4) + d.getPlayer().getY());
-									}
-									if (d.getPlayer().getY() > d.getMaxOffsetY() - Display.HEIGHT*2) {
-										newY = (my - Display.HEIGHT/4) + (d.getMaxOffsetY() - Display.HEIGHT*2 + 60);
-									}
-									
-									d.getPlayer().setVelocity(newX, newY);
 								}
-							}
-						};
+							};
+						}
+						t.scheduleAtFixedRate(tt, 0, 100);
 					}
-					t.scheduleAtFixedRate(tt, 0, 100);
 				}
 			}
-		}
-		else {
-			if (e.getButton() == MouseEvent.BUTTON1) {
-				for (int i = 0; i < d.getPlayer().getItems().size(); i++) {
-					Rectangle itemBox = new Rectangle(d.getDisplay().getInvX() + (i%3*40) + 4, Display.HEIGHT/4 - 100 + i/3*40 + 4, 32, 32);			
-					if (itemBox.contains(temp)) {
-						if (d.getSelected() == null && d.getPlayer().getItems().get(i) != null) {
-							d.setSelected(d.getPlayer().getItems().get(i));
-							d.getPlayer().getItems().set(i, null);
-							d.setLastSelected(i);
-						}
-						else if (d.getSelected() != null && d.getPlayer().getItems().get(i) == null) {
-							d.getPlayer().getItems().set(i, d.getSelected());
-							d.setSelected(null);
-							d.setLastSelected(-1);
+			else {
+				if (e.getButton() == MouseEvent.BUTTON1) {
+					for (int i = 0; i < d.getPlayer().getItems().size(); i++) {
+						Rectangle itemBox = new Rectangle(d.getDisplay().getInvX() + (i%3*40) + 4, Display.HEIGHT/4 - 100 + i/3*40 + 4, 32, 32);			
+						if (itemBox.contains(temp)) {
+							if (d.getSelected() == null && d.getPlayer().getItems().get(i) != null) {
+								d.setSelected(d.getPlayer().getItems().get(i));
+								d.getPlayer().getItems().set(i, null);
+								d.setLastSelected(i);
+							}
 						}
 					}
-				}
-				
-				Rectangle equipBox = new Rectangle(d.getDisplay().getInvX() + 140, Display.HEIGHT/4 - 100 + 25, 32, 32);			
-				if (equipBox.contains(temp)) {
-					if (d.getSelected() == null && !d.getPlayer().getEWeapon().getName().equals("null")) {
-						d.setSelected(d.getPlayer().getEWeapon());
-						d.getPlayer().setEWeapon(null);
-						d.setLastSelected(100);
-					}
-					else if (d.getSelected() != null && d.getPlayer().getEWeapon().getName().equals("null")) {
-						if (d.getSelected().getClass().getSimpleName().equals("Weapon")) {
-							d.getPlayer().setEWeapon((Weapon) d.getSelected());
-							d.setSelected(null);
-							d.setLastSelected(-1);
+					
+					Rectangle equipBox = new Rectangle(d.getDisplay().getInvX() + 140, Display.HEIGHT/4 - 100 + 25, 32, 32);			
+					if (equipBox.contains(temp)) {
+						if (d.getSelected() == null && !d.getPlayer().getEWeapon().getName().equals("null")) {
+							d.setSelected(d.getPlayer().getEWeapon());
+							d.getPlayer().setEWeapon(null);
+							d.setLastSelected(100);
 						}
 					}
 				}
@@ -228,14 +236,55 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	 * Resets the timer task
 	 */
 	public void mouseReleased(MouseEvent e) {
-		if (e.getButton() == MouseEvent.BUTTON1) {
-			mPressed = false;
-			if (d.getPlayer().isColliding()) {
-				d.getPlayer().setDx(0);
-				d.getPlayer().setDy(0);
-				d.getPlayer().setCollides(false);
-			}
-			if (!tt.cancel()) {
+		Point temp = new Point(e.getX()/2, e.getY()/2);
+		if (!d.isInMenu() && d.getLoadPerc() == 1.0) {
+			if (e.getButton() == MouseEvent.BUTTON1) {
+				if (!d.getInvOpen()) {
+					mPressed = false;
+					if (d.getPlayer().isColliding()) {
+						d.getPlayer().setDx(0);
+						d.getPlayer().setDy(0);
+						d.getPlayer().setCollides(false);
+					}
+					if (!tt.cancel()) {
+					}
+				}
+				else {
+					for (int i = 0; i < d.getPlayer().getItems().size(); i++) {
+						Rectangle itemBox = new Rectangle(d.getDisplay().getInvX() + (i%3*40) + 4, Display.HEIGHT/4 - 100 + i/3*40 + 4, 32, 32);			
+						if (itemBox.contains(temp)) {
+							if (d.getSelected() != null && d.getPlayer().getItems().get(i) == null) {
+								d.getPlayer().getItems().set(i, d.getSelected());
+								d.setSelected(null);
+								d.setLastSelected(-1);
+							}
+						}
+					}
+	
+					Rectangle equipBox = new Rectangle(d.getDisplay().getInvX() + 140, Display.HEIGHT/4 - 100 + 25, 32, 32);			
+					if (equipBox.contains(temp)) {
+						if (d.getSelected() != null && d.getPlayer().getEWeapon().getName().equals("null")) {
+							if (d.getSelected().getClass().getSimpleName().equals("Weapon")) {
+								d.getPlayer().setEWeapon((Weapon) d.getSelected());
+								d.setSelected(null);
+								d.setLastSelected(-1);
+							}
+						}
+					}
+					
+					if (d.getSelected() != null) {
+						if (d.getLastSelected() != 100) {
+							d.getPlayer().getItems().set(d.getLastSelected(), d.getSelected());
+							d.setSelected(null);
+						}
+						else {
+							d.getPlayer().setEWeapon((Weapon) d.getSelected());
+							d.setSelected(null);
+						}
+	
+						d.setLastSelected(-1);
+					}
+				}
 			}
 		}
 	}

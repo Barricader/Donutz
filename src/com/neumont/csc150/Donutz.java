@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Vector;
 
 import com.neumont.csc150.audio.AudioPlayer;
+import com.neumont.csc150.entity.Chest;
 import com.neumont.csc150.entity.Player;
 import com.neumont.csc150.item.Item;
 
@@ -14,10 +15,13 @@ public class Donutz {
 	public static boolean DEBUG = false;
 	private static Donutz instance;
 	private Vector<Area> areas;
+	private Vector<Vector<Chest>> chests;
 	private Area curArea;
 	private Player p;
 	private Item selected;
 	private int lastSelected;
+	private int areaIndex;
+	private int curChestInv;
 	
 	private int maxOffsetX, maxOffsetY, minOffsetX, minOffsetY;
 	private int camX, camY;
@@ -48,6 +52,7 @@ public class Donutz {
 	public Donutz(Display d) {
 		r = new Random();
 		
+		chests = new Vector<Vector<Chest>>();
 		areas = new Vector<Area>();
 		selected = null;
 		lastSelected = -1;
@@ -63,6 +68,8 @@ public class Donutz {
 		
 		selector = 0;
 		menuDelay = 0;
+		areaIndex = 0;
+		curChestInv = -1;
 		
 		p = new Player(Display.WIDTH / 4, Display.HEIGHT / 4);
 		
@@ -116,6 +123,8 @@ public class Donutz {
 					d.setInvX(Display.WIDTH/2);
 				}
 				playerUpdate();
+				
+				chestUpdate();
 			}
 			else if (!end && loadPerc >= 1.0 && invOpen) {
 				invUpdate();
@@ -157,11 +166,20 @@ public class Donutz {
 						minOffsetY = 0;
 
 						p.load("player.png");
+						
+						Vector<Chest> townChests = new Vector<Chest>();
+						Vector<Chest> forestChests = new Vector<Chest>();
+						
+						townChests.add(new Chest(280, maxOffsetY/2 - 240));
+						forestChests.add(new Chest(400, maxOffsetY/4 + 80));
+						
+						chests.add(townChests);
+						chests.add(forestChests);
 					}
 
 					areas.add(curArea);
 				}
-
+				
 				p.setDx(0);
 				p.setDy(0);
 
@@ -183,25 +201,28 @@ public class Donutz {
 				}
 				
 				//Plays Song for current area
-				if (path.equals("LostHaven.json")){
-					if(inTown = true){
+				if (path.equals("LostHaven.json")) {
+					areaIndex = 0;
+					if (inTown = true) {
 						forest2.stop();
 						town.play();
 					}
 				}
-				else{
-					if(inTown == false){
+				else {
+					if (inTown == false) {
 						town.stop();
 					}
 				}
-				if(path.equals("Eternal_Forest.json")){
-					if(inForest1 = true){
+				
+				if (path.equals("Eternal_Forest.json")) {
+					areaIndex = 1;
+					if (inForest1 = true) {
 						forest2.stop();
 						forest1.play();
 					}
 				}
-				else{
-					if(inForest1 == false){
+				else {
+					if (inForest1 == false) {
 						forest1.stop();
 					}
 				}
@@ -215,6 +236,33 @@ public class Donutz {
 		};
 
 		t.start();
+	}
+	
+	private void chestUpdate() {
+		if (curChestInv != -1) {
+			if (d.getChestInvX() < 0) {
+				d.setChestInvX(d.getChestInvX() + 6);
+			}
+			else if (d.getChestInvX() != 0) {
+				d.setChestInvX(0);
+			}
+		}
+		else {
+			if (d.getChestInvX() > -150) {
+				d.setChestInvX(d.getChestInvX() - 6);
+			}
+			else if (d.getChestInvX() != -150) {
+				d.setChestInvX(-150);
+			}
+		}
+		
+		for (int i = 0; i < chests.get(areas.indexOf(curArea)).size(); i++) {
+			boolean test = false;
+			chests.get(areas.indexOf(curArea)).get(i).update(test);
+			if (test) {
+				System.out.println("HMMMMMMMMM");
+			}
+		}
 	}
 	
 	private void invUpdate() {
@@ -413,6 +461,14 @@ public class Donutz {
 		//howGameOver = true;
 	}
 	
+	public Vector<Area> getAreas() {
+		return areas;
+	}
+	
+	public Vector<Vector<Chest>> getChests() {
+		return chests;
+	}
+	
 	public Area getCurArea() {
 		return curArea;
 	}
@@ -527,5 +583,13 @@ public class Donutz {
 
 	public void setForest1(AudioPlayer forest1) {
 		this.forest1 = forest1;
+	}
+	
+	public void setCurChestInv(int chestIndex) {
+		curChestInv = chestIndex;
+	}
+
+	public int getCurChestInv() {
+		return curChestInv;
 	}
 }

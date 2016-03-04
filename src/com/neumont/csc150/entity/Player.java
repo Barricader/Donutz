@@ -312,7 +312,7 @@ public class Player extends Entity {
 		
 		System.out.println("NO FREE SPACES");
 	}
-//	Player attack
+//	Player attack----------------------------------------------
 	public int attack() {
 		int damage = r.nextInt(minDmg + (minDmg - maxDmg)) + 1;
 		return damage;

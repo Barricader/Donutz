@@ -28,8 +28,10 @@ public class Enemy extends Entity {
 		super(x, y, speed);
 		super.collides = false;
 		super.dead = false;
-		w = 32;
-		h = 32;
+		w = 64;
+		h = 64;
+		bw = 128;
+		bh = 128;
 		this.maxHealth = health;
 		this.curHealth = health;
 		this.type = type;
@@ -82,23 +84,23 @@ public class Enemy extends Entity {
 
 				//Ranged
 				sprites[0][0] = buff.getSubimage(0, 0, this.w, this.h);
-				sprites[1][0] = buff.getSubimage(0, 0, this.w, this.h);
+				sprites[1][0] = buff.getSubimage(0, 64, this.w, this.h);
 			
 				//Melee
-				sprites[0][1] = buff.getSubimage(0, 0, this.w, this.h);
-				sprites[1][1] = buff.getSubimage(0, 0, this.w, this.h);
+				sprites[0][1] = buff.getSubimage(64, 0, this.w, this.h);
+				sprites[1][1] = buff.getSubimage(64, 64, this.w, this.h);
 			
 				//Fast
-				sprites[0][2] = buff.getSubimage(0, 0, this.w, this.h);
-				sprites[1][2] = buff.getSubimage(0, 0, this.w, this.h);
+				sprites[0][2] = buff.getSubimage(128, 0, this.w, this.h);
+				sprites[1][2] = buff.getSubimage(128, 64, this.w, this.h);
 				
 				//Heavy
-				sprites[0][3] = buff.getSubimage(0, 0, this.w, this.h);
-				sprites[1][3] = buff.getSubimage(0, 0, this.w, this.h);
+				sprites[0][3] = buff.getSubimage(192, 0, this.w, this.h);
+				sprites[1][3] = buff.getSubimage(192, 64, this.w, this.h);
 				
 				//Boss
-				sprites[0][4] = buff.getSubimage(0, 0, this.w, this.h);
-				sprites[1][4] = buff.getSubimage(0, 0, this.w, this.h);
+				sprites[0][4] = buff.getSubimage(256, 0, this.bw, this.bh);
+				sprites[1][4] = buff.getSubimage(256, 128, this.bw, this.bh);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

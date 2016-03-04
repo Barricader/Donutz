@@ -12,7 +12,7 @@ import com.neumont.csc150.util.Vector;
  */
 public abstract class Entity {
 	protected double x, y, dx, dy;
-	protected int w, h;
+	protected int w, h, bh, bw;
 	protected boolean collides;
 	protected double speed;
 	protected double direction;

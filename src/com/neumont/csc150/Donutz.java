@@ -123,7 +123,9 @@ public class Donutz {
 					d.setInvX(Display.WIDTH/2);
 				}
 				playerUpdate();
-				chestUpdate();
+				if (areas.size() > 0) {
+					chestUpdate();
+				}
 				if (combatCounter >= 600) {
 					combatCounter = 0;
 					setInCombat(true);
@@ -148,10 +150,13 @@ public class Donutz {
 		Thread t = new Thread("load") {
 			public void run() {
 				boolean notYetLoaded = true;
+				int curIndex = areas.indexOf(curArea);
+				
 				for (int i = 0; i < areas.size(); i++) {
 					if (areas.get(i).getPath().equals(path)) {
 						curArea = areas.get(i);
 						notYetLoaded = false;
+						loadPerc = 1.0;
 					}
 				}
 
@@ -175,12 +180,15 @@ public class Donutz {
 						
 						Vector<Chest> townChests = new Vector<Chest>();
 						Vector<Chest> forestChests = new Vector<Chest>();
+						Vector<Chest> caveChests = new Vector<Chest>();
 						
 						townChests.add(new Chest(280, maxOffsetY/2 - 240));
 						forestChests.add(new Chest(400, maxOffsetY/4 + 80));
+						caveChests.add(new Chest(0, 0));
 						
 						chests.add(townChests);
 						chests.add(forestChests);
+						chests.add(caveChests);
 					}
 
 					areas.add(curArea);
@@ -193,17 +201,29 @@ public class Donutz {
 					p.setX(maxOffsetX / 2 - Display.WIDTH / 4);
 					p.setY(maxOffsetY / 2 - Display.HEIGHT);
 				}
-				else if (path.equals("LostHaven.json") && areas.size() > 1) {
+				else if (path.equals("LostHaven.json") && curIndex == 1) {
 					p.setX(maxOffsetX - Display.WIDTH/2 - 80);
 					p.setY(940);
 					inTown = true;
 					inForest1 = false;
 				}
-				else if (path.equals("Eternal_Forest.json")) {
+				else if (path.equals("Eternal_Forest.json") && curIndex == 0) {
 					p.setX(80);
 					p.setY(850);
 					inTown = false;
 					inForest1 = true;
+				}
+				else if (path.equals("Eternal_Forest.json") && curIndex == 2) {
+					p.setX(maxOffsetX - Display.WIDTH/2 - 310);
+					p.setY(maxOffsetY - Display.HEIGHT/2 - 970);
+					inTown = false;
+					inForest1 = true;
+				}
+				else if (path.equals("Doom_Cavern.json") && curIndex == 1) {
+					p.setX(340);
+					p.setY(280);
+					inForest1 = false;
+					inCave = true;
 				}
 				
 				//Plays Song for current area
@@ -228,6 +248,18 @@ public class Donutz {
 				else {
 					if (inForest1 == false) {
 						forest1.stop();
+					}
+				}
+				
+				if (path.equals("Doom_Cavern.json")) {
+					if (inCave = true) {
+						forest1.stop();
+						cave.play();
+					}
+				}
+				else {
+					if (inCave == false) {
+						cave.stop();
 					}
 				}
 				
@@ -413,7 +445,10 @@ public class Donutz {
 	}
 	
 	public void requestTP(String location) {
-		load(location + ".json");
+		if (loadPerc == 1.0) {
+			loadPerc = 0.0;
+			load(location + ".json");
+		}
 	}
 
 	/*

@@ -136,7 +136,7 @@ public class Player extends Entity {
 			}
 		}
 		
-		if (Donutz.getInstance().getAreas().size() > 0) {
+		if (Donutz.getInstance().getAreas().size() > 0 && Donutz.getInstance().getLoadPerc() == 1.0) {
 			Vector<Chest> tempChests = Donutz.getInstance().getChests().get(Donutz.getInstance().getAreas().indexOf(Donutz.getInstance().getCurArea()));
 			for (int i = 0; i < tempChests.size(); i++) {
 				Rectangle t = tempChests.get(i).getRect();

@@ -45,6 +45,7 @@ public class Combat {
 		do{
 			if(choice == true){
 			//player attacks
+<<<<<<< HEAD
 				//recieveDam(2, p.a);
 				recieveDam(2, p.attack());
 				checkIsDead(p, e);
@@ -53,6 +54,18 @@ public class Combat {
 				//enemy attacks
 				//recieveDam(1, e.a);
 				recieveDam(1, e.attack());
+=======
+			recieveDam(2, p.attack());
+			//enemy attacks
+			recieveDam(1, e.attack());
+			checkIsDead(p, e);
+			}
+			else{
+				//enemy attacks
+				recieveDam(1, e.attack());				
+				//player attacks
+				recieveDam(2, p.attack());
+>>>>>>> origin/master
 				checkIsDead(p, e);
 			}
 		}while(p.isDead() == false && e.isDead() == false);

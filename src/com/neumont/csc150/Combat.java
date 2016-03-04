@@ -60,7 +60,7 @@ public class Combat {
 			recieveDam(1, e.attack());
 			checkIsDead(p, e);
 			}
-			else{
+			if(choice == false){
 				//enemy attacks
 				recieveDam(1, e.attack());				
 				//player attacks
@@ -75,9 +75,11 @@ public class Combat {
 		boolean eDead = e.isDead();
 		boolean pDead = p.isDead();
 		if(e.getCurHealth() == 0){
+			eDead = true;
 		return eDead;
 		}
 		else if(p.getCurHP() == 0){
+			pDead = true;
 			return pDead;
 		}
 		return false;
@@ -89,6 +91,7 @@ public class Combat {
 			return true;
 		}
 		else{
+			//enemy goes first
 			return false;
 		}
 	}

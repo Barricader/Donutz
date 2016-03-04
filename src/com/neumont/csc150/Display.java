@@ -11,8 +11,6 @@ import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Robot;
 import java.awt.Toolkit;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import java.awt.event.InputEvent;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferStrategy;
@@ -26,7 +24,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import com.neumont.csc150.audio.AudioPlayer;
 import com.neumont.csc150.entity.Chest;
 
 /**
@@ -128,6 +125,7 @@ public class Display extends Canvas implements Runnable {
 			d.getAp().stop();
 			d.getAp().close();
 		}
+		
 		// Create a triple buffering strategy to create very smooth animations and movements
 		BufferStrategy bs = getBufferStrategy();
 		if (bs == null) {

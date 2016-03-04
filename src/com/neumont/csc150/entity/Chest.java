@@ -1,23 +1,15 @@
 package com.neumont.csc150.entity;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
-import javax.swing.Timer;
 
-import com.neumont.csc150.Display;
 import com.neumont.csc150.Donutz;
-import com.neumont.csc150.Tile;
 import com.neumont.csc150.item.Item;
 import com.neumont.csc150.item.Weapon;
 

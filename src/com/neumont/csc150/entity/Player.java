@@ -10,6 +10,7 @@ import java.awt.geom.NoninvertibleTransformException;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Random;
 import java.util.Vector;
 
 import javax.imageio.ImageIO;
@@ -35,6 +36,7 @@ public class Player extends Entity {
 	private Weapon eWeapon;
 	private int curHP, maxHP;
 	private int minDmg, maxDmg;
+	protected Random r;
 
 	public Player(double x, double y) {
 		super(x, y, MAX_SPEED);
@@ -309,6 +311,11 @@ public class Player extends Entity {
 		}
 		
 		System.out.println("NO FREE SPACES");
+	}
+//	Player attack
+	public int attack() {
+		int damage = r.nextInt(minDmg + (minDmg - maxDmg)) + 1;
+		return damage;
 	}
 	
 	/**

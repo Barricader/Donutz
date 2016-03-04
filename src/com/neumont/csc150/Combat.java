@@ -28,8 +28,8 @@ public class Combat {
 			//player attacks
 			//recieveDam(2, p.a);
 			//enemy attacks
-			recieveDam(1, e.attack());
-			checkIsDead(p, e);
+				p.attack();
+				checkIsDead(p, e);
 			}
 			else{
 				//enemy attacks

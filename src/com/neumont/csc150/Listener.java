@@ -239,7 +239,7 @@ public class Listener implements KeyListener, MouseListener, MouseMotionListener
 	 */
 	public void mouseReleased(MouseEvent e) {
 		Point temp = new Point(e.getX()/2, e.getY()/2);
-		if (!d.isInMenu() && d.getLoadPerc() == 1.0) {
+		if (!d.isInMenu() || d.getLoadPerc() == 1.0) {
 			if (e.getButton() == MouseEvent.BUTTON1) {
 				if (!d.getInvOpen()) {
 					mPressed = false;

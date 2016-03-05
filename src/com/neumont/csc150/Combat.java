@@ -1,6 +1,5 @@
 package com.neumont.csc150;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.util.Random;
 
@@ -16,32 +15,36 @@ public class Combat {
 //	Constructor
 	public Combat(Player p,Enemy e){
 		rand = new Random();
-		this.p = p;
-		this.e = e;
+		this.setP(p);
+		this.setE(e);
 	}
 //	Renders combat?????
 	public void renderCombat(Graphics g){
-		g.setColor(Color.BLACK);
+		System.out.println("1");
 		int i = rand.nextInt(4) + 1;
 		if(i == 1){
-			e = new Enemy(0, 0, 7, 20, EnemyType.RANGED, 5, 3);
+			setE(new Enemy(0, 0, 7, 20, EnemyType.RANGED, 5, 3));
 		}
 		else if(i == 2){
-			e = new Enemy(0, 0, 8, 25, EnemyType.MELEE, 6, 5);
+			setE(new Enemy(0, 0, 8, 25, EnemyType.MELEE, 6, 5));
 		}
 		else if(i == 3){
-			e = new Enemy(0, 0, 10, 15, EnemyType.FAST, 3, 1);
+			setE(new Enemy(0, 0, 10, 15, EnemyType.FAST, 3, 1));
 		}
 		else{
-			e = new Enemy(0, 0, 5, 30, EnemyType.HEAVY, 8, 6);
+			setE(new Enemy(0, 0, 5, 30, EnemyType.HEAVY, 8, 6));
 		}
-		e.load("Enemy Sprites.png");
-		e.render(g);
+		System.out.println("2");
+		getE().load("Enemy.png");
+		System.out.println("3");
+		getE().render(g);
+		System.out.println("4");
+		initCombat(getP(), getE());
 	}
-//	Actual combat????
+//	Actual combat----------------------------------------
 	public void initCombat(Player p, Enemy e){
 		boolean choice = firstTurn(p, e);
-	
+		System.out.println("5");
 		do{
 			if(choice == true){
 				//player attacks
@@ -61,9 +64,10 @@ public class Combat {
 			else{
 				choice = true;
 			}
-		}while(p.isDead() == false || e.isDead() == false);
+		}while(p.isDead() == false && e.isDead() == false);
+		System.out.println("6");
 	}
-//	Checks to see if enemy or player is dead
+//	Checks to see if enemy or player is dead--------------------
 	public boolean checkIsDead(Player p, Enemy e){
 		boolean eDead = e.isDead();
 		boolean pDead = p.isDead();
@@ -79,7 +83,19 @@ public class Combat {
 			return false;
 		}
 	}
-//	Decide who goes first
+//	What happens after battle-----------------------------------
+	public boolean battleResult(){
+		if(e.isDead() == true){
+			return true;
+		}
+		else if(p.isDead() == true){
+			return false;
+		}
+		else{
+			return false;
+		}
+	}
+//	Decide who goes first---------------------------------------
 	public boolean firstTurn(Player p, Enemy e){
 		if(p.getSpeed() >= e.getSpeed()){
 			//Player goes first
@@ -94,15 +110,28 @@ public class Combat {
 	public int recieveDam(int id,int damage){
 		switch(id){
 		case 1:
-			int change = p.getCurHP() - damage;
-			p.setCurHP(change);
-			return p.getCurHP();
+			int change = getP().getCurHP() - damage;
+			getP().setCurHP(change);
+			return getP().getCurHP();
 		case 2:
-			int change1 = e.getCurHealth() - damage;
-			e.setCurHealth(change1);
-			return e.getCurHealth();
+			int change1 = getE().getCurHealth() - damage;
+			getE().setCurHealth(change1);
+			return getE().getCurHealth();
 		}
 		return 0;
+	}
+//	Getters/Setters----------------------------------------------
+	public Player getP() {
+		return p;
+	}
+	public void setP(Player p) {
+		this.p = p;
+	}
+	public Enemy getE() {
+		return e;
+	}
+	public void setE(Enemy e) {
+		this.e = e;
 	}
 
 }

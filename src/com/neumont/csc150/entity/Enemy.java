@@ -16,7 +16,7 @@ public class Enemy extends Entity {
 	private int minDam,maxDam;
 	private EnemyType type;
 	protected BufferedImage[][] sprites;
-	protected Random r;
+	protected Random rand;
 
 	public Enemy(double x, double y, double speed) {
 		super(x, y, speed);
@@ -37,35 +37,38 @@ public class Enemy extends Entity {
 		this.type = type;
 		this.maxDam = maxDam;
 		this.minDam = minDam;
+		sprites = new BufferedImage[2][5];
+		rand = new Random();
 	}
 
 	@Override
 	public void render(Graphics g) {
+		load("Enemy.png");
 		if (this.type == EnemyType.RANGED) {
-			g.drawImage(sprites[0][0], (int) x, (int) y, null);
+			g.drawImage(sprites[0][0], 0, 0, null);
 			if (collides = true) {
-				g.drawImage(sprites[1][0], (int) x, (int) y, null);
+				g.drawImage(sprites[1][0], 0, 64, null);
 			}
 		}
 
 		if (this.type == EnemyType.MELEE) {
-			g.drawImage(sprites[0][1], (int) x, (int) y, null);
+			g.drawImage(sprites[0][1], 64, 0, null);
 			if (collides = true) {
-				g.drawImage(sprites[1][1], (int) x, (int) y, null);
+				g.drawImage(sprites[1][1], 64, 64, null);
 			}
 		}
 
 		if (this.type == EnemyType.FAST) {
-			g.drawImage(sprites[0][2], (int) x, (int) y, null);
+			g.drawImage(sprites[0][2], 128, 0, null);
 			if (collides = true) {
-				g.drawImage(sprites[1][2], (int) x, (int) y, null);
+				g.drawImage(sprites[1][2], 128, 64, null);
 			}
 		}
 		
 		if (this.type == EnemyType.HEAVY) {
-			g.drawImage(sprites[0][3], (int) x, (int) y, null);
+			g.drawImage(sprites[0][3], 192, 0, null);
 			if (collides = true) {
-				g.drawImage(sprites[1][3], (int) x, (int) y, null);
+				g.drawImage(sprites[1][3], 192, 64, null);
 			}
 		}
 	}
@@ -108,7 +111,7 @@ public class Enemy extends Entity {
 	}
 //	Attack method--------------------------------------------
 	public int attack() {
-		int damage = r.nextInt(getMaxDam()) + getMinDam();
+		int damage = rand.nextInt(getMaxDam()) + getMinDam();
 		return damage;
 	}
 //	Special Attack method------------------------------------
@@ -116,10 +119,10 @@ public class Enemy extends Entity {
 		int attack = getMaxDam() + 5;
 		if(this.type == EnemyType.HEAVY){
 		attack = getMaxDam() + 10;
-		return r.nextInt(attack) + getMinDam();
+		return rand.nextInt(attack) + getMinDam();
 		}
 		else
-			return r.nextInt(attack) + getMinDam();
+			return rand.nextInt(attack) + getMinDam();
 	}
 //	Dodge Method---------------------------------------------
 	public double dodge() {
@@ -131,7 +134,7 @@ public class Enemy extends Entity {
 		Rectangle r = new Rectangle((int) this.x, (int) this.y, this.w, this.h);
 		return r;
 	}
-
+//	GETTERS/SETTERS-------------------------------------------
 	public int getMaxHealth() {
 		return maxHealth;
 	}

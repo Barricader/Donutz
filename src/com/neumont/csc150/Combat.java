@@ -13,13 +13,13 @@ public class Combat {
 	private Random rand;
 	private Player p;
 	private Enemy e;
-	
+//	Constructor
 	public Combat(Player p,Enemy e){
 		rand = new Random();
 		this.p = p;
 		this.e = e;
 	}
-	
+//	Renders combat?????
 	public void renderCombat(Graphics g){
 		g.setColor(Color.BLACK);
 		int i = rand.nextInt(4) + 1;
@@ -38,7 +38,7 @@ public class Combat {
 		e.load("Enemy Sprites.png");
 		e.render(g);
 	}
-	
+//	Actual combat????
 	public void initCombat(Player p, Enemy e){
 		boolean choice = firstTurn(p, e);
 	
@@ -55,9 +55,15 @@ public class Combat {
 				recieveDam(1, e.attack());
 				checkIsDead(p, e);
 			}
-		}while(p.isDead() == false && e.isDead() == false);
+			if(choice == true){
+				choice = false;
+			}
+			else{
+				choice = true;
+			}
+		}while(p.isDead() == false || e.isDead() == false);
 	}
-	
+//	Checks to see if enemy or player is dead
 	public boolean checkIsDead(Player p, Enemy e){
 		boolean eDead = e.isDead();
 		boolean pDead = p.isDead();
@@ -73,7 +79,7 @@ public class Combat {
 			return false;
 		}
 	}
-	
+//	Decide who goes first
 	public boolean firstTurn(Player p, Enemy e){
 		if(p.getSpeed() >= e.getSpeed()){
 			//Player goes first
@@ -84,7 +90,7 @@ public class Combat {
 			return false;
 		}
 	}
-	
+//	Allows player and enemy to receive damage
 	public int recieveDam(int id,int damage){
 		switch(id){
 		case 1:

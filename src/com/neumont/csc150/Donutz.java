@@ -126,9 +126,11 @@ public class Donutz {
 				if (areas.size() > 0) {
 					chestUpdate();
 				}
-				if (combatCounter >= 600) {
-					combatCounter = 0;
-					setInCombat(true);
+				if(inTown == false){
+					if (combatCounter >= 600) {
+						combatCounter = 0;
+						setInCombat(true);
+					}
 				}
 			}
 			else if (!end && loadPerc >= 1.0 && invOpen) {
@@ -273,7 +275,7 @@ public class Donutz {
 				}
 			}
 		};
-
+		
 		t.start();
 	}
 	

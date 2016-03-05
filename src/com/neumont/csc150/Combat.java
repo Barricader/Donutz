@@ -61,15 +61,17 @@ public class Combat {
 	public boolean checkIsDead(Player p, Enemy e){
 		boolean eDead = e.isDead();
 		boolean pDead = p.isDead();
-		if(e.getCurHealth() == 0){
+		if(e.getCurHealth() <= 0){
 			eDead = true;
 		return eDead;
 		}
-		else if(p.getCurHP() == 0){
+		else if(p.getCurHP() <= 0){
 			pDead = true;
 			return pDead;
 		}
-		return false;
+		else{
+			return false;
+		}
 	}
 	
 	public boolean firstTurn(Player p, Enemy e){
@@ -86,9 +88,9 @@ public class Combat {
 	public int recieveDam(int id,int damage){
 		switch(id){
 		case 1:
-		int change = p.getCurHP() - damage;
-		p.setCurHP(change);
-		return p.getCurHP();
+			int change = p.getCurHP() - damage;
+			p.setCurHP(change);
+			return p.getCurHP();
 		case 2:
 			int change1 = e.getCurHealth() - damage;
 			e.setCurHealth(change1);

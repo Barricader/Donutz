@@ -142,7 +142,7 @@ public class Display extends Canvas implements Runnable {
 		g.fillRect(0, 0, getWidth(), getHeight());
 		/**/
 		if(d.isInCombat() == true){
-			d.combatUpdate(null);
+			d.combatUpdate(g);
 		}
 		/**/
 		// Draw the menu if we are in the menu state

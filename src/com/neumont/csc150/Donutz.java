@@ -135,7 +135,7 @@ public class Donutz {
 				if(inTown == false){
 					if (combatCounter >= 600) {
 						combatCounter = 0;
-						setInCombat(true);
+						inCombat = true;
 					}
 				}
 			}
@@ -401,20 +401,15 @@ public class Donutz {
 			battleSong(inCombat);
 			c.renderCombat(g);
 			if(c.battleResult() == true){
-				setInCombat(false);
+				inCombat = false;
 			}
-			else if(c.battleResult() == true){
+			else if(c.battleResult() == false){
 				showGameOver = true;
-				setInCombat(false);
+				inCombat = false;
 			}
 		}
 		if(inCombat == false){
-			if(inForest1 == true){
-				forest1.play();
-			}
-			if(inCave == true){
-				cave.play();
-			}
+			battleSong(inCombat);
 		}
 	}
 	

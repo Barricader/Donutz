@@ -23,23 +23,24 @@ public class Combat {
 		System.out.println("1");
 		int i = rand.nextInt(4) + 1;
 		if(i == 1){
-			setE(new Enemy(0, 0, 7, 20, EnemyType.RANGED, 5, 3));
+			e = new Enemy(0, 0, 7, 20, EnemyType.RANGED, 5, 3);
 		}
 		else if(i == 2){
-			setE(new Enemy(0, 0, 8, 25, EnemyType.MELEE, 6, 5));
+			e = new Enemy(0, 0, 8, 25, EnemyType.MELEE, 6, 5);
 		}
 		else if(i == 3){
-			setE(new Enemy(0, 0, 10, 15, EnemyType.FAST, 3, 1));
+			e = new Enemy(0, 0, 10, 15, EnemyType.FAST, 3, 1);
 		}
 		else{
-			setE(new Enemy(0, 0, 5, 30, EnemyType.HEAVY, 8, 6));
+			e = new Enemy(0, 0, 5, 30, EnemyType.HEAVY, 8, 6);
 		}
 		System.out.println("2");
-		getE().load("Enemy.png");
+		e.load("Enemy.png");
 		System.out.println("3");
-		getE().render(g);
+		e.render(g);
 		System.out.println("4");
 		initCombat(getP(), getE());
+		System.out.println("8");
 	}
 //	Actual combat----------------------------------------
 	public void initCombat(Player p, Enemy e){
@@ -49,35 +50,39 @@ public class Combat {
 			if(choice == true){
 				//player attacks
 				//recieveDam(2, p.a);
+				System.out.println("6.1");
 				recieveDam(2, p.attack());
+				System.out.println("6.2");
 				checkIsDead(p, e);
+				System.out.println("6.3");
 			}
 			else{
 				//enemy attacks
 				//recieveDam(1, e.a);
+				System.out.println("6.4");
 				recieveDam(1, e.attack());
+				System.out.println("6.5");
 				checkIsDead(p, e);
+				System.out.println("6.6");
 			}
 			if(choice == true){
 				choice = false;
 			}
-			else{
+			else if(choice == false){
 				choice = true;
 			}
-		}while(p.isDead() == false && e.isDead() == false);
-		System.out.println("6");
+		}while(p.isDead() != true || e.isDead() != true);
+		System.out.println("7");
 	}
 //	Checks to see if enemy or player is dead--------------------
 	public boolean checkIsDead(Player p, Enemy e){
-		boolean eDead = e.isDead();
-		boolean pDead = p.isDead();
 		if(e.getCurHealth() <= 0){
-			eDead = true;
-		return eDead;
+			e.setDead(true);;
+		return e.isDead();
 		}
 		else if(p.getCurHP() <= 0){
-			pDead = true;
-			return pDead;
+			p.setDead(true);
+			return p.isDead();
 		}
 		else{
 			return false;
@@ -108,17 +113,19 @@ public class Combat {
 	}
 //	Allows player and enemy to receive damage
 	public int recieveDam(int id,int damage){
-		switch(id){
-		case 1:
-			int change = getP().getCurHP() - damage;
-			getP().setCurHP(change);
+		if(id == 1){
+			int pain = getP().getCurHP() - damage;
+			getP().setCurHP(pain);
 			return getP().getCurHP();
-		case 2:
-			int change1 = getE().getCurHealth() - damage;
-			getE().setCurHealth(change1);
+		}
+		else if(id == 2){
+			int pain2 = getE().getCurHealth() - damage;
+			getE().setCurHealth(pain2);
 			return getE().getCurHealth();
 		}
-		return 0;
+		else{
+			return 0;
+		}
 	}
 //	Getters/Setters----------------------------------------------
 	public Player getP() {

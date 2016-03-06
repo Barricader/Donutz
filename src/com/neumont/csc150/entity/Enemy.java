@@ -51,21 +51,21 @@ public class Enemy extends Entity {
 			}
 		}
 
-		if (this.type == EnemyType.MELEE) {
+		else if (this.type == EnemyType.MELEE) {
 			g.drawImage(sprites[0][1], 64, 0, null);
 			if (collides = true) {
 				g.drawImage(sprites[1][1], 64, 64, null);
 			}
 		}
 
-		if (this.type == EnemyType.FAST) {
+		else if (this.type == EnemyType.FAST) {
 			g.drawImage(sprites[0][2], 128, 0, null);
 			if (collides = true) {
 				g.drawImage(sprites[1][2], 128, 64, null);
 			}
 		}
 		
-		if (this.type == EnemyType.HEAVY) {
+		else if (this.type == EnemyType.HEAVY) {
 			g.drawImage(sprites[0][3], 192, 0, null);
 			if (collides = true) {
 				g.drawImage(sprites[1][3], 192, 64, null);
@@ -85,7 +85,6 @@ public class Enemy extends Entity {
 	public void load(String i) {
 		try {
 			BufferedImage buff = ImageIO.read(new File(i));
-
 				//Ranged
 				sprites[0][0] = buff.getSubimage(0, 0, this.w, this.h);
 				sprites[1][0] = buff.getSubimage(0, 64, this.w, this.h);

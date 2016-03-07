@@ -34,13 +34,12 @@ public class Combat {
 		else{
 			e = new Enemy(0, 0, 5, 30, EnemyType.HEAVY, 8, 6);
 		}
+		
 		System.out.println("2");
 		e.load("Enemy.png");
 		System.out.println("3");
 		e.render(g);
 		System.out.println("4");
-		initCombat(getP(), getE());
-		System.out.println("8");
 	}
 //	Actual combat----------------------------------------
 	public void initCombat(Player p, Enemy e){

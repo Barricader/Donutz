@@ -140,11 +140,7 @@ public class Display extends Canvas implements Runnable {
 		g2d.scale(2.0, 2.0);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		/**/
-		if(d.isInCombat() == true){
-			d.combatUpdate(g);
-		}
-		/**/
+		
 		// Draw the menu if we are in the menu state
 		g.setColor(Color.WHITE);
 		if (d.isInMenu()) {
@@ -206,8 +202,45 @@ public class Display extends Canvas implements Runnable {
 				loadAngle++;
 			}
 		}
+		
+		if(d.isInCombat() == true){
+			drawBattle(g2d);
+		}
 		g.dispose();
 		bs.show();
+	}
+	
+	private void drawBattle(Graphics g){		
+		d.getC().renderCombat(g);
+		g.setFont(new Font("LucidaConsole", Font.PLAIN, 18));
+		g.drawString("Attack", WIDTH / 2 - 450, HEIGHT / 2 - 140);
+		g.drawString("Use Item", WIDTH / 2 - 450, HEIGHT / 2 - 120);
+		g.drawString("Run", WIDTH / 2 - 450, HEIGHT / 2 - 100);
+		
+		Polygon p = new Polygon();
+		
+		if (d.getSelector() == 0) {
+			p.addPoint(WIDTH / 2 - 457, HEIGHT / 2 - 147);
+			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 142);
+			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 152);
+			g.drawLine(WIDTH / 2 - 450, HEIGHT / 2 - 137, WIDTH / 2 - 360, HEIGHT / 2 - 137);
+		}
+		else if(d.getSelector() == 1){
+			p.addPoint(WIDTH / 2 - 457, HEIGHT / 2 - 127);
+			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 122);
+			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 132);
+			g.drawLine(WIDTH / 2 - 450, HEIGHT / 2 - 117, WIDTH / 2 - 355, HEIGHT / 2 - 117);
+		}
+		else if(d.getSelector() == 2){
+			p.addPoint(WIDTH / 2 - 457, HEIGHT / 2 - 107);
+			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 102);
+			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 112);
+			g.drawLine(WIDTH / 2 - 450, HEIGHT / 2 - 97, WIDTH / 2 - 420, HEIGHT / 2 - 97);
+		}
+		
+		if(d.isInCombat() == true){
+			
+		}
 	}
 	
 	private void drawChests(Graphics g) {

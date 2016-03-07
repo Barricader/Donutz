@@ -136,6 +136,9 @@ public class Donutz {
 					if (combatCounter >= 600) {
 						combatCounter = 0;
 						inCombat = true;
+						if(inCombat == true){
+							combatUpdate();
+						}
 					}
 				}
 			}
@@ -396,20 +399,52 @@ public class Donutz {
 		}
 	}
 	
-	public void combatUpdate(Graphics g){
+	/**
+	 * Update the menu
+	 */
+	private void combatUpdate() {
 		if(inCombat == true){
 			battleSong(inCombat);
-			c.renderCombat(g);
-			if(c.battleResult() == true){
-				inCombat = false;
+			if ((d.getListener().s || d.getListener().down) && menuDelay <= 0) {
+				selector++;
+				menuDelay = 20;
 			}
-			else if(c.battleResult() == false){
-				showGameOver = true;
-				inCombat = false;
+			else if ((d.getListener().w || d.getListener().up) && menuDelay <= 0) {
+				selector--;
+				menuDelay = 20;
+			}
+			
+			if (d.getListener().enter) {
+				chooseSelected();
+			}
+			if (menuDelay > 0) {
+				menuDelay--;
+			}
+			if(selector >= 3){
+				selector = 0;
+			}
+			else if(selector <= -1){
+				selector = 2;
 			}
 		}
 		if(inCombat == false){
 			battleSong(inCombat);
+		}
+	}
+
+	public void chooseAction() {
+		// Attack
+		if (selector == 0) {
+			c.recieveDam(2, c.getP().attack());
+			c.recieveDam(1, c.getE().attack());
+		}
+		// Item
+		else if(selector == 1){
+			
+		}
+		//	Run
+		else if(selector == 2){
+			inCombat = false;
 		}
 	}
 	
@@ -694,5 +729,13 @@ public class Donutz {
 
 	public void setCave(AudioPlayer cave) {
 		this.cave = cave;
+	}
+
+	public Combat getC() {
+		return c;
+	}
+
+	public void setC(Combat c) {
+		this.c = c;
 	}
 }

@@ -13,10 +13,9 @@ public class Combat {
 	private Player p;
 	private Enemy e;
 //	Constructor
-	public Combat(Player p,Enemy e){
+	public Combat(Player p){
 		rand = new Random();
-		this.setP(p);
-		this.setE(e);
+		this.p = p;
 	}
 //	Renders combat?????
 	public void renderCombat(Graphics g){

@@ -1,12 +1,10 @@
 package com.neumont.csc150;
 
-import java.awt.Graphics;
 import java.util.Random;
 import java.util.Vector;
 
 import com.neumont.csc150.audio.AudioPlayer;
 import com.neumont.csc150.entity.Chest;
-import com.neumont.csc150.entity.Enemy;
 import com.neumont.csc150.entity.Player;
 import com.neumont.csc150.item.Item;
 
@@ -20,7 +18,6 @@ public class Donutz {
 	private Vector<Vector<Chest>> chests;
 	private Area curArea;
 	private Player p;
-	private Enemy e;
 	private Item selected;
 	private int lastSelected;
 	private int curChestInv;
@@ -82,7 +79,7 @@ public class Donutz {
 		
 		this.d = d;
 		
-		c = new Combat(p, e);
+		c = new Combat(p);
 		
 		if (instance == null) {
 			instance = this;

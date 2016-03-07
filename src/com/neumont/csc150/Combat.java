@@ -8,11 +8,11 @@ import com.neumont.csc150.entity.EnemyType;
 import com.neumont.csc150.entity.Player;
 
 public class Combat {
-//	Variables
+//	Variables----------------------------------------
 	private Random rand;
 	private Player p;
 	private Enemy e;
-//	Constructor
+//	Constructor--------------------------------------
 	public Combat(Player p){
 		rand = new Random();
 		this.p = p;

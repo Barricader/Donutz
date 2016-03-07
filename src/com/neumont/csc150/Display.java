@@ -210,15 +210,16 @@ public class Display extends Canvas implements Runnable {
 		bs.show();
 	}
 	
-	private void drawBattle(Graphics g){		
+	private void drawBattle(Graphics g){
+		System.out.println("1.5");
 		d.getC().renderCombat(g);
 		g.setFont(new Font("LucidaConsole", Font.PLAIN, 18));
 		g.drawString("Attack", WIDTH / 2 - 450, HEIGHT / 2 - 140);
 		g.drawString("Use Item", WIDTH / 2 - 450, HEIGHT / 2 - 120);
 		g.drawString("Run", WIDTH / 2 - 450, HEIGHT / 2 - 100);
-		
+		System.out.println("2.5");
 		Polygon p = new Polygon();
-		
+		System.out.println("3.5");
 		if (d.getSelector() == 0) {
 			p.addPoint(WIDTH / 2 - 457, HEIGHT / 2 - 147);
 			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 142);
@@ -237,10 +238,7 @@ public class Display extends Canvas implements Runnable {
 			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 112);
 			g.drawLine(WIDTH / 2 - 450, HEIGHT / 2 - 97, WIDTH / 2 - 420, HEIGHT / 2 - 97);
 		}
-		
-		if(d.isInCombat() == true){
-			
-		}
+		System.out.println("4.5");
 	}
 	
 	private void drawChests(Graphics g) {

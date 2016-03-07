@@ -24,7 +24,7 @@ public class Boss extends Enemy {
 	}
 
 	public int attack() {
-		int damage = r.nextInt(getMaxDam()) + getMinDam();
+		int damage = rand.nextInt(getMaxDam()) + getMinDam();
 		return damage;
 	}
 
@@ -35,7 +35,7 @@ public class Boss extends Enemy {
 		int minAttack = getMinDam() + 10;
 		setMaxDam(maxAttack);
 		setMinDam(minAttack);
-		return r.nextInt(getMaxDam()) + getMinDam();
+		return rand.nextInt(getMaxDam()) + getMinDam();
 	}
 
 	public void specialDefense() {

@@ -36,7 +36,7 @@ public class Player extends Entity {
 	private Weapon eWeapon;
 	private int curHP, maxHP;
 	private int minDmg, maxDmg;
-	protected Random r;
+	protected Random rand;
 
 	public Player(double x, double y) {
 		super(x, y, MAX_SPEED);
@@ -51,6 +51,8 @@ public class Player extends Entity {
 		
 		minDmg = 1;
 		maxDmg = 2;
+		
+		rand = new Random();
 
 		// A timer that just animates the player
 		step = 0;
@@ -314,7 +316,7 @@ public class Player extends Entity {
 	}
 //	Player attack----------------------------------------------
 	public int attack() {
-		int damage = r.nextInt(maxDmg + eWeapon.getDmg()) + minDmg;
+		int damage = rand.nextInt(maxDmg + eWeapon.getDmg()) + minDmg;
 		return damage;
 	}
 	

@@ -1,10 +1,12 @@
 package com.neumont.csc150;
 
+import java.awt.Graphics;
 import java.util.Random;
 import java.util.Vector;
 
 import com.neumont.csc150.audio.AudioPlayer;
 import com.neumont.csc150.entity.Chest;
+import com.neumont.csc150.entity.Enemy;
 import com.neumont.csc150.entity.Player;
 import com.neumont.csc150.item.Item;
 
@@ -18,6 +20,7 @@ public class Donutz {
 	private Vector<Vector<Chest>> chests;
 	private Area curArea;
 	private Player p;
+	private Enemy e;
 	private Item selected;
 	private int lastSelected;
 	private int curChestInv;
@@ -42,6 +45,7 @@ public class Donutz {
 	
 	private Display d;
 	
+	private Combat c;
 
 	private AudioPlayer ap, town = new AudioPlayer("Town.wav"), forest1 = new AudioPlayer("Forest1.wav"), forest2 = new AudioPlayer("Forest2.wav"),
 			battle = new AudioPlayer("Battle.wav"), cave = new AudioPlayer("Cave.wav");
@@ -77,6 +81,8 @@ public class Donutz {
 		camY = (int) (p.getY() - Display.HEIGHT / 4);
 		
 		this.d = d;
+		
+		c = new Combat(p, e);
 		
 		if (instance == null) {
 			instance = this;
@@ -126,9 +132,11 @@ public class Donutz {
 				if (areas.size() > 0) {
 					chestUpdate();
 				}
-				if (combatCounter >= 600) {
-					combatCounter = 0;
-					setInCombat(true);
+				if(inTown == false){
+					if (combatCounter >= 600) {
+						combatCounter = 0;
+						inCombat = true;
+					}
 				}
 			}
 			else if (!end && loadPerc >= 1.0 && invOpen) {
@@ -137,9 +145,6 @@ public class Donutz {
 		}
 		else {
 			menuUpdate();
-		}
-		if(inCombat == true){
-			combatUpdate();
 		}
 	}
 	
@@ -229,6 +234,7 @@ public class Donutz {
 				//Plays Song for current area
 				if (path.equals("LostHaven.json")) {
 					if (inTown = true) {
+						forest1.stop();
 						forest2.stop();
 						town.play();
 					}
@@ -255,6 +261,7 @@ public class Donutz {
 				if (path.equals("Doom_Cavern.json")) {
 					if (inCave = true) {
 						forest1.stop();
+						forest2.stop();
 						cave.play();
 					}
 				}
@@ -263,7 +270,6 @@ public class Donutz {
 						cave.stop();
 					}
 				}
-				
 				try {
 					this.join();
 				} catch (InterruptedException e) {
@@ -271,7 +277,7 @@ public class Donutz {
 				}
 			}
 		};
-
+		
 		t.start();
 	}
 	
@@ -342,7 +348,9 @@ public class Donutz {
 				end = true;
 			}
 		}
-		combatCounter += 1;
+		if(inTown == false){
+			combatCounter += 1;
+		}
 	}
 	
 	/**
@@ -380,7 +388,7 @@ public class Donutz {
 		}
 		// Load Game
 		else if(selector == 1){
-			showGameOver = true;
+			
 		}
 		//	Exit
 		else if(selector == 2){
@@ -388,60 +396,47 @@ public class Donutz {
 		}
 	}
 	
-	/**
-	 * Update the combat menu
-	 */
-	private void combatUpdate() {
-		if ((d.getListener().s || d.getListener().down) && menuDelay <= 0) {
-			selector++;
-			menuDelay = 20;
+	public void combatUpdate(Graphics g){
+		if(inCombat == true){
+			battleSong(inCombat);
+			c.renderCombat(g);
+			if(c.battleResult() == true){
+				inCombat = false;
+			}
+			else if(c.battleResult() == false){
+				showGameOver = true;
+				inCombat = false;
+			}
 		}
-		else if ((d.getListener().w || d.getListener().up) && menuDelay <= 0) {
-			selector--;
-			menuDelay = 20;
-		}
-		
-		if (d.getListener().enter) {
-			chooseAction();
-		}
-		if (menuDelay > 0) {
-			menuDelay--;
-		}
-		if(selector >= 3){
-			selector = 0;
-		}
-		else if(selector <= -1){
-			selector = 2;
+		if(inCombat == false){
+			battleSong(inCombat);
 		}
 	}
 	
-	public void chooseAction(){
-		// Attack
-		if (selector == 0) {
-			
-		}
-		// Item
-		else if(selector == 1){
-			
-		}
-		//	Run
-		else if(selector == 2){
-			
-		}
-	}
 	/**
 	 * Sets ap to String s (in other words, to a song)
 	 * */
 	public void playSong(String s){
 		setAp(new AudioPlayer(s));
 	}
-	
-	public void battleSong(){
+	/**
+	 * 
+	 * */
+	public void battleSong(boolean inCombat){
 		if(inCombat == true){
+			forest1.stop();
+			forest2.stop();
+			cave.stop();
 			battle.play();
 		}
 		else{
 			battle.stop();
+			if(inForest1 == true){
+				forest1.play();
+			}
+			else if(inCave == true){
+				cave.play();
+			}
 		}
 	}
 	
@@ -692,7 +687,7 @@ public class Donutz {
 	public void setInCombat(boolean inCombat) {
 		this.inCombat = inCombat;
 	}
-
+	
 	public AudioPlayer getCave() {
 		return cave;
 	}

@@ -18,6 +18,10 @@ public abstract class Entity {
 	protected double direction;
 	protected boolean dead;
 	
+	public void setDead(boolean dead) {
+		this.dead = dead;
+	}
+
 	public Entity(double x, double y, double speed) {
 		this.x = x;
 		this.y = y;

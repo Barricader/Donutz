@@ -140,7 +140,11 @@ public class Display extends Canvas implements Runnable {
 		g2d.scale(2.0, 2.0);
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		
+		/**/
+		if(d.isInCombat() == true){
+			d.combatUpdate(g);
+		}
+		/**/
 		// Draw the menu if we are in the menu state
 		g.setColor(Color.WHITE);
 		if (d.isInMenu()) {

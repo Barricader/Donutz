@@ -41,7 +41,7 @@ public class Combat {
 		e.render(g);
 		System.out.println("4");
 	}
-//	Actual combat----------------------------------------
+//	Does Something????
 	public void initCombat(Player p, Enemy e){
 		boolean choice = firstTurn(p, e);
 		System.out.println("5");

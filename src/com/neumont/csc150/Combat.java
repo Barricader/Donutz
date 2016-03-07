@@ -8,15 +8,14 @@ import com.neumont.csc150.entity.EnemyType;
 import com.neumont.csc150.entity.Player;
 
 public class Combat {
-//	Variables
+//	Variables----------------------------------------
 	private Random rand;
 	private Player p;
 	private Enemy e;
-//	Constructor
-	public Combat(Player p,Enemy e){
+//	Constructor--------------------------------------
+	public Combat(Player p){
 		rand = new Random();
-		this.setP(p);
-		this.setE(e);
+		this.p = p;
 	}
 //	Renders combat?????
 	public void renderCombat(Graphics g){
@@ -34,15 +33,14 @@ public class Combat {
 		else{
 			e = new Enemy(0, 0, 5, 30, EnemyType.HEAVY, 8, 6);
 		}
+		
 		System.out.println("2");
 		e.load("Enemy.png");
 		System.out.println("3");
 		e.render(g);
 		System.out.println("4");
-		initCombat(getP(), getE());
-		System.out.println("8");
 	}
-//	Actual combat----------------------------------------
+//	Does Something????
 	public void initCombat(Player p, Enemy e){
 		boolean choice = firstTurn(p, e);
 		System.out.println("5");

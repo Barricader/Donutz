@@ -115,6 +115,12 @@ public class Donutz {
 				d.getFrame().setTitle("Donutz | " + frames + " fps");
 				frames = 0;
 			}
+			
+			try {
+				Thread.sleep(2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -124,13 +130,13 @@ public class Donutz {
 	public void update() {
 		if (!inMenu) {
 			if(inTown == false){
-				if (combatCounter >= 600) {
-					combatCounter = 0;
-					inCombat = true;
-//					if(inCombat == true){
-//						combatUpdate();
-//					}
-				}
+//				if (combatCounter >= 600) {
+//					combatCounter = 0;
+//					inCombat = true;
+////					if(inCombat == true){
+////						combatUpdate();
+////					}
+//				}
 			}
 			if(inCombat == false){
 				if (!end && loadPerc >= 1.0 && !invOpen) {

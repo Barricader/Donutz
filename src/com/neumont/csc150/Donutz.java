@@ -159,6 +159,9 @@ public class Donutz {
 		else {
 			menuUpdate();
 		}
+		if(inCombat == true){
+			combatUpdate();
+		}
 	}
 	
 	/**
@@ -415,8 +418,8 @@ public class Donutz {
 	 * Update the menu
 	 */
 	private void combatUpdate() {
+		battleSong(inCombat);
 		if(inCombat == true){
-			battleSong(inCombat);
 			if ((d.getListener().s || d.getListener().down) && combatDelay <= 0) {
 				selector++;
 				combatDelay = 20;
@@ -441,6 +444,11 @@ public class Donutz {
 		}
 		if(inCombat == false){
 			battleSong(inCombat);
+			System.out.println("3");
+			battle.stop();
+			System.out.println("2");
+			c.setE(null);
+			System.out.println("1");
 		}
 	}
 
@@ -449,6 +457,13 @@ public class Donutz {
 		if (selector == 0) {
 			c.recieveDam(2, c.getP().attack());
 			c.recieveDam(1, c.getE().attack());
+			c.checkIsDead(c.getP(), c.getE());
+			if(c.getP().isDead() == true){
+				showGameOver = true;
+			}
+			else if(c.getE().isDead() == true){
+				inCombat = false;
+			}
 		}
 		// Item
 		else if(selector == 1){
@@ -476,8 +491,7 @@ public class Donutz {
 			cave.stop();
 			battle.play();
 		}
-		else{
-			battle.stop();
+		else if(inCombat == false){
 			if(inForest1 == true){
 				forest1.play();
 			}
@@ -687,4 +701,8 @@ public class Donutz {
 	public void setMap(String map) {
 		this.map = map;
 	}
+	public AudioPlayer getBattle() {
+		return battle;
+	}
+
 }

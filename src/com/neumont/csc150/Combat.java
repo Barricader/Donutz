@@ -17,7 +17,7 @@ public class Combat {
 		rand = new Random();
 		this.p = p;
 	}
-//	Renders combat?????
+//	Renders enemy
 	public void renderCombat(Graphics g, int x, int y){
 		if(e == null){
 			int i = rand.nextInt(4) + 1;

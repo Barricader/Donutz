@@ -336,6 +336,10 @@ public class Display extends Canvas implements Runnable {
 		return l;
 	}
 	
+	public Thread getThread() {
+		return thread;
+	}
+	
 	//static boolean start;
 	public static void main(String[] args) throws AWTException {
 		Display game = new Display();

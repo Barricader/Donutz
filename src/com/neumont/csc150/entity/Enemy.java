@@ -117,12 +117,15 @@ public class Enemy extends Entity {
 //	Special Attack method------------------------------------
 	public int specialAttack(){
 		int attack = getMaxDam() + 5;
-		if(this.type == EnemyType.HEAVY){
+		int conditon = (int)(getCurHealth()*.40);
+		if(this.type == EnemyType.HEAVY && getCurHealth() <= conditon){
 		attack = getMaxDam() + 10;
 		return rand.nextInt(attack) + getMinDam();
 		}
-		else
+		else if(getCurHealth() <= conditon){
 			return rand.nextInt(attack) + getMinDam();
+		}
+		return 0;
 	}
 //	Dodge Method---------------------------------------------
 	public double dodge() {

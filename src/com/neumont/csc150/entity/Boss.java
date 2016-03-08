@@ -31,10 +31,13 @@ public class Boss extends Enemy {
 	public int specialAttack() {
 		// Increases the boss' maxDamage when health gets to a certain level
 		// *Still time to decide effect
-		int maxAttack = getMaxDam() + 20;
+		int condition = (int) (getCurHealth()*.45);
+		if(getCurHealth() == condition){
+		int maxAttack = getMaxDam() + 15;
 		int minAttack = getMinDam() + 10;
 		setMaxDam(maxAttack);
 		setMinDam(minAttack);
+		}
 		return rand.nextInt(getMaxDam()) + getMinDam();
 	}
 

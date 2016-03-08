@@ -316,7 +316,7 @@ public class Player extends Entity {
 	}
 //	Player attack----------------------------------------------
 	public int attack() {
-		int damage = rand.nextInt(maxDmg + eWeapon.getDmg()) + minDmg;
+		int damage = rand.nextInt(maxDmg) + minDmg;
 		return damage;
 	}
 	

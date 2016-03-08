@@ -233,12 +233,9 @@ public class Display extends Canvas implements Runnable {
 		else if(d.getSelector() == 2){
 			g.drawLine((int)d.getPlayer().getX() - 75, (int)d.getPlayer().getY() + 102, (int)d.getPlayer().getX() - 43, (int)d.getPlayer().getY() + 102);
 		}
-		d.getC().checkIsDead(d.getC().getP(), d.getC().getE());
-		if(d.getC().getP().isDead() == true){
-			d.showGameOver = true;
-		}
-		else if(d.getC().getE().isDead() == true){
-			d.setInCombat(false);
+		if(d.isInCombat() == false){
+			g.dispose();
+			d.getBattle();
 		}
 	}
 	

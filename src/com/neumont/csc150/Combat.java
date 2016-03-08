@@ -25,13 +25,13 @@ public class Combat {
 				e = new Enemy(x, y, 7, 20, EnemyType.RANGED, 5, 3);
 			}
 			else if(i == 2){
-				e = new Enemy(x, y, 8, 25, EnemyType.MELEE, 6, 5);
+				e = new Enemy(x, y, 8, 25, EnemyType.MELEE, 4, 2);
 			}
 			else if(i == 3){
-				e = new Enemy(x, y, 10, 15, EnemyType.FAST, 3, 1);
+				e = new Enemy(x, y, 10, 15, EnemyType.FAST, 2, 1);
 			}
 			else{
-				e = new Enemy(x, y, 5, 30, EnemyType.HEAVY, 8, 6);
+				e = new Enemy(x, y, 5, 30, EnemyType.HEAVY, 5, 1);
 			}
 		}
 		e.load("Enemy.png");

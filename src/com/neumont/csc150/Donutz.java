@@ -123,12 +123,12 @@ public class Donutz {
 	 **/
 	public void update() {
 		if (!inMenu) {
-//			if(inTown == false){
-//				if (combatCounter >= 600) {
-//					combatCounter = 0;
-//					inCombat = true;
-//				}
-//			}
+			if(inTown == false){
+				if (combatCounter >= 600) {
+					combatCounter = 0;
+					inCombat = true;
+				}
+			}
 			if(inCombat == false){
 				if (!end && loadPerc >= 1.0 && !invOpen) {
 					if (d.getInvX() < Display.WIDTH/2) {
@@ -458,7 +458,10 @@ public class Donutz {
 		}
 		// Item
 		else if(selector == 1){
-			
+			p.setCurHP(p.getCurHP() + 10);
+			if(p.getCurHP() > p.getMaxHP()){
+				p.setCurHP(p.getMaxHP());
+			}
 		}
 		//	Run
 		else if(selector == 2){

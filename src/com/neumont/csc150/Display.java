@@ -181,9 +181,7 @@ public class Display extends Canvas implements Runnable {
 			if (d.getLoadPerc() >= 1.0) {
 				if (d.getCurArea() != null) {
 					d.getCurArea().render(g, false);
-					if (d.getCurArea() != null) {
-						drawChests(g);
-					}
+					drawChests(g);
 					d.getPlayer().render(g);
 					d.getCurArea().render(g, true);
 					
@@ -206,9 +204,9 @@ public class Display extends Canvas implements Runnable {
 			}
 		}
 		
-//		if(d.isInCombat() == true){
-//			drawBattle(g2d);
-//		}
+		if(d.isInCombat() == true){
+			drawBattle(g2d);
+		}
 		g.dispose();
 		bs.show();
 	}
@@ -221,6 +219,8 @@ public class Display extends Canvas implements Runnable {
 		d.getC().renderCombat(g, (int)d.getPlayer().getX() - 32, (int)d.getPlayer().getY() - 32);
 		g.setColor(Color.white);
 		g.setFont(new Font("LucidaConsole", Font.PLAIN, 18));
+		g.drawString("Enemy Health: " + d.getC().getE().getCurHealth(), (int)d.getPlayer().getX() - 65, (int)d.getPlayer().getY() - 35);
+		g.drawString("Player Health: " + d.getC().getP().getCurHP(), (int)d.getPlayer().getX() - 282, (int)d.getPlayer().getY() - 150);
 		g.drawString("Attack", (int)d.getPlayer().getX() - 75, (int) (d.getPlayer().getY()) + 50);
 		g.drawString("Use Item", (int) (d.getPlayer().getX()) - 75, (int) (d.getPlayer().getY()) + 75);
 		g.drawString("Run", (int)d.getPlayer().getX() - 75, (int) (d.getPlayer().getY()) + 100);

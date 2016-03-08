@@ -111,8 +111,9 @@ public class Enemy extends Entity {
 	}
 //	Attack method--------------------------------------------
 	public int attack() {
-		int damage = rand.nextInt(getMaxDam()) + getMinDam();
-		return damage;
+		double maxDamage = rand.nextGaussian();
+		maxDamage += getMinDam();
+		return (int)maxDamage;
 	}
 //	Special Attack method------------------------------------
 	public int specialAttack(){

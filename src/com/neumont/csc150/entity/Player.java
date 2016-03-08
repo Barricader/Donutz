@@ -46,8 +46,8 @@ public class Player extends Entity {
 		destX = x;
 		destY = y;
 		sprinting = false;
-		maxHP = 100;
-		curHP = 100;
+		maxHP = 1000;
+		curHP = 1000;
 		
 		minDmg = 1;
 		maxDmg = 2;

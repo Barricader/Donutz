@@ -18,27 +18,24 @@ public class Combat {
 		this.p = p;
 	}
 //	Renders combat?????
-	public void renderCombat(Graphics g){
-		System.out.println("1");
-		int i = rand.nextInt(4) + 1;
-		if(i == 1){
-			e = new Enemy(0, 0, 7, 20, EnemyType.RANGED, 5, 3);
+	public void renderCombat(Graphics g, int x, int y){
+		if(e == null){
+			int i = rand.nextInt(4) + 1;
+			if(i == 1){
+				e = new Enemy(x, y, 7, 20, EnemyType.RANGED, 5, 3);
+			}
+			else if(i == 2){
+				e = new Enemy(x, y, 8, 25, EnemyType.MELEE, 6, 5);
+			}
+			else if(i == 3){
+				e = new Enemy(x, y, 10, 15, EnemyType.FAST, 3, 1);
+			}
+			else{
+				e = new Enemy(x, y, 5, 30, EnemyType.HEAVY, 8, 6);
+			}
 		}
-		else if(i == 2){
-			e = new Enemy(0, 0, 8, 25, EnemyType.MELEE, 6, 5);
-		}
-		else if(i == 3){
-			e = new Enemy(0, 0, 10, 15, EnemyType.FAST, 3, 1);
-		}
-		else{
-			e = new Enemy(0, 0, 5, 30, EnemyType.HEAVY, 8, 6);
-		}
-		
-		System.out.println("2");
 		e.load("Enemy.png");
-		System.out.println("3");
 		e.render(g);
-		System.out.println("4");
 	}
 //	Does Something????
 	public void initCombat(Player p, Enemy e){

@@ -35,8 +35,10 @@ public class Donutz {
 	private boolean invOpen;
 	
 	private int selector;
-	private int menuDelay;
+	private int menuDelay, combatDelay;
 	private int combatCounter;
+	
+	private String map;
 	
 	private Random r;
 	
@@ -70,7 +72,10 @@ public class Donutz {
 		
 		selector = 0;
 		menuDelay = 0;
+		combatDelay = 0;
 		curChestInv = -1;
+		
+		map = "";
 		
 		p = new Player(Display.WIDTH / 4, Display.HEIGHT / 4);
 		
@@ -118,29 +123,31 @@ public class Donutz {
 	 **/
 	public void update() {
 		if (!inMenu) {
-			if (!end && loadPerc >= 1.0 && !invOpen) {
-				if (d.getInvX() < Display.WIDTH/2) {
-					d.setInvX(d.getInvX() + 6);
-				}
-				else if (d.getInvX() != Display.WIDTH/2) {
-					d.setInvX(Display.WIDTH/2);
-				}
-				playerUpdate();
-				if (areas.size() > 0) {
-					chestUpdate();
-				}
-				if(inTown == false){
-					if (combatCounter >= 600) {
-						combatCounter = 0;
-						inCombat = true;
-						if(inCombat == true){
-							combatUpdate();
-						}
-					}
+			if(inTown == false){
+				if (combatCounter >= 600) {
+					combatCounter = 0;
+					inCombat = true;
+//					if(inCombat == true){
+//						combatUpdate();
+//					}
 				}
 			}
-			else if (!end && loadPerc >= 1.0 && invOpen) {
-				invUpdate();
+			if(inCombat == false){
+				if (!end && loadPerc >= 1.0 && !invOpen) {
+					if (d.getInvX() < Display.WIDTH/2) {
+						d.setInvX(d.getInvX() + 6);
+					}
+					else if (d.getInvX() != Display.WIDTH/2) {
+						d.setInvX(Display.WIDTH/2);
+					}
+					playerUpdate();
+					if (areas.size() > 0) {
+						chestUpdate();
+					}
+				}
+				else if (!end && loadPerc >= 1.0 && invOpen) {
+					invUpdate();
+				}
 			}
 		}
 		else {
@@ -247,6 +254,7 @@ public class Donutz {
 				
 				if (path.equals("Eternal_Forest.json")) {
 					if (inForest1 = true) {
+						map = "Background1.png";
 						forest2.stop();
 						forest1.play();
 						cave.stop();
@@ -260,6 +268,7 @@ public class Donutz {
 				
 				if (path.equals("Doom_Cavern.json")) {
 					if (inCave = true) {
+						map = "Background2.png";
 						forest1.stop();
 						forest2.stop();
 						cave.play();
@@ -402,20 +411,20 @@ public class Donutz {
 	private void combatUpdate() {
 		if(inCombat == true){
 			battleSong(inCombat);
-			if ((d.getListener().s || d.getListener().down) && menuDelay <= 0) {
+			if ((d.getListener().s || d.getListener().down) && combatDelay <= 0) {
 				selector++;
-				menuDelay = 20;
+				combatDelay = 20;
 			}
-			else if ((d.getListener().w || d.getListener().up) && menuDelay <= 0) {
+			else if ((d.getListener().w || d.getListener().up) && combatDelay <= 0) {
 				selector--;
-				menuDelay = 20;
+				combatDelay = 20;
 			}
 			
 			if (d.getListener().enter) {
-				chooseSelected();
+				chooseAction();
 			}
-			if (menuDelay > 0) {
-				menuDelay--;
+			if (combatDelay > 0) {
+				combatDelay--;
 			}
 			if(selector >= 3){
 				selector = 0;
@@ -663,5 +672,13 @@ public class Donutz {
 
 	public void setC(Combat c) {
 		this.c = c;
+	}
+
+	public String getMap() {
+		return map;
+	}
+
+	public void setMap(String map) {
+		this.map = map;
 	}
 }

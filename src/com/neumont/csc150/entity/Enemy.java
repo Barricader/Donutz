@@ -28,6 +28,8 @@ public class Enemy extends Entity {
 		super(x, y, speed);
 		super.collides = false;
 		super.dead = false;
+		this.x = x;
+		this.y = y;
 		w = 64;
 		h = 64;
 		bw = 128;
@@ -44,31 +46,31 @@ public class Enemy extends Entity {
 	@Override
 	public void render(Graphics g) {
 		if (this.type == EnemyType.RANGED) {
-			g.drawImage(sprites[0][0], 0, 0, null);
-			if (collides = true) {
-				g.drawImage(sprites[1][0], 0, 64, null);
-			}
+			g.drawImage(sprites[0][0], (int)x, (int)y, null);
+//			if (collides = true) {
+//				g.drawImage(sprites[1][0], (int)x, (int)y, null);
+//			}
 		}
 
 		else if (this.type == EnemyType.MELEE) {
-			g.drawImage(sprites[0][1], 64, 0, null);
-			if (collides = true) {
-				g.drawImage(sprites[1][1], 64, 64, null);
-			}
+			g.drawImage(sprites[0][1], (int)x, (int)y, null);
+//			if (collides = true) {
+//				g.drawImage(sprites[1][1], (int)x, (int)y, null);
+//			}
 		}
 
 		else if (this.type == EnemyType.FAST) {
-			g.drawImage(sprites[0][2], 128, 0, null);
-			if (collides = true) {
-				g.drawImage(sprites[1][2], 128, 64, null);
-			}
+			g.drawImage(sprites[0][2], (int)x, (int)y, null);
+//			if (collides = true) {
+//				g.drawImage(sprites[1][2],(int)x, (int)y, null);
+//			}
 		}
 		
 		else if (this.type == EnemyType.HEAVY) {
-			g.drawImage(sprites[0][3], 192, 0, null);
-			if (collides = true) {
-				g.drawImage(sprites[1][3], 192, 64, null);
-			}
+			g.drawImage(sprites[0][3], (int)x, (int)y, null);
+//			if (collides = true) {
+//				g.drawImage(sprites[1][3], (int)x, (int)y, null);
+//			}
 		}
 	}
 	

@@ -44,6 +44,7 @@ public class Display extends Canvas implements Runnable {
 	private DecimalFormat df;
 	
 	private int loadAngle;
+	private BufferedImage forest;
 	private BufferedImage loadImage;
 	private BufferedImage menuImage;
 	private BufferedImage hpImage;
@@ -203,42 +204,40 @@ public class Display extends Canvas implements Runnable {
 			}
 		}
 		
-		if(d.isInCombat() == true){
-			drawBattle(g2d);
-		}
+//		if(d.isInCombat() == true){
+//			drawBattle(g2d);
+//		}
 		g.dispose();
 		bs.show();
 	}
 	
 	private void drawBattle(Graphics g){
-		System.out.println("1.5");
-		d.getC().renderCombat(g);
+		try {
+			forest = ImageIO.read(new File(d.getMap()));
+		} catch (IOException e) {}
+		g.drawImage(forest, (int)d.getPlayer().getX() - 320, (int)d.getPlayer().getY() - 180, null);
+		d.getC().renderCombat(g, (int)d.getPlayer().getX() - 32, (int)d.getPlayer().getY() - 32);
+		g.setColor(Color.white);
 		g.setFont(new Font("LucidaConsole", Font.PLAIN, 18));
-		g.drawString("Attack", WIDTH / 2 - 450, HEIGHT / 2 - 140);
-		g.drawString("Use Item", WIDTH / 2 - 450, HEIGHT / 2 - 120);
-		g.drawString("Run", WIDTH / 2 - 450, HEIGHT / 2 - 100);
-		System.out.println("2.5");
-		Polygon p = new Polygon();
-		System.out.println("3.5");
+		g.drawString("Attack", (int)d.getPlayer().getX() - 75, (int) (d.getPlayer().getY()) + 50);
+		g.drawString("Use Item", (int) (d.getPlayer().getX()) - 75, (int) (d.getPlayer().getY()) + 75);
+		g.drawString("Run", (int)d.getPlayer().getX() - 75, (int) (d.getPlayer().getY()) + 100);
 		if (d.getSelector() == 0) {
-			p.addPoint(WIDTH / 2 - 457, HEIGHT / 2 - 147);
-			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 142);
-			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 152);
-			g.drawLine(WIDTH / 2 - 450, HEIGHT / 2 - 137, WIDTH / 2 - 360, HEIGHT / 2 - 137);
+			g.drawLine((int)d.getPlayer().getX() - 75, (int)d.getPlayer().getY() + 52 , (int)d.getPlayer().getX() - 25, (int)d.getPlayer().getY() + 52);
 		}
 		else if(d.getSelector() == 1){
-			p.addPoint(WIDTH / 2 - 457, HEIGHT / 2 - 127);
-			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 122);
-			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 132);
-			g.drawLine(WIDTH / 2 - 450, HEIGHT / 2 - 117, WIDTH / 2 - 355, HEIGHT / 2 - 117);
+			g.drawLine((int)d.getPlayer().getX() - 75, (int)d.getPlayer().getY() + 77, (int)d.getPlayer().getX() - 1, (int)d.getPlayer().getY() + 77);
 		}
 		else if(d.getSelector() == 2){
-			p.addPoint(WIDTH / 2 - 457, HEIGHT / 2 - 107);
-			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 102);
-			p.addPoint(WIDTH / 2 - 462, HEIGHT / 2 - 112);
-			g.drawLine(WIDTH / 2 - 450, HEIGHT / 2 - 97, WIDTH / 2 - 420, HEIGHT / 2 - 97);
+			g.drawLine((int)d.getPlayer().getX() - 75, (int)d.getPlayer().getY() + 102, (int)d.getPlayer().getX() - 43, (int)d.getPlayer().getY() + 102);
 		}
-		System.out.println("4.5");
+		d.getC().checkIsDead(d.getC().getP(), d.getC().getE());
+		if(d.getC().getP().isDead() == true){
+			d.showGameOver = true;
+		}
+		else if(d.getC().getE().isDead() == true){
+			d.setInCombat(false);
+		}
 	}
 	
 	private void drawChests(Graphics g) {

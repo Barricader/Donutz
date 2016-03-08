@@ -235,7 +235,7 @@ public class Display extends Canvas implements Runnable {
 		}
 		if(d.isInCombat() == false){
 			g.dispose();
-			d.getBattle();
+			d.battleSong();
 		}
 	}
 	

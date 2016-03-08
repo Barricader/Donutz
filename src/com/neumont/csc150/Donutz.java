@@ -288,6 +288,11 @@ public class Donutz {
 						cave.stop();
 					}
 				}
+				
+				if(inCombat == false){
+					battle.stop();
+				}
+				
 				try {
 					this.join();
 				} catch (InterruptedException e) {
@@ -418,7 +423,7 @@ public class Donutz {
 	 * Update the menu
 	 */
 	private void combatUpdate() {
-		battleSong(inCombat);
+		battleSong();
 		if(inCombat == true){
 			if ((d.getListener().s || d.getListener().down) && combatDelay <= 0) {
 				selector++;
@@ -443,12 +448,8 @@ public class Donutz {
 			}
 		}
 		if(inCombat == false){
-			battleSong(inCombat);
-			System.out.println("3");
-			battle.stop();
-			System.out.println("2");
+			battleSong();
 			c.setE(null);
-			System.out.println("1");
 		}
 	}
 
@@ -487,7 +488,7 @@ public class Donutz {
 	/**
 	 * 
 	 * */
-	public void battleSong(boolean inCombat){
+	public void battleSong(){
 		if(inCombat == true){
 			forest1.stop();
 			forest2.stop();
@@ -495,6 +496,7 @@ public class Donutz {
 			battle.play();
 		}
 		else if(inCombat == false){
+			battle.stop();
 			if(inForest1 == true){
 				forest1.play();
 			}

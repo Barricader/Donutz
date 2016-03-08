@@ -181,7 +181,9 @@ public class Display extends Canvas implements Runnable {
 			if (d.getLoadPerc() >= 1.0) {
 				if (d.getCurArea() != null) {
 					d.getCurArea().render(g, false);
-					drawChests(g);
+					if (d.getCurArea() != null) {
+						drawChests(g);
+					}
 					d.getPlayer().render(g);
 					d.getCurArea().render(g, true);
 					

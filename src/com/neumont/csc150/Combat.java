@@ -44,7 +44,6 @@ public class Combat {
 		do{
 			if(choice == true){
 				//player attacks
-				//recieveDam(2, p.a);
 				System.out.println("6.1");
 				recieveDam(2, p.attack());
 				System.out.println("6.2");
@@ -53,7 +52,6 @@ public class Combat {
 			}
 			else{
 				//enemy attacks
-				//recieveDam(1, e.a);
 				System.out.println("6.4");
 				recieveDam(1, e.attack());
 				System.out.println("6.5");

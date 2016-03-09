@@ -156,6 +156,11 @@ public class Donutz {
 		else {
 			menuUpdate();
 		}
+		
+		if (p.getCurHP() <= 0) {
+			running = false;
+		}
+		
 		if(inCombat == true){
 			combatUpdate();
 		}

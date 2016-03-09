@@ -233,10 +233,6 @@ public class Display extends Canvas implements Runnable {
 		else if(d.getSelector() == 2){
 			g.drawLine((int)d.getPlayer().getX() - 75, (int)d.getPlayer().getY() + 102, (int)d.getPlayer().getX() - 43, (int)d.getPlayer().getY() + 102);
 		}
-		if(d.isInCombat() == false){
-			g.dispose();
-			d.battleSong();
-		}
 	}
 	
 	private void drawChests(Graphics g) {

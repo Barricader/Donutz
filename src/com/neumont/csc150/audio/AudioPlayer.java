@@ -21,6 +21,7 @@ public class AudioPlayer {
 	        clip.open(audioInputStream);
 	        
 	        clip.addLineListener(new LineListener() {
+				@Override
 				public void update(LineEvent event) {
 					if (event.getType() == Type.STOP && playing) {
 						play();

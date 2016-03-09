@@ -47,7 +47,7 @@ public class Donutz {
 	private Combat c;
 
 	private AudioPlayer ap, town = new AudioPlayer("Town.wav"), forest1 = new AudioPlayer("Forest1.wav"), forest2 = new AudioPlayer("Forest2.wav"),
-			battle = new AudioPlayer("Battle.wav"), cave = new AudioPlayer("Cave.wav");
+			cave = new AudioPlayer("Cave.wav");
 	
 	public Donutz() {
 		this(null);
@@ -133,12 +133,9 @@ public class Donutz {
 				if (combatCounter >= 600) {
 					combatCounter = 0;
 					inCombat = true;
-					if(inCombat == true){
-						combatUpdate();
-					}
 				}
 			}
-			if(inCombat == false){
+			if(!inCombat){
 				if (!end && loadPerc >= 1.0 && !invOpen) {
 					if (d.getInvX() < Display.WIDTH/2) {
 						d.setInvX(d.getInvX() + 6);
@@ -169,6 +166,7 @@ public class Donutz {
 	 */
 	public void load(String path) {
 		Thread t = new Thread("load") {
+			@Override
 			public void run() {
 				boolean notYetLoaded = true;
 				int curIndex = areas.indexOf(curArea);
@@ -287,10 +285,6 @@ public class Donutz {
 					if (inCave == false) {
 						cave.stop();
 					}
-				}
-				
-				if(inCombat == false){
-					battle.stop();
 				}
 				
 				try {
@@ -423,7 +417,6 @@ public class Donutz {
 	 * Update the menu
 	 */
 	private void combatUpdate() {
-		battleSong();
 		if(inCombat == true){
 			if ((d.getListener().s || d.getListener().down) && combatDelay <= 0) {
 				selector++;
@@ -448,7 +441,6 @@ public class Donutz {
 			}
 		}
 		if(inCombat == false){
-			battleSong();
 			c.setE(null);
 		}
 	}
@@ -484,26 +476,6 @@ public class Donutz {
 	 * */
 	public void playSong(String s){
 		setAp(new AudioPlayer(s));
-	}
-	/**
-	 * 
-	 * */
-	public void battleSong(){
-		if(inCombat == true){
-			forest1.stop();
-			forest2.stop();
-			cave.stop();
-			battle.play();
-		}
-		else if(inCombat == false){
-			battle.stop();
-			if(inForest1 == true){
-				forest1.play();
-			}
-			else if(inCave == true){
-				cave.play();
-			}
-		}
 	}
 	
 	public void requestTP(String location) {
@@ -705,9 +677,6 @@ public class Donutz {
 
 	public void setMap(String map) {
 		this.map = map;
-	}
-	public AudioPlayer getBattle() {
-		return battle;
 	}
 
 }

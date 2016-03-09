@@ -45,6 +45,7 @@ public class Enemy extends Entity {
 
 	@Override
 	public void render(Graphics g) {
+		load("Enemy.png");
 		if (this.type == EnemyType.RANGED) {
 			g.drawImage(sprites[0][0], (int)x, (int)y, null);
 //			if (collides = true) {

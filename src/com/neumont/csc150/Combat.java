@@ -34,38 +34,7 @@ public class Combat {
 				e = new Enemy(x, y, 5, 30, EnemyType.HEAVY, 5, 1);
 			}
 		}
-		e.load("Enemy.png");
 		e.render(g);
-	}
-//	Does Something????
-	public void initCombat(Player p, Enemy e){
-		boolean choice = firstTurn(p, e);
-		System.out.println("5");
-		do{
-			if(choice == true){
-				//player attacks
-				System.out.println("6.1");
-				recieveDam(2, p.attack());
-				System.out.println("6.2");
-				checkIsDead(p, e);
-				System.out.println("6.3");
-			}
-			else{
-				//enemy attacks
-				System.out.println("6.4");
-				recieveDam(1, e.attack());
-				System.out.println("6.5");
-				checkIsDead(p, e);
-				System.out.println("6.6");
-			}
-			if(choice == true){
-				choice = false;
-			}
-			else if(choice == false){
-				choice = true;
-			}
-		}while(p.isDead() != true || e.isDead() != true);
-		System.out.println("7");
 	}
 //	Checks to see if enemy or player is dead--------------------
 	public boolean checkIsDead(Player p, Enemy e){

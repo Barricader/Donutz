@@ -215,23 +215,23 @@ public class Display extends Canvas implements Runnable {
 		try {
 			forest = ImageIO.read(new File(d.getMap()));
 		} catch (IOException e) {}
-		g.drawImage(forest, (int)d.getPlayer().getX() - 320, (int)d.getPlayer().getY() - 180, null);
-		d.getC().renderCombat(g, (int)d.getPlayer().getX() - 32, (int)d.getPlayer().getY() - 32);
+		g.drawImage(forest, d.getCamX()/2, d.getCamY()/2, null);
+		d.getC().renderCombat(g, d.getCamX()/2 + WIDTH/4 -32, d.getCamY()/2 + HEIGHT/4 -32);
 		g.setColor(Color.white);
 		g.setFont(new Font("LucidaConsole", Font.PLAIN, 18));
-		g.drawString("Enemy Health: " + d.getC().getE().getCurHealth(), (int)d.getPlayer().getX() - 65, (int)d.getPlayer().getY() - 35);
-		g.drawString("Player Health: " + d.getC().getP().getCurHP(), (int)d.getPlayer().getX() - 282, (int)d.getPlayer().getY() - 150);
-		g.drawString("Attack", (int)d.getPlayer().getX() - 75, (int) (d.getPlayer().getY()) + 50);
-		g.drawString("Use Item", (int) (d.getPlayer().getX()) - 75, (int) (d.getPlayer().getY()) + 75);
-		g.drawString("Run", (int)d.getPlayer().getX() - 75, (int) (d.getPlayer().getY()) + 100);
+		g.drawString("Enemy Health: " + d.getC().getE().getCurHealth(), d.getCamX()/2 + WIDTH/4 - 65, d.getCamY()/2 + HEIGHT/4 - 35);
+		g.drawString("Player Health: " + d.getC().getP().getCurHP(), d.getCamX()/2 + WIDTH/4 - 282, d.getCamY()/2 + HEIGHT/4 - 150);
+		g.drawString("Attack", d.getCamX()/2 + WIDTH/4 - 75, d.getCamY()/2 + HEIGHT/4 + 50);
+		g.drawString("Use Item", d.getCamX()/2 + WIDTH/4 - 75, d.getCamY()/2 + HEIGHT/4 + 75);
+		g.drawString("Run", d.getCamX()/2 + WIDTH/4 - 75, d.getCamY()/2 + HEIGHT/4 + 100);
 		if (d.getSelector() == 0) {
-			g.drawLine((int)d.getPlayer().getX() - 75, (int)d.getPlayer().getY() + 52 , (int)d.getPlayer().getX() - 25, (int)d.getPlayer().getY() + 52);
+			g.drawLine(d.getCamX()/2 + WIDTH/4 - 75, d.getCamY()/2 + HEIGHT/4 + 52 , d.getCamX()/2 + WIDTH/4 - 25, d.getCamY()/2 + HEIGHT/4 + 52);
 		}
 		else if(d.getSelector() == 1){
-			g.drawLine((int)d.getPlayer().getX() - 75, (int)d.getPlayer().getY() + 77, (int)d.getPlayer().getX() - 1, (int)d.getPlayer().getY() + 77);
+			g.drawLine(d.getCamX()/2 + WIDTH/4 - 75, d.getCamY()/2 + HEIGHT/4 + 77, d.getCamX()/2 + WIDTH/4 - 1, d.getCamY()/2 + HEIGHT/4+ 77);
 		}
 		else if(d.getSelector() == 2){
-			g.drawLine((int)d.getPlayer().getX() - 75, (int)d.getPlayer().getY() + 102, (int)d.getPlayer().getX() - 43, (int)d.getPlayer().getY() + 102);
+			g.drawLine(d.getCamX()/2 + WIDTH/4 - 75, d.getCamY()/2 + HEIGHT/4 + 102, d.getCamX()/2 + WIDTH/4 - 43, d.getCamY()/2 + HEIGHT/4 + 102);
 		}
 	}
 	
